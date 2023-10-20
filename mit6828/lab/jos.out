@@ -1,0 +1,43 @@
+*** Now run 'make gdb'.
+***
+c[?7l[2J[0mSeaBIOS (version 1.13.0-1ubuntu1.1)
+
+
+iPXE (http://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+07F8CA10+07ECCA10 CA00
+Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
+
+
+Booting from Hard Disk..6828 decimal is 15254 octal!
+entering test_backtrace 5
+entering test_backtrace 4
+entering test_backtrace 3
+entering test_backtrace 2
+entering test_backtrace 1
+entering test_backtrace 0
+Stack backtrace:
+  ebp f0110f18  eip f01000a5  args 00000000 00000000 00000000 f010004e f0112308
+         kern/init.c:18: test_backtrace+101
+  ebp f0110f38  eip f010007a  args 00000000 00000001 f0110f78 f010004e f0112308
+         kern/init.c:16: test_backtrace+58
+  ebp f0110f58  eip f010007a  args 00000001 00000002 f0110f98 f010004e f0112308
+         kern/init.c:16: test_backtrace+58
+  ebp f0110f78  eip f010007a  args 00000002 00000003 f0110fb8 f010004e f0112308
+         kern/init.c:16: test_backtrace+58
+  ebp f0110f98  eip f010007a  args 00000003 00000004 00000000 f010004e f0112308
+         kern/init.c:16: test_backtrace+58
+  ebp f0110fb8  eip f010007a  args 00000004 00000005 00000000 f010004e f0112308
+         kern/init.c:16: test_backtrace+58
+  ebp f0110fd8  eip f01000fc  args 00000005 00001aac 00000640 00000000 00000000
+         kern/init.c:39: i386_init+82
+  ebp f0110ff8  eip f010003e  args 00000003 00001003 00002003 00003003 00004003
+         kern/entry.S:83: <unknown>+0
+leaving test_backtrace 0
+leaving test_backtrace 1
+leaving test_backtrace 2
+leaving test_backtrace 3
+leaving test_backtrace 4
+leaving test_backtrace 5
+6828 decimal is 15254 octal!
+Welcome to the JOS kernel monitor!
+Type 'help' for a list of commands.
+qemu-system-i386: terminating on signal 15 from pid 25218 (make)
