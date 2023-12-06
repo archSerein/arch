@@ -115,16 +115,16 @@ f0100082:	e8 e2 12 00 00       	call   f0101369 <mem_init>
 f0100087:	e8 f6 32 00 00       	call   f0103382 <env_init>
 	trap_init();
 f010008c:	e8 47 3a 00 00       	call   f0103ad8 <trap_init>
-
 #if defined(TEST)
 	// Don't touch -- used by grading script!
 	ENV_CREATE(TEST, ENV_TYPE_USER);
+#else
+	// Touch all you want.
+	ENV_CREATE(user_hello, ENV_TYPE_USER);
 f0100091:	83 c4 08             	add    $0x8,%esp
 f0100094:	6a 00                	push   $0x0
 f0100096:	ff b3 f4 ff ff ff    	push   -0xc(%ebx)
 f010009c:	e8 b5 34 00 00       	call   f0103556 <env_create>
-	// Touch all you want.
-	ENV_CREATE(user_hello, ENV_TYPE_USER);
 #endif // TEST*
 
 	// We only have one user environment for now, so just run it.
