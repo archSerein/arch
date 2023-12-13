@@ -1,0 +1,17 @@
+usertrap
+
+p->trapframe->a7: 0x7
+SYS_exec
+
+User Mode
+
+lw a3, 0(zero)
+a3
+
+scause = 13 => load page fault
+
+地址0没有被使用
+
+p->name = initcode
+p->pid = 1
+

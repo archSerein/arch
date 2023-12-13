@@ -301,13 +301,13 @@ fork(void)
 
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
-
   // increment reference counts on open file descriptors.
   for(i = 0; i < NOFILE; i++)
     if(p->ofile[i])
       np->ofile[i] = filedup(p->ofile[i]);
   np->cwd = idup(p->cwd);
 
+  np->mask = p->mask;
   safestrcpy(np->name, p->name, sizeof(p->name));
 
   pid = np->pid;
@@ -685,4 +685,20 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+
+// 返回当前使用中的进程的个数
+uint64 get_process_number(void)
+{
+  struct proc *p;
+  uint64 num = 0;
+  for (p = proc; p < &proc[NPROC]; ++p)
+  {
+    acquire(&p->lock);
+    if (p->state != UNUSED)
+      num++;
+    release(&p->lock);
+  }
+  return num;
 }
