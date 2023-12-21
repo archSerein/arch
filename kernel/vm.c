@@ -450,7 +450,27 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
   }
 }
 
-void vmprint()
+void vmprintf(pagetable_t node, int arg)
 {
+  if(arg > 2) return;// 三级页表
+  for(int i = 0; i < 512; i++)
+  {
+    pte_t pte = node[i];
+    if(pte & PTE_V)
+    {
+      for(int j = arg; j; j--)
+      {
+        printf(".. ");
+      }
 
+      printf("..%d: pte %p pa %p\n", i, pte, (pagetable_t)PTE2PA(pte));
+      vmprintf((pagetable_t)PTE2PA(pte), arg+1);
+    }
+  }
+}
+
+void vmprint(pagetable_t node)
+{
+  printf("page table %p\n", node);
+  vmprintf(node, 0);  
 }

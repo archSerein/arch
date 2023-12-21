@@ -1,0 +1,11 @@
+0: Vaild
+1: Readable
+2: Writeable
+3: Executable
+4: User
+5: Global
+6: Accessed
+7: Dirty
+8-9: Reserved for supervisor software
+10-53: physical page number
+54-63: Reserved
