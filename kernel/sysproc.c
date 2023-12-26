@@ -119,12 +119,8 @@ sys_sigalarm(void)
 uint64
 sys_sigreturn(void)
 {
- struct proc *p = myproc();
-  p->trapframe->epc = p->epc;
-  p->trapframe->ra = p->ra;
-  p->trapframe->sp = p->sp;
-  p->trapframe->s0 = p->s0; 
-  p->trapframe->a1 = p->a1;
+  struct proc *p = myproc();
+  memmove(p->trapframe, &p->back_trapframe, sizeof(struct trapframe));
   p->flag = 0;//退出fn需要把标记置0
-  return p->a0;//系统调用的返回值会在syscall中写入p->trapframe->a0
+  return p->back_trapframe.a0;//系统调用的返回值会在syscall中写入p->trapframe->a0
 }

@@ -108,11 +108,6 @@ struct proc {
   uint64 handler;
   int ticks;
   int ticks_num;
-  uint64 ra;
-  uint64 epc;
-  uint64 sp;
-  uint64 a0;
-  uint64 a1;
-  uint64 s0;
   int flag;
+  struct trapframe back_trapframe;
 };

@@ -84,12 +84,7 @@ usertrap(void)
       ++p->ticks_num;
       if(p->ticks_num > p->ticks && p->flag == 0)
       {
-        p->epc = p->trapframe->epc;//保存pc以及寄存器状态
-        p->ra = p->trapframe->ra;
-        p->sp = p->trapframe->sp;
-        p->s0 = p->trapframe->s0;
-        p->a0 = p->trapframe->a0;
-        p->a1 = p->trapframe->a1;
+        memmove(&p->back_trapframe, p->trapframe, sizeof(struct trapframe));
         p->trapframe->epc = (uint64)p->handler;//修改从trap恢复的pc所指地址，令其指向fn入口
         p->ticks_num = 0;
         p->flag = 1;
