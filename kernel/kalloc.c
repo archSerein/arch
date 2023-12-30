@@ -23,12 +23,33 @@ struct {
   struct run *freelist;
 } kmem;
 
+struct {
+  struct spinlock lock;
+  int count[NPAGE];
+} count_pa;
+
 void
 kinit()
 {
+  initlock(&count_pa.lock, "count_pa");
   initlock(&kmem.lock, "kmem");
   freerange(end, (void*)PHYSTOP);
 }
+
+void incr(uint64 pa)
+{
+  acquire(&count_pa.lock);
+  ++count_pa.count[pa/PGSIZE];
+  release(&count_pa.lock);
+}
+
+void decr(uint64 pa)
+{
+  acquire(&count_pa.lock);
+  --count_pa.count[pa/PGSIZE];
+  release(&count_pa.lock);
+}
+
 
 void
 freerange(void *pa_start, void *pa_end)
@@ -36,7 +57,10 @@ freerange(void *pa_start, void *pa_end)
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
   for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
+  {
+    count_pa.count[(uint64)p/PGSIZE] = 1;
     kfree(p);
+  }
 }
 
 // Free the page of physical memory pointed at by pa,
@@ -46,6 +70,14 @@ freerange(void *pa_start, void *pa_end)
 void
 kfree(void *pa)
 {
+  if(count_pa.count[(uint64)pa/PGSIZE] > 1)
+  {
+    decr((uint64)pa);
+    return;
+  }
+  else{
+    decr((uint64)pa);
+  }
   struct run *r;
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
@@ -77,6 +109,9 @@ kalloc(void)
   release(&kmem.lock);
 
   if(r)
+  {
     memset((char*)r, 5, PGSIZE); // fill with junk
+    incr((uint64)r);
+  }
   return (void*)r;
 }
