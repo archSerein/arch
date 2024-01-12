@@ -22,8 +22,11 @@ endfunction
 function Bit#(32) barrelShifterRight(Bit#(32) in, Bit#(5) shiftBy);
     Vector#(6, Bit#(32)) vec;
     vec[0] = in;
-    for(Integer i = 0; i < 5; i = i + 1) begin
-        vec[i + 1] = shiftRightPow2(shiftBy[i], vec[i], i);
+    for(Integer i = 0; i < 5; i = i + 1)
+    begin
+        vec[i+1] = shiftRightPow2(shiftBy[i], vec[i], i);
     end
     return vec[5];
+    // 直接使用移位运算符
+    // return in >> shiftBy;
 endfunction

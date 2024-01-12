@@ -6,15 +6,15 @@ How many gates does your one-bit multiplexer use? The 5-bit multiplexer? Write d
 
 Assume a single full adder requires 5 gates. How many gates does the 8-bit ripple-carry adder require? How many gates does the 8-bit carry-select adder require? (2 Points)
 
-40,60
+40,60(80)
 
 Assume a single full adder requires A time unit to compute its outputs once all its inputs are valid and a mux requires M time unit to compute its output. In terms of A and M, how long does the 8-bit ripple-carry adder take? How long does the 8-bit carry-select adder take? (2 Points)
 
-8A,4A+M
+8A,4A+M(A + M)
 
 Optional: How long did you take to work on this lab?
 
-3H
+4H
 
 
 Lab1：多路复用器和加法器，主要是对组合逻辑的实现和语法的熟悉，ppt中没看到桶形移位器
