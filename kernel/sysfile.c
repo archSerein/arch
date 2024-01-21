@@ -503,3 +503,109 @@ sys_pipe(void)
   }
   return 0;
 }
+
+uint64
+sys_mmap(void)
+{
+  uint64 addr;
+  int len, offset, prot, flag, fd;
+  struct file *file;
+  argaddr(0, &addr);
+  argint(1, &len);
+  argint(2, &prot);
+  argint(3, &flag);
+  //argint(4, &fd);     fd 获取方式错误
+  if(argfd(4, &fd, &file))
+    return -1;
+  argint(5, &offset);
+  
+  if(addr < 0 || len < 0 || prot < 0 || flag < 0)
+    return -1;
+
+  if((prot & PROT_READ) && !file->readable)
+    return -1;
+
+  if((prot & PROT_WRITE) && !file->writable && (flag & MAP_SHARED))
+    return -1;
+
+  len = PGROUNDUP(len);
+
+  struct proc*p = myproc();
+
+  if(p->sz + len > MAXVA)
+    return -1;
+  int index = -1;
+  for(int i = 0; i < 16; i++)
+  {
+    if(p->vma[i].addr == 0)
+    {
+      index = i; 
+      break;
+    }
+  }
+  if(index < 0)
+    return -1;
+  p->vma[index].addr = p->sz;
+  p->vma[index].length = len;
+  p->vma[index].prot = prot;
+  p->vma[index].flag = flag;
+  p->vma[index].fd = fd;
+  p->vma[index].offset = offset;
+  p->vma[index].file = file;
+  p->vma[index].len = 0;
+  p->sz += len;
+  filedup(file);
+  return p->vma[index].addr;
+}
+
+uint64
+sys_munmap(void)
+{
+  uint64 addr;
+  int len;
+  argaddr(0, &addr);
+  argint(1, &len);
+  
+  if(addr < 0 || len <= 0)
+    return -1;
+  int index = -1;
+  struct proc *p = myproc();
+  for(int i = 0; i < 16; i++)
+  {
+    if(addr >= p->vma[i].addr && addr < p->vma[i].addr + p->vma[i].length)
+    {
+      index = i;
+      break;
+    }
+  }
+
+  if(index == -1)
+    return -1;
+  
+  if(p->vma[index].len + p->vma[index].addr != addr)     //必须从上次取消的结尾开始取消
+     return -1;
+  len = PGROUNDUP(len);
+  addr = PGROUNDDOWN(addr);
+
+  if(p->vma[index].flag & MAP_SHARED)
+    filewrite(p->vma[index].file, addr, len);
+
+  for(uint64 a = addr; a < addr + len; a += PGSIZE)
+  {
+    pte_t *pte;
+    pte = walk(p->pagetable, a, 0);
+    if(!(*pte & PTE_V))
+      return 0;
+  }
+  uvmunmap(p->pagetable, addr, len / PGSIZE, 1);
+
+  if(p->vma[index].len + len == p->vma[index].length)
+  {
+    fileclose(p->vma[index].file);
+    p->vma[index].addr = 0;
+  }
+  else {
+    p->vma[index].len += len;
+  }
+  return 0;
+}
