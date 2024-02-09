@@ -130,12 +130,9 @@ VL_ATTR_COLD void Vadder___024root___ctor_var_reset(Vadder___024root* vlSelf) {
     // Body
     vlSelf->x = 0;
     vlSelf->y = 0;
-    vlSelf->clk = 0;
-    vlSelf->rst = 0;
     vlSelf->select = 0;
     vlSelf->out = 0;
     vlSelf->seg0 = 0;
     vlSelf->seg1 = 0;
     vlSelf->led = 0;
-    vlSelf->adder__DOT__to_add = 0;
 }

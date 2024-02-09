@@ -7,25 +7,17 @@ module encode(
     output reg [2:0] y,
     output [6:0] seg0
 );
-    integer i;
-    always @(*)
-    begin
-        if(en == 1'b1)
-        begin
-            casez (sw)
-                8'b00000000: y = 3'b000;
-                8'b0000001?: y = 3'b001;
-                8'b000001??: y = 3'b010;
-                8'b00001???: y = 3'b011;
-                8'b0001????: y = 3'b100;
-                8'b001?????: y = 3'b101;
-                8'b01??????: y = 3'b110;
-                8'b1???????: y = 3'b111;
-                default: y = 3'b000;
-            endcase
-        end 
-        else y = 3'b000;
-    end 
+    assign y =  (en == 1'b0) ? 3'b000 :
+                (sw == 8'b00000000) ? 3'b000 :
+                (sw[7:1] == 7'b0000001) ? 3'b001 :
+                (sw[7:2] == 6'b000001) ? 3'b010 :
+                (sw[7:3] == 5'b00001) ? 3'b011 :
+                (sw[7:4] == 4'b0001) ? 3'b100 :
+                (sw[7:5] == 3'b001) ? 3'b101 :
+                (sw[7:6] == 2'b01) ? 3'b110 :
+                (sw[7] == 1'b1) ? 3'b111 :
+                3'b000;
+    
     always @ (posedge clk)
     begin
         if(rst)

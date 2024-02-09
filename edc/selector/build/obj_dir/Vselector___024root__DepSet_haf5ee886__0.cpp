@@ -18,26 +18,38 @@ VL_INLINE_OPT void Vselector___024root___nba_sequent__TOP__0(Vselector___024root
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vselector___024root___nba_sequent__TOP__0\n"); );
     // Body
     vlSelf->led = ((IData)(vlSelf->rst) ? 0U : (3U 
-                                                & ((2U 
-                                                    & (IData)(vlSelf->sw))
+                                                & ((0U 
+                                                    == 
+                                                    (3U 
+                                                     & (IData)(vlSelf->sw)))
                                                     ? 
-                                                   ((1U 
-                                                     & (IData)(vlSelf->sw))
-                                                     ? 
-                                                    ((IData)(vlSelf->sw) 
-                                                     >> 8U)
-                                                     : 
-                                                    ((IData)(vlSelf->sw) 
-                                                     >> 6U))
+                                                   ((IData)(vlSelf->sw) 
+                                                    >> 2U)
                                                     : 
                                                    ((1U 
-                                                     & (IData)(vlSelf->sw))
+                                                     == 
+                                                     (3U 
+                                                      & (IData)(vlSelf->sw)))
                                                      ? 
                                                     ((IData)(vlSelf->sw) 
                                                      >> 4U)
                                                      : 
-                                                    ((IData)(vlSelf->sw) 
-                                                     >> 2U)))));
+                                                    ((2U 
+                                                      == 
+                                                      (3U 
+                                                       & (IData)(vlSelf->sw)))
+                                                      ? 
+                                                     ((IData)(vlSelf->sw) 
+                                                      >> 6U)
+                                                      : 
+                                                     ((3U 
+                                                       == 
+                                                       (3U 
+                                                        & (IData)(vlSelf->sw)))
+                                                       ? 
+                                                      ((IData)(vlSelf->sw) 
+                                                       >> 8U)
+                                                       : 0U))))));
 }
 
 void Vselector___024root___eval_nba(Vselector___024root* vlSelf) {

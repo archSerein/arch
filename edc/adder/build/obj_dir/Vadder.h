@@ -26,8 +26,6 @@ class Vadder VL_NOT_FINAL : public VerilatedModel {
     // propagate new values into/out from the Verilated model.
     VL_IN8(&x,3,0);
     VL_IN8(&y,3,0);
-    VL_IN8(&clk,0,0);
-    VL_IN8(&rst,0,0);
     VL_IN8(&select,2,0);
     VL_OUT8(&out,3,0);
     VL_OUT8(&seg0,6,0);

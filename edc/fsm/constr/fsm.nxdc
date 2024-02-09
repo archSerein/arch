@@ -1,0 +1,4 @@
+top = fsm
+
+led (LD5, LD4, LD3, LD2, LD1, LD0)
+in SW0

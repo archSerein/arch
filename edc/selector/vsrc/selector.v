@@ -11,16 +11,11 @@ module selector(
     assign X1 = sw[5:4];
     assign X2 = sw[7:6];
     assign X3 = sw[9:8];
-    always @ (X0, X1, X2, X3, F, Y)
-        begin
-            case(Y)
-                2'b00: F = X0;
-                2'b01: F = X1;
-                2'b10: F = X2;
-                2'b11: F = X3;
-                default: F = 2'b00;
-            endcase
-        end
+    assign F =  (Y == 2'b00) ? X0 :
+                (Y == 2'b01) ? X1 :
+                (Y == 2'b10) ? X2 :
+                (Y == 2'b11) ? X3 :
+                2'b00;
     always @ (posedge clk)
         begin 
             if(rst) begin

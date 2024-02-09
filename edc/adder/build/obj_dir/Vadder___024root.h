@@ -15,14 +15,11 @@ class Vadder___024root final : public VerilatedModule {
     // DESIGN SPECIFIC STATE
     VL_IN8(x,3,0);
     VL_IN8(y,3,0);
-    VL_IN8(clk,0,0);
-    VL_IN8(rst,0,0);
     VL_IN8(select,2,0);
     VL_OUT8(out,3,0);
     VL_OUT8(seg0,6,0);
     VL_OUT8(seg1,6,0);
     VL_OUT8(led,2,0);
-    CData/*3:0*/ adder__DOT__to_add;
     CData/*0:0*/ __VactContinue;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;

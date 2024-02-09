@@ -1,0 +1,6 @@
+top=register8
+
+wr SW4
+addr (SW3, SW2, SW1, SW0)
+data (SW12, SW11, SW10, SW9, SW8, SW7, SW6, SW5)
+led (LD7, LD6, LD5, LD4, LD3, LD2, LD1, LD0)

@@ -12,8 +12,6 @@ Vadder::Vadder(VerilatedContext* _vcontextp__, const char* _vcname__)
     , vlSymsp{new Vadder__Syms(contextp(), _vcname__, this)}
     , x{vlSymsp->TOP.x}
     , y{vlSymsp->TOP.y}
-    , clk{vlSymsp->TOP.clk}
-    , rst{vlSymsp->TOP.rst}
     , select{vlSymsp->TOP.select}
     , out{vlSymsp->TOP.out}
     , seg0{vlSymsp->TOP.seg0}

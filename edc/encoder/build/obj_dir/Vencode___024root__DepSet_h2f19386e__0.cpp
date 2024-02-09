@@ -6,19 +6,59 @@
 
 #include "Vencode___024root.h"
 
-extern const VlUnpacked<CData/*2:0*/, 512> Vencode__ConstPool__TABLE_h0d68042a_0;
-
 VL_INLINE_OPT void Vencode___024root___ico_sequent__TOP__0(Vencode___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vencode__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vencode___024root___ico_sequent__TOP__0\n"); );
-    // Init
-    SData/*8:0*/ __Vtableidx1;
-    __Vtableidx1 = 0;
     // Body
-    __Vtableidx1 = (((IData)(vlSelf->sw) << 1U) | (IData)(vlSelf->en));
-    vlSelf->y = Vencode__ConstPool__TABLE_h0d68042a_0
-        [__Vtableidx1];
+    vlSelf->y = ((IData)(vlSelf->en) ? ((0U == (IData)(vlSelf->sw))
+                                         ? 0U : ((1U 
+                                                  == 
+                                                  (0x7fU 
+                                                   & ((IData)(vlSelf->sw) 
+                                                      >> 1U)))
+                                                  ? 1U
+                                                  : 
+                                                 ((1U 
+                                                   == 
+                                                   (0x3fU 
+                                                    & ((IData)(vlSelf->sw) 
+                                                       >> 2U)))
+                                                   ? 2U
+                                                   : 
+                                                  ((1U 
+                                                    == 
+                                                    (0x1fU 
+                                                     & ((IData)(vlSelf->sw) 
+                                                        >> 3U)))
+                                                    ? 3U
+                                                    : 
+                                                   ((1U 
+                                                     == 
+                                                     (0xfU 
+                                                      & ((IData)(vlSelf->sw) 
+                                                         >> 4U)))
+                                                     ? 4U
+                                                     : 
+                                                    ((1U 
+                                                      == 
+                                                      (7U 
+                                                       & ((IData)(vlSelf->sw) 
+                                                          >> 5U)))
+                                                      ? 5U
+                                                      : 
+                                                     ((1U 
+                                                       == 
+                                                       (3U 
+                                                        & ((IData)(vlSelf->sw) 
+                                                           >> 6U)))
+                                                       ? 6U
+                                                       : 
+                                                      ((0x80U 
+                                                        & (IData)(vlSelf->sw))
+                                                        ? 7U
+                                                        : 0U))))))))
+                  : 0U);
 }
 
 void Vencode___024root___eval_ico(Vencode___024root* vlSelf) {
@@ -44,12 +84,12 @@ VL_INLINE_OPT void Vencode___024root___nba_sequent__TOP__0(Vencode___024root* vl
     Vencode__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vencode___024root___nba_sequent__TOP__0\n"); );
     // Init
-    CData/*2:0*/ __Vtableidx2;
-    __Vtableidx2 = 0;
+    CData/*2:0*/ __Vtableidx1;
+    __Vtableidx1 = 0;
     // Body
-    __Vtableidx2 = vlSelf->y;
+    __Vtableidx1 = vlSelf->y;
     vlSelf->seg0 = Vencode__ConstPool__TABLE_hc682995c_0
-        [__Vtableidx2];
+        [__Vtableidx1];
     vlSelf->led = ((IData)(vlSelf->rst) ? 0U : (((IData)(vlSelf->en) 
                                                  << 4U) 
                                                 | (((0U 
