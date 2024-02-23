@@ -38,7 +38,7 @@ VL_INLINE_OPT void Vadder___024root___ico_sequent__TOP__0(Vadder___024root* vlSe
     if ((0U == (IData)(vlSelf->select))) {
         vlSelf->out = (0xfU & (IData)(adder__DOT__add));
         vlSelf->led = ((((IData)(adder__DOT____VdfgTmp_he3f694c6__0) 
-                         & ((1U & ((IData)(vlSelf->out) 
+                         & ((1U & ((IData)(adder__DOT__add) 
                                    >> 3U)) != (1U & 
                                                ((IData)(vlSelf->x) 
                                                 >> 3U)))) 

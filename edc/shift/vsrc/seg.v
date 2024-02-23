@@ -1,7 +1,7 @@
 module seg(coda, seg1, seg0);
   input  [7:0] coda;
-  output [6:0] seg1;
-  output [6:0] seg0;
+  output wire [6:0] seg1;
+  output wire [6:0] seg0;
 
   assign seg0 = (coda[3:0] == 4'b0000) ? 7'b0000001 :
                 (coda[3:0] == 4'b0001) ? 7'b1001111 :

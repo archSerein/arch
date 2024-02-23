@@ -1,7 +1,7 @@
 module seg (
     input [3:0] out,
-    output reg [6:0] seg0,
-    output reg [6:0] seg1
+    output wire [6:0] seg0,
+    output wire [6:0] seg1
 );
     reg [2:0] out_s;
     

@@ -2,8 +2,8 @@ module shift(en, in, coda, seg1, seg0);
   input en;
   input [7:0] in;
   output reg [7:0] coda;
-  output reg [6:0] seg1;
-  output reg [6:0] seg0;
+  output wire [6:0] seg1;
+  output wire [6:0] seg0;
 
   reg x8;
   

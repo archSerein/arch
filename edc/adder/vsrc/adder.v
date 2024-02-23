@@ -2,15 +2,15 @@ module adder (
     input [3:0] x,
     input [3:0] y,
     input [2:0] select,
-    output reg [3:0] out,
+    output wire [3:0] out,
     output [6:0] seg0,
     output [6:0] seg1,
-    output reg [2:0] led
+    output wire [2:0] led
 );
   
     // 加法
     wire [4:0] add = x + y;
-    wire add_over_flow = (x[3] == y[3]) && (out[3] != x[3]);
+    wire add_over_flow = (x[3] == y[3]) && (add[3] != x[3]);
 
     // 减法
     wire [3:0] t_add_Cin = {4{select[0]}} ^ y;
