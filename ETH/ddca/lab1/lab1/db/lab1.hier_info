@@ -1,0 +1,36 @@
+|lab1
+a[0] => a[0].IN1
+a[1] => a[1].IN1
+a[2] => a[2].IN1
+a[3] => a[3].IN1
+b[0] => b[0].IN1
+b[1] => b[1].IN1
+b[2] => b[2].IN1
+b[3] => b[3].IN1
+out << out_s3.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|lab1|comp_1:comp1
+a => equal_a_b.IN0
+b => equal_a_b.IN1
+equal <= equal_a_b.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|lab1|comp_1:comp2
+a => equal_a_b.IN0
+b => equal_a_b.IN1
+equal <= equal_a_b.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|lab1|comp_1:comp3
+a => equal_a_b.IN0
+b => equal_a_b.IN1
+equal <= equal_a_b.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|lab1|comp_1:comp4
+a => equal_a_b.IN0
+b => equal_a_b.IN1
+equal <= equal_a_b.DB_MAX_OUTPUT_PORT_TYPE
+
+

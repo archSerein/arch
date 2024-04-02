@@ -1,0 +1,37 @@
+module lab1(
+    input [3:0] a,
+    input [3:0] b,
+    output out
+);
+
+    wire [3:0] equal, l, m;
+    wire [2:0] out_s;
+    comp_1 comp1(a[3], b[3], l[3], m[3], equal[3]);
+    comp_1 comp2(a[2], b[2], l[2], m[2], equal[2]);
+    comp_1 comp3(a[1], b[1], l[1], m[1], equal[1]);
+    comp_1 comp4(a[0], b[0], l[0], m[0], equal[0]);
+
+    or out_s1(out_s[0], equal[0], equal[1]);
+    or out_s2(out_s[1], out_s[0], equal[2]);
+    or out_s3(out_s[2], out_s[1], equal[3]);
+    or out_s4(out, out_s[2], equal[4]);
+
+endmodule
+
+module comp_1(
+    input a,
+    input b,
+    output l,
+    output m,
+    output equal
+);
+
+    wire notb, nota;
+
+    not notb(notb, b);
+    not nota(nota, a);
+    and and_a_nb(m, a, notb);
+    and and_b_na(l, b, nota);
+    xor equal_a_b(equal, a, b);
+
+endmodule

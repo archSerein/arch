@@ -1,0 +1,12 @@
+|part2
+a => and_1.IN0
+a => xnor_1.IN0
+a => and_2.IN0
+b => and_2.IN1
+b => xnor_1.IN1
+b => and_1.IN1
+O[0] << and_1.DB_MAX_OUTPUT_PORT_TYPE
+O[1] << xnor_1.DB_MAX_OUTPUT_PORT_TYPE
+O[2] << and_2.DB_MAX_OUTPUT_PORT_TYPE
+
+

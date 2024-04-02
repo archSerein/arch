@@ -1,0 +1,14 @@
+|part3
+a => nand4.IN0
+a => nand8.IN0
+a => nand2.IN0
+a => nand6.IN0
+b => nand2.IN1
+b => nand4.IN1
+b => nand6.IN1
+b => nand8.IN1
+O1 <= nand8.DB_MAX_OUTPUT_PORT_TYPE
+O2 <= nand7.DB_MAX_OUTPUT_PORT_TYPE
+O3 <= nand2.DB_MAX_OUTPUT_PORT_TYPE
+
+
