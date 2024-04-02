@@ -1,0 +1,805 @@
+{
+ "builder": {
+  "_version": "<undefined>",
+  "_logger": "hdl_checker.builders.fallback",
+  "_work_folder": "/home/serein/Desktop/mit-os/.hdl_checker",
+  "_builtin_libraries": [],
+  "_added_libraries": [
+   {
+    "name": "default_library",
+    "case_sensitive": false,
+    "__class__": "Identifier"
+   }
+  ],
+  "__class__": "Fallback"
+ },
+ "config_file": [
+  {
+   "name": "/tmp/hdl_checker_project_pid74722.json",
+   "__class__": "Path"
+  },
+  1712071467.1750286,
+  "generated"
+ ],
+ "database": {
+  "sources": [
+   {
+    "path": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part2/fulladder4.v",
+     "__class__": "Path"
+    },
+    "mtime": 1712071887.061259,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part1/fulladder1.v",
+     "__class__": "Path"
+    },
+    "mtime": 1712070825.2154408,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/lab1/lab1.v",
+     "__class__": "Path"
+    },
+    "mtime": 1712060472.7129953,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/part3/part3.v",
+     "__class__": "Path"
+    },
+    "mtime": 1712063807.432532,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/part2/part2.v",
+     "__class__": "Path"
+    },
+    "mtime": 1712062158.6365218,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   }
+  ],
+  "inferred_libraries": [
+   {
+    "name": "/tmp/tmpch33gipf.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpiajlvali.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmppz3oy1au.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp2mlc2l_w.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpatj461k4.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp8f01fmsx.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpqn93anuk.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpv12owik3.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp_h95bsyd.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpoht7ce3y.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpl9c_m5ih.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpoxnqod_6.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpky98vipx.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpo4gwryl9.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpqratnhex.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpqko17g3x.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp9f85v57n.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp7qzzz9p9.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpbe03edjb.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpmvnftnw7.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpeq4fbq7u.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp7kat5axl.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4vzz2epm.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp5kj3lymf.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpfbt8tlln.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpc7gfkp1i.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp2anl3zn_.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp227y5wy2.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpa5qf4vxw.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmppn9qahi3.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4k2_wmot.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpe9qg6gqu.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpmy_st86h.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmptjfig95w.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp5idcibq8.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpadvw7r83.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpek293b1h.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp9c3em0on.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp7wl6j3bx.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpo1unlcjk.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpas2ui4gj.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp13kfehsy.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmphvh3mvm5.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp805o0b9z.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp2tk3y9zc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmppm25ze55.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpgsk5evsk.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpvb290l61.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpryxo0att.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part2/fulladder4.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpwitikar6.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpb2c462j5.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpd9faonuc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp3yp9bezq.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmppl0tm4ph.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpqvw99370.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpetp4wb_7.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpgis9i9tq.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpfiudkzvi.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpsf9vcufs.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmprcrptcbg.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4kk6j_2a.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp_noxk4qb.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpoa76mlpi.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp9i7ax__n.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpv1d6bv6n.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpik3ton2e.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpnjdccmmz.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpvqttlwbi.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpy2eh3pqj.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpawz44oa4.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmphd1w9gmp.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpp7s30_o_.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp82ujzovs.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpjvkzdpnz.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmppgs9sd5y.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpkaryh5jc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpenhksdew.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp_jf0rznl.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp1xdeo96w.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpghz6xjlr.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmprbo_iq5f.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpdn2_amej.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpv9_c44hc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpdpgab2xv.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp3o7shs90.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4y6addib.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpx5ngj_1y.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpekhcgxgt.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp75l95ubn.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpdceyc2ne.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4_qhiaml.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpq0n_ghwk.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpo_07892s.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpju3bqn09.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpr3p2p30s.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpiiktbogr.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpgkjswfyp.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpx9ont2iy.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp4010k2hf.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp36dec8tu.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp2j185r7u.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpkd9r1kcf.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpps3kju_3.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpouvqiny_.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpu4pvzj8r.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpj0zbvefa.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpf5j586ux.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpypc32koh.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpnx9t3h9o.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpdfba8ehq.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpb_p4g3nq.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmph_43jcga.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpr7k66wkw.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpfw5d532p.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmphmftxqh7.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp81x0wata.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpynu1u13j.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpu18v7t3r.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpow87h396.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpfuk0omjl.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmprgna9n9g.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpmqho6n0s.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpn8286wp_.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpe8nahxeo.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp68g7patr.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpeyjamq18.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp7yjrz4vi.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmptrh0ev7u.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpym2r7upe.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp5oqwbf1a.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpkt_u6hyq.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpmgn7qj7k.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpsfzrvzk9.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpsjgol8uj.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp6dpejq6y.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmptt1tv2tb.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpjs6ekl3o.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp7zshtkxv.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmpjkerarhg.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmp16h0fetc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "/tmp/tmph2ucadfg.v",
+    "__class__": "Path"
+   }
+  ],
+  "design_units": [
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part2/fulladder4.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "fulladder4",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      0,
+      6
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/lab1/lab1.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "comp_1",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      19,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/part2/part2.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "part2",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      0,
+      6
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/part3/part3.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "part3",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      0,
+      6
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab1/lab1/lab1.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "lab1",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      0,
+      6
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part1/fulladder1.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "fulladder1",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      0,
+      6
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "/home/serein/Desktop/mit-os/ETH/ddca/lab2/part2/fulladder4.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "fulladder1",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      16,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   }
+  ],
+  "__class__": "Database"
+ },
+ "__version__": "0.7.4"
+}

@@ -1,0 +1,73 @@
+|fulladder4
+a[0] => a[0].IN1
+a[1] => a[1].IN1
+a[2] => a[2].IN1
+a[3] => a[3].IN1
+b[0] => b[0].IN1
+b[1] => b[1].IN1
+b[2] => b[2].IN1
+b[3] => b[3].IN1
+ci => ci.IN1
+s[0] <= fulladder1:fulladder_0.port3
+s[1] <= fulladder1:fulladder_1.port3
+s[2] <= fulladder1:fulladder_2.port3
+s[3] <= fulladder1:fulladder_3.port3
+co <= fulladder1:fulladder_3.port4
+
+
+|fulladder4|fulladder1:fulladder_0
+a => xnor1.IN0
+a => and1.IN0
+a => and2.IN0
+b => xnor1.IN1
+b => and1.IN1
+b => and3.IN0
+ci => xnor2.IN1
+ci => and2.IN1
+ci => and3.IN1
+s <= xnor2.DB_MAX_OUTPUT_PORT_TYPE
+co <= or2.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|fulladder4|fulladder1:fulladder_1
+a => xnor1.IN0
+a => and1.IN0
+a => and2.IN0
+b => xnor1.IN1
+b => and1.IN1
+b => and3.IN0
+ci => xnor2.IN1
+ci => and2.IN1
+ci => and3.IN1
+s <= xnor2.DB_MAX_OUTPUT_PORT_TYPE
+co <= or2.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|fulladder4|fulladder1:fulladder_2
+a => xnor1.IN0
+a => and1.IN0
+a => and2.IN0
+b => xnor1.IN1
+b => and1.IN1
+b => and3.IN0
+ci => xnor2.IN1
+ci => and2.IN1
+ci => and3.IN1
+s <= xnor2.DB_MAX_OUTPUT_PORT_TYPE
+co <= or2.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|fulladder4|fulladder1:fulladder_3
+a => xnor1.IN0
+a => and1.IN0
+a => and2.IN0
+b => xnor1.IN1
+b => and1.IN1
+b => and3.IN0
+ci => xnor2.IN1
+ci => and2.IN1
+ci => and3.IN1
+s <= xnor2.DB_MAX_OUTPUT_PORT_TYPE
+co <= or2.DB_MAX_OUTPUT_PORT_TYPE
+
+

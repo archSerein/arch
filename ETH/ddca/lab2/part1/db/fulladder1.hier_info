@@ -1,0 +1,14 @@
+|fulladder1
+a => xnor1.IN0
+a => and1.IN0
+a => and2.IN0
+b => xnor1.IN1
+b => and1.IN1
+b => and3.IN0
+ci => xnor2.IN1
+ci => and2.IN1
+ci => and3.IN1
+s <= xnor2.DB_MAX_OUTPUT_PORT_TYPE
+co <= or2.DB_MAX_OUTPUT_PORT_TYPE
+
+
