@@ -1,0 +1,15 @@
+|decode
+in[0] => and1.IN0
+in[0] => and3.IN0
+in[0] => and2.IN0
+in[0] => and4.IN0
+in[1] => and1.IN1
+in[1] => and2.IN1
+in[1] => and3.IN1
+in[1] => and4.IN1
+out[0] <= and4.DB_MAX_OUTPUT_PORT_TYPE
+out[1] <= and3.DB_MAX_OUTPUT_PORT_TYPE
+out[2] <= and2.DB_MAX_OUTPUT_PORT_TYPE
+out[3] <= and1.DB_MAX_OUTPUT_PORT_TYPE
+
+

@@ -1,0 +1,31 @@
+|mux
+a => a.IN1
+b => b.IN1
+x => x.IN1
+y => y.IN1
+c[0] => c[0].IN2
+c[1] => c[1].IN1
+o <= mux21:mux_o.port3
+
+
+|mux|mux21:mux_a_b
+a => o.DATAB
+b => o.DATAA
+c => o.OUTPUTSELECT
+o <= o.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|mux|mux21:mux_x_y
+a => o.DATAB
+b => o.DATAA
+c => o.OUTPUTSELECT
+o <= o.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|mux|mux21:mux_o
+a => o.DATAB
+b => o.DATAA
+c => o.OUTPUTSELECT
+o <= o.DB_MAX_OUTPUT_PORT_TYPE
+
+
