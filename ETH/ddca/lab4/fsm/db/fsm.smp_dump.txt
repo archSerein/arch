@@ -1,0 +1,20 @@
+
+State Machine - |fsm|out_r
+Name out_r.state_r_2 out_r.state_r_1 out_r.state_l_2 out_r.state_l_1 out_r.init_state out_r.state_r_3 out_r.state_l_3 
+out_r.init_state 0 0 0 0 0 0 0 
+out_r.state_l_1 0 0 0 1 1 0 0 
+out_r.state_l_2 0 0 1 0 1 0 0 
+out_r.state_l_3 0 0 0 0 1 0 1 
+out_r.state_r_1 0 1 0 0 1 0 0 
+out_r.state_r_2 1 0 0 0 1 0 0 
+out_r.state_r_3 0 0 0 0 1 1 0 
+
+State Machine - |fsm|state_holding_reg
+Name state_holding_reg.state_r_2 state_holding_reg.state_r_1 state_holding_reg.state_l_2 state_holding_reg.state_l_1 state_holding_reg.init_state state_holding_reg.state_r_3 state_holding_reg.state_l_3 
+state_holding_reg.init_state 0 0 0 0 0 0 0 
+state_holding_reg.state_l_1 0 0 0 1 1 0 0 
+state_holding_reg.state_l_2 0 0 1 0 1 0 0 
+state_holding_reg.state_l_3 0 0 0 0 1 0 1 
+state_holding_reg.state_r_1 0 1 0 0 1 0 0 
+state_holding_reg.state_r_2 1 0 0 0 1 0 0 
+state_holding_reg.state_r_3 0 0 0 0 1 1 0 
