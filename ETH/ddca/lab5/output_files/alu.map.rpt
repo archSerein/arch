@@ -1,0 +1,1815 @@
+Analysis & Synthesis report for alu
+Mon Apr  8 21:12:34 2024
+Quartus Prime Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. General Register Statistics
+  9. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 10. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1
+ 11. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_2
+ 12. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3
+ 13. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_4
+ 14. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_1
+ 15. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_2
+ 16. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_3
+ 17. Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4
+ 18. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[0].mux
+ 19. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[0].mux|MuxKeyInternal:i0
+ 20. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[1].mux
+ 21. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[1].mux|MuxKeyInternal:i0
+ 22. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[2].mux
+ 23. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[2].mux|MuxKeyInternal:i0
+ 24. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[3].mux
+ 25. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[3].mux|MuxKeyInternal:i0
+ 26. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[4].mux
+ 27. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[4].mux|MuxKeyInternal:i0
+ 28. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[5].mux
+ 29. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[5].mux|MuxKeyInternal:i0
+ 30. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[6].mux
+ 31. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[6].mux|MuxKeyInternal:i0
+ 32. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[7].mux
+ 33. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[7].mux|MuxKeyInternal:i0
+ 34. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[8].mux
+ 35. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[8].mux|MuxKeyInternal:i0
+ 36. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[9].mux
+ 37. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[9].mux|MuxKeyInternal:i0
+ 38. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[10].mux
+ 39. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[10].mux|MuxKeyInternal:i0
+ 40. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[11].mux
+ 41. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[11].mux|MuxKeyInternal:i0
+ 42. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[12].mux
+ 43. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[12].mux|MuxKeyInternal:i0
+ 44. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[13].mux
+ 45. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[13].mux|MuxKeyInternal:i0
+ 46. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[14].mux
+ 47. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[14].mux|MuxKeyInternal:i0
+ 48. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[15].mux
+ 49. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[15].mux|MuxKeyInternal:i0
+ 50. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[16].mux
+ 51. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[16].mux|MuxKeyInternal:i0
+ 52. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[17].mux
+ 53. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[17].mux|MuxKeyInternal:i0
+ 54. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[18].mux
+ 55. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[18].mux|MuxKeyInternal:i0
+ 56. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[19].mux
+ 57. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[19].mux|MuxKeyInternal:i0
+ 58. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[20].mux
+ 59. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[20].mux|MuxKeyInternal:i0
+ 60. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[21].mux
+ 61. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[21].mux|MuxKeyInternal:i0
+ 62. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[22].mux
+ 63. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[22].mux|MuxKeyInternal:i0
+ 64. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[23].mux
+ 65. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[23].mux|MuxKeyInternal:i0
+ 66. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[24].mux
+ 67. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[24].mux|MuxKeyInternal:i0
+ 68. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[25].mux
+ 69. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[25].mux|MuxKeyInternal:i0
+ 70. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[26].mux
+ 71. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[26].mux|MuxKeyInternal:i0
+ 72. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[27].mux
+ 73. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[27].mux|MuxKeyInternal:i0
+ 74. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[28].mux
+ 75. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[28].mux|MuxKeyInternal:i0
+ 76. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[29].mux
+ 77. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[29].mux|MuxKeyInternal:i0
+ 78. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[30].mux
+ 79. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[30].mux|MuxKeyInternal:i0
+ 80. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[31].mux
+ 81. Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[31].mux|MuxKeyInternal:i0
+ 82. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[31].mux"
+ 83. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[30].mux"
+ 84. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[29].mux"
+ 85. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[28].mux"
+ 86. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[27].mux"
+ 87. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[26].mux"
+ 88. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[25].mux"
+ 89. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[24].mux"
+ 90. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[23].mux"
+ 91. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[22].mux"
+ 92. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[21].mux"
+ 93. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[20].mux"
+ 94. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[19].mux"
+ 95. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[18].mux"
+ 96. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[17].mux"
+ 97. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[16].mux"
+ 98. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[15].mux"
+ 99. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[14].mux"
+100. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[13].mux"
+101. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[12].mux"
+102. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[11].mux"
+103. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[10].mux"
+104. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[9].mux"
+105. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[8].mux"
+106. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[7].mux"
+107. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[6].mux"
+108. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[5].mux"
+109. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[4].mux"
+110. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[3].mux"
+111. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[2].mux"
+112. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[1].mux"
+113. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[0].mux|MuxKeyInternal:i0"
+114. Port Connectivity Checks: "bool:bool_module|MuxKey:bool[0].mux"
+115. Port Connectivity Checks: "arith:arith_module"
+116. Post-Synthesis Netlist Statistics for Top Partition
+117. Elapsed Time Per Partition
+118. Analysis & Synthesis Messages
+119. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2023  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++-------------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                        ;
++------------------------------------+------------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Mon Apr  8 21:12:34 2024          ;
+; Quartus Prime Version              ; 23.1std.0 Build 991 11/28/2023 SC Lite Edition ;
+; Revision Name                      ; alu                                            ;
+; Top-level Entity Name              ; alu                                            ;
+; Family                             ; MAX 10                                         ;
+; Total logic elements               ; 715                                            ;
+;     Total combinational functions  ; 715                                            ;
+;     Dedicated logic registers      ; 0                                              ;
+; Total registers                    ; 0                                              ;
+; Total pins                         ; 101                                            ;
+; Total virtual pins                 ; 0                                              ;
+; Total memory bits                  ; 0                                              ;
+; Embedded Multiplier 9-bit elements ; 0                                              ;
+; Total PLLs                         ; 0                                              ;
+; UFM blocks                         ; 0                                              ;
+; ADC blocks                         ; 0                                              ;
++------------------------------------+------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                              ;
++------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                           ; Setting            ; Default Value      ;
++------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                           ; 10M08DAF484C8G     ;                    ;
+; Top-level entity name                                            ; alu                ; alu                ;
+; Family name                                                      ; MAX 10             ; Cyclone V          ;
+; Use smart compilation                                            ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                      ; Off                ; Off                ;
+; Restructure Multiplexers                                         ; Auto               ; Auto               ;
+; Create Debugging Nodes for IP Cores                              ; Off                ; Off                ;
+; Preserve fewer node names                                        ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                    ; Enable             ; Enable             ;
+; Verilog Version                                                  ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                     ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                         ; Auto               ; Auto               ;
+; Safe State Machine                                               ; Off                ; Off                ;
+; Extract Verilog State Machines                                   ; On                 ; On                 ;
+; Extract VHDL State Machines                                      ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                       ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                   ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                          ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                        ; On                 ; On                 ;
+; Parallel Synthesis                                               ; On                 ; On                 ;
+; DSP Block Balancing                                              ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                               ; On                 ; On                 ;
+; Power-Up Don't Care                                              ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                     ; Off                ; Off                ;
+; Remove Duplicate Registers                                       ; On                 ; On                 ;
+; Ignore CARRY Buffers                                             ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                           ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                            ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                        ; Off                ; Off                ;
+; Ignore LCELL Buffers                                             ; Off                ; Off                ;
+; Ignore SOFT Buffers                                              ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                   ; Off                ; Off                ;
+; Optimization Technique                                           ; Balanced           ; Balanced           ;
+; Carry Chain Length                                               ; 70                 ; 70                 ;
+; Auto Carry Chains                                                ; On                 ; On                 ;
+; Auto Open-Drain Pins                                             ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                            ; Off                ; Off                ;
+; Auto ROM Replacement                                             ; On                 ; On                 ;
+; Auto RAM Replacement                                             ; On                 ; On                 ;
+; Auto DSP Block Replacement                                       ; On                 ; On                 ;
+; Auto Shift Register Replacement                                  ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                  ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                    ; On                 ; On                 ;
+; Strict RAM Replacement                                           ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                           ; Off                ; Off                ;
+; Auto RAM Block Balancing                                         ; On                 ; On                 ;
+; Auto RAM to Logic Cell Conversion                                ; Off                ; Off                ;
+; Auto Resource Sharing                                            ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                               ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                               ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                    ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing              ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                ; Off                ; Off                ;
+; Timing-Driven Synthesis                                          ; On                 ; On                 ;
+; Report Parameter Settings                                        ; On                 ; On                 ;
+; Report Source Assignments                                        ; On                 ; On                 ;
+; Report Connectivity Checks                                       ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                               ; Off                ; Off                ;
+; Synchronization Register Chain Length                            ; 2                  ; 2                  ;
+; Power Optimization During Synthesis                              ; Normal compilation ; Normal compilation ;
+; HDL message level                                                ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                  ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report         ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report               ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report        ; 100                ; 100                ;
+; Clock MUX Protection                                             ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                      ; Off                ; Off                ;
+; Block Design Naming                                              ; Auto               ; Auto               ;
+; SDC constraint protection                                        ; Off                ; Off                ;
+; Synthesis Effort                                                 ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal     ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                             ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                               ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                      ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                           ; On                 ; On                 ;
++------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 8           ;
+; Maximum allowed            ; 8           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 1           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
++----------------------------+-------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                           ;
++---------------------------------------------------+-----------------+------------------------------+---------------------------------------------------+---------+
+; File Name with User-Entered Path                  ; Used in Netlist ; File Type                    ; File Name with Absolute Path                      ; Library ;
++---------------------------------------------------+-----------------+------------------------------+---------------------------------------------------+---------+
+; alu.v                                             ; yes             ; Auto-Found Verilog HDL File  ; /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v   ;         ;
+; /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v ; yes             ; Auto-Found Verilog HDL File  ; /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v ;         ;
+; /home/serein/Desktop/mit-os/ETH/ddca/lab5/cmp.v   ; yes             ; Auto-Found Verilog HDL File  ; /home/serein/Desktop/mit-os/ETH/ddca/lab5/cmp.v   ;         ;
+; /home/serein/Desktop/mit-os/ETH/ddca/lab5/shift.v ; yes             ; Auto-Found Verilog HDL File  ; /home/serein/Desktop/mit-os/ETH/ddca/lab5/shift.v ;         ;
+; /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v   ; yes             ; Auto-Found Verilog HDL File  ; /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v   ;         ;
++---------------------------------------------------+-----------------+------------------------------+---------------------------------------------------+---------+
+
+
++----------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                    ;
++---------------------------------------------+------------------+
+; Resource                                    ; Usage            ;
++---------------------------------------------+------------------+
+; Estimated Total logic elements              ; 715              ;
+;                                             ;                  ;
+; Total combinational functions               ; 715              ;
+; Logic element usage by number of LUT inputs ;                  ;
+;     -- 4 input functions                    ; 493              ;
+;     -- 3 input functions                    ; 156              ;
+;     -- <=2 input functions                  ; 66               ;
+;                                             ;                  ;
+; Logic elements by mode                      ;                  ;
+;     -- normal mode                          ; 715              ;
+;     -- arithmetic mode                      ; 0                ;
+;                                             ;                  ;
+; Total registers                             ; 0                ;
+;     -- Dedicated logic registers            ; 0                ;
+;     -- I/O registers                        ; 0                ;
+;                                             ;                  ;
+; I/O pins                                    ; 101              ;
+;                                             ;                  ;
+; Embedded Multiplier 9-bit elements          ; 0                ;
+;                                             ;                  ;
+; Maximum fan-out node                        ; r2_data[0]~input ;
+; Maximum fan-out                             ; 119              ;
+; Total fan-out                               ; 2706             ;
+; Average fan-out                             ; 2.95             ;
++---------------------------------------------+------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                     ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------------------------------+-------------+--------------+
+; Compilation Hierarchy Node      ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                                 ; Entity Name ; Library Name ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------------------------------+-------------+--------------+
+; |alu                            ; 715 (294)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 101  ; 0            ; 0          ; |alu                                                                                ; alu         ; work         ;
+;    |arith:arith_module|         ; 157 (34)            ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module                                                             ; arith       ; work         ;
+;       |fulladder16:adder16_1|   ; 64 (11)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1                                       ; fulladder16 ; work         ;
+;          |fulladder4:adder4_1|  ; 11 (6)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 5 (5)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1|CLA:carry_in      ; CLA         ; work         ;
+;          |fulladder4:adder4_2|  ; 14 (7)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_2                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 6 (6)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_2|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_2|fulladder:adder_1 ; fulladder   ; work         ;
+;          |fulladder4:adder4_3|  ; 15 (8)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 5 (5)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3|fulladder:adder_1 ; fulladder   ; work         ;
+;             |fulladder:adder_4| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3|fulladder:adder_4 ; fulladder   ; work         ;
+;          |fulladder4:adder4_4|  ; 13 (5)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_4                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 7 (7)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_4|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_4|fulladder:adder_1 ; fulladder   ; work         ;
+;       |fulladder16:adder16_2|   ; 59 (8)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2                                       ; fulladder16 ; work         ;
+;          |fulladder4:adder4_1|  ; 13 (5)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_1                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 7 (7)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_1|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_1|fulladder:adder_1 ; fulladder   ; work         ;
+;          |fulladder4:adder4_2|  ; 14 (7)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_2                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 6 (6)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_2|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_2|fulladder:adder_1 ; fulladder   ; work         ;
+;          |fulladder4:adder4_3|  ; 13 (5)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_3                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 7 (7)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_3|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_3|fulladder:adder_1 ; fulladder   ; work         ;
+;          |fulladder4:adder4_4|  ; 11 (0)              ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4                   ; fulladder4  ; work         ;
+;             |CLA:carry_in|      ; 9 (9)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4|CLA:carry_in      ; CLA         ; work         ;
+;             |fulladder:adder_1| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4|fulladder:adder_1 ; fulladder   ; work         ;
+;             |fulladder:adder_4| ; 1 (1)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4|fulladder:adder_4 ; fulladder   ; work         ;
+;    |shift:shift_module|         ; 264 (264)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |alu|shift:shift_module                                                             ; shift       ; work         ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------------------------------+-------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 0     ;
+; Number of registers using Synchronous Clear  ; 0     ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 0     ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output         ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------+
+; 3:1                ; 30 bits   ; 60 LEs        ; 60 LEs               ; 0 LEs                  ; No         ; |alu|shift:shift_module|out_SL[1]  ;
+; 3:1                ; 30 bits   ; 60 LEs        ; 60 LEs               ; 0 LEs                  ; No         ; |alu|shift:shift_module|out_SR[17] ;
+; 3:1                ; 30 bits   ; 60 LEs        ; 60 LEs               ; 0 LEs                  ; No         ; |alu|shift:shift_module|out_SA[23] ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |alu|shift:shift_module|R[24]      ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |alu|shift:shift_module|S1[3]      ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |alu|shift:shift_module|T[30]      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_2 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_3 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_4 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_1 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_2 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_3 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: arith:arith_module|fulladder16:adder16_2|fulladder4:adder4_4 ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; NUM            ; 4     ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[0].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[0].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[1].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[1].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[2].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[2].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[3].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[3].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[4].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[4].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[5].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[5].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[6].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[6].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[7].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[7].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[8].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[8].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[9].mux ;
++----------------+-------+---------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                    ;
++----------------+-------+---------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                          ;
+; KEY_LEN        ; 2     ; Signed Integer                                          ;
+; DATA_LEN       ; 1     ; Signed Integer                                          ;
++----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[9].mux|MuxKeyInternal:i0 ;
++----------------+-------+---------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                      ;
++----------------+-------+---------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                            ;
+; KEY_LEN        ; 2     ; Signed Integer                                                            ;
+; DATA_LEN       ; 1     ; Signed Integer                                                            ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                            ;
++----------------+-------+---------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[10].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[10].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[11].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[11].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[12].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[12].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[13].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[13].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[14].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[14].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[15].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[15].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[16].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[16].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[17].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[17].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[18].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[18].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[19].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[19].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[20].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[20].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[21].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[21].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[22].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[22].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[23].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[23].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[24].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[24].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[25].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[25].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[26].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[26].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[27].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[27].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[28].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[28].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[29].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[29].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[30].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[30].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[31].mux ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                           ;
+; KEY_LEN        ; 2     ; Signed Integer                                           ;
+; DATA_LEN       ; 1     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: bool:bool_module|MuxKey:bool[31].mux|MuxKeyInternal:i0 ;
++----------------+-------+----------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                       ;
++----------------+-------+----------------------------------------------------------------------------+
+; NR_KEY         ; 4     ; Signed Integer                                                             ;
+; KEY_LEN        ; 2     ; Signed Integer                                                             ;
+; DATA_LEN       ; 1     ; Signed Integer                                                             ;
+; HAS_DEFAULT    ; 0     ; Signed Integer                                                             ;
++----------------+-------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[31].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[30].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[29].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[28].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[27].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[26].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[25].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[24].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[23].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[22].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[21].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[20].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[19].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[18].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[17].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[16].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[15].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[14].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[13].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[12].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[11].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[10].mux" ;
++-------------+-------+----------+---------------------------------+
+; Port        ; Type  ; Severity ; Details                         ;
++-------------+-------+----------+---------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                    ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                    ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                    ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                    ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                    ;
++-------------+-------+----------+---------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[9].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[8].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[7].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[6].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[5].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[4].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[3].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[2].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[1].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++-----------------------------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[0].mux|MuxKeyInternal:i0" ;
++-------------+-------+----------+--------------------------------------------------+
+; Port        ; Type  ; Severity ; Details                                          ;
++-------------+-------+----------+--------------------------------------------------+
+; default_out ; Input ; Info     ; Stuck at GND                                     ;
++-------------+-------+----------+--------------------------------------------------+
+
+
++-----------------------------------------------------------------+
+; Port Connectivity Checks: "bool:bool_module|MuxKey:bool[0].mux" ;
++-------------+-------+----------+--------------------------------+
+; Port        ; Type  ; Severity ; Details                        ;
++-------------+-------+----------+--------------------------------+
+; lut[2..1]   ; Input ; Info     ; Stuck at VCC                   ;
+; lut[11..10] ; Input ; Info     ; Stuck at GND                   ;
+; lut[8]      ; Input ; Info     ; Stuck at GND                   ;
+; lut[7]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[5]      ; Input ; Info     ; Stuck at VCC                   ;
+; lut[4]      ; Input ; Info     ; Stuck at GND                   ;
++-------------+-------+----------+--------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "arith:arith_module"                                                                                       ;
++-------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; Port  ; Type   ; Severity ; Details                                                                                                  ;
++-------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; carry ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
++-------+--------+----------+----------------------------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 101                         ;
+; cycloneiii_lcell_comb ; 715                         ;
+;     normal            ; 715                         ;
+;         2 data inputs ; 66                          ;
+;         3 data inputs ; 156                         ;
+;         4 data inputs ; 493                         ;
+;                       ;                             ;
+; Max LUT depth         ; 14.00                       ;
+; Average LUT depth     ; 10.75                       ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:02     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+    Info: Processing started: Mon Apr  8 21:12:23 2024
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off alu -c alu
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 8 of the 8 processors detected
+Warning (12125): Using design file alu.v, which is not specified as a design file for the current project, but contains definitions for 12 design units and 12 entities in project
+    Info (12023): Found entity 1: arith File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 5
+    Info (12023): Found entity 2: fulladder16 File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 56
+    Info (12023): Found entity 3: fulladder4 File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 115
+    Info (12023): Found entity 4: CLA File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 177
+    Info (12023): Found entity 5: fulladder File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 192
+    Info (12023): Found entity 6: cmp File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/cmp.v Line: 1
+    Info (12023): Found entity 7: shift File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/shift.v Line: 1
+    Info (12023): Found entity 8: MuxKeyInternal File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v Line: 2
+    Info (12023): Found entity 9: MuxKey File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v Line: 39
+    Info (12023): Found entity 10: MuxKeyWithDefault File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v Line: 48
+    Info (12023): Found entity 11: alu File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 7
+    Info (12023): Found entity 12: bool File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 67
+Info (12127): Elaborating entity "alu" for the top level hierarchy
+Info (12128): Elaborating entity "arith" for hierarchy "arith:arith_module" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 28
+Info (12128): Elaborating entity "fulladder16" for hierarchy "arith:arith_module|fulladder16:adder16_1" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 27
+Info (12128): Elaborating entity "fulladder4" for hierarchy "arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 76
+Info (12128): Elaborating entity "fulladder" for hierarchy "arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1|fulladder:adder_1" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 134
+Info (12128): Elaborating entity "CLA" for hierarchy "arith:arith_module|fulladder16:adder16_1|fulladder4:adder4_1|CLA:carry_in" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 161
+Info (12128): Elaborating entity "cmp" for hierarchy "cmp:cmp_module" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 37
+Info (12128): Elaborating entity "shift" for hierarchy "shift:shift_module" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 45
+Info (12128): Elaborating entity "bool" for hierarchy "bool:bool_module" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 53
+Info (12128): Elaborating entity "MuxKey" for hierarchy "bool:bool_module|MuxKey:bool[0].mux" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/alu.v Line: 84
+Info (12128): Elaborating entity "MuxKeyInternal" for hierarchy "bool:bool_module|MuxKey:bool[0].mux|MuxKeyInternal:i0" File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/Mux.v Line: 44
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Info (286030): Timing-Driven Synthesis is running
+Info (144001): Generated suppressed messages file /home/serein/Desktop/mit-os/ETH/ddca/lab5/output_files/alu.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 816 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 68 input pins
+    Info (21059): Implemented 33 output pins
+    Info (21061): Implemented 715 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 3 warnings
+    Info: Peak virtual memory: 411 megabytes
+    Info: Processing ended: Mon Apr  8 21:12:34 2024
+    Info: Elapsed time: 00:00:11
+    Info: Total CPU time (on all processors): 00:00:23
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in /home/serein/Desktop/mit-os/ETH/ddca/lab5/output_files/alu.map.smsg.
+
+

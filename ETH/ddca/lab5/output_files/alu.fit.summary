@@ -1,0 +1,18 @@
+Fitter Status : Successful - Mon Apr  8 21:12:44 2024
+Quartus Prime Version : 23.1std.0 Build 991 11/28/2023 SC Lite Edition
+Revision Name : alu
+Top-level Entity Name : alu
+Family : MAX 10
+Device : 10M08DAF484C8G
+Timing Models : Final
+Total logic elements : 716 / 8,064 ( 9 % )
+    Total combinational functions : 716 / 8,064 ( 9 % )
+    Dedicated logic registers : 0 / 8,064 ( 0 % )
+Total registers : 0
+Total pins : 101 / 250 ( 40 % )
+Total virtual pins : 0
+Total memory bits : 0 / 387,072 ( 0 % )
+Embedded Multiplier 9-bit elements : 0 / 48 ( 0 % )
+Total PLLs : 0 / 2 ( 0 % )
+UFM blocks : 0 / 1 ( 0 % )
+ADC blocks : 0 / 1 ( 0 % )

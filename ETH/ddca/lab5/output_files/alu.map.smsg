@@ -1,0 +1,1 @@
+Info (10281): Verilog HDL Declaration information at arith.v(7): object "y" differs only in case from object "Y" in the same scope File: /home/serein/Desktop/mit-os/ETH/ddca/lab5/arith.v Line: 7
