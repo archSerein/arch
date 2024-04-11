@@ -124,6 +124,10 @@ end_loop:
 	
 	add $t2, $v0, $0
 	
+	li $v0, 1
+	add $a0, $t2, $0
+	syscall
+	
 	# Prepare the second argument of the function call: the size of the array
 	
 	#..... 
