@@ -1,4 +1,0 @@
-server waiting on 54321
-server get msg ADD_AUTOMOTIVE
-server get msg ADD_AUTOMOTIVE
-server get msg READ_AUTOMOTIVE
