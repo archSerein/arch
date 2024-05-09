@@ -1,0 +1,131 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+A	vsrc/InstructionMemory.v	/^     input   [5:0] A,   \/\/ Address of the Instruction max 64 instructions$/;"	p
+A1	vsrc/RegisterFile.v	/^          input   [4:0] A1,   \/\/ selects one of 32 registers$/;"	p
+A2	vsrc/RegisterFile.v	/^			 input   [4:0] A2,   \/\/ selects one of 32 registers$/;"	p
+A3	vsrc/RegisterFile.v	/^			 input   [4:0] A3,   \/\/ selects the address for writeback$/;"	p
+ALU	vsrc/ALU.v	/^module ALU( $/;"	m
+ALUControl	vsrc/ControlUnit.v	/^		output [5:0] ALUControl,$/;"	p
+ALUControl	vsrc/MIPS.v	/^	wire  [5:0] ALUControl;\/\/ Control signals for the ALU$/;"	n
+ALUResult	vsrc/MIPS.v	/^	wire [31:0] ALUResult; \/\/ The output of the ALU$/;"	n
+ALUSrc	vsrc/MIPS.v	/^	wire        ALUSrc;    \/\/ 0: Register file, 1: Immediate value$/;"	n
+BIN	Makefile	/^BIN = $(BUILD_DIR)\/$(TOPNAME)$/;"	m
+BIN_PATH	Makefile	/^BIN_PATH ?=$/;"	m
+BUILD_DIR	Makefile	/^BUILD_DIR = .\/build$/;"	m
+Branch	vsrc/MIPS.v	/^	wire        Branch;    \/\/ 1: We have a branch instruction$/;"	n
+CLK	vsrc/DataMemory.v	/^             input         CLK,  \/\/ Clock signal rising edge$/;"	p
+CLK	vsrc/MIPS.v	/^             input CLK,                   \/\/ Clock signal$/;"	p
+CLK	vsrc/top.v	/^  wire CLK;                 \/\/ The output of the clock divider 10 MHz Clock$/;"	n
+CSRCS	Makefile	/^CSRCS = $(shell find $(abspath .\/csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")$/;"	m
+ControlUnit	vsrc/ControlUnit.v	/^module ControlUnit($/;"	m
+DataArr	vsrc/DataMemory.v	/^    reg [31:0] DataArr [63:0];   \/\/ This is the variable that holds the memory$/;"	r
+DataMemory	vsrc/DataMemory.v	/^module DataMemory($/;"	m
+DispCount	vsrc/top.v	/^  reg   [15:0]  DispCount;     \/\/ Simple counter to go through all options$/;"	r
+DispDigit	vsrc/top.v	/^  reg   [6:0]  DispDigit;      \/\/ Present 4bit value to drive the $/;"	r
+DispReg	vsrc/top.v	/^  reg   [27:0] DispReg;        \/\/ Register that holds the number$/;"	r
+FPGACLK	vsrc/top.v	/^        input             FPGACLK,$/;"	p
+INCFLAGS	Makefile	/^INCFLAGS = $(addprefix -I, $(INC_PATH))$/;"	m
+INC_PATH	Makefile	/^INC_PATH ?=$/;"	m
+IOAddr	vsrc/top.v	/^  wire  [3:0] IOAddr;$/;"	n
+IOReadData	vsrc/top.v	/^  wire [31:0] IOReadData;$/;"	n
+IOWriteData	vsrc/MIPS.v	/^				 output [31:0] IOWriteData,   \/\/ IO Data to be written to the interface$/;"	p
+IOWriteData	vsrc/top.v	/^  wire [31:0] IOWriteData;$/;"	n
+IOWriteEn	vsrc/MIPS.v	/^				 output        IOWriteEn,     \/\/ 1: There is a valid IO Write$/;"	p
+IOWriteEn	vsrc/top.v	/^  wire        IOWriteEn;$/;"	n
+IOin	vsrc/top.v	/^  wire  [1:0]  IOin;           \/\/ output of the multiplexer$/;"	n
+InsArr	vsrc/InstructionMemory.v	/^ reg [31:0] InsArr [63:0];  \/\/ Array holding the memory 64 entries each 32 bits$/;"	r
+Instr	vsrc/MIPS.v	/^	wire [31:0] Instr;     \/\/ The output of the Instruction memory$/;"	n
+InstructionMemory	vsrc/InstructionMemory.v	/^module InstructionMemory($/;"	m
+IsIO	vsrc/MIPS.v	/^   wire        IsIO;      \/\/ 1: if Address is in I\/O range 0x00007ff0 to 0x0007fff$/;"	n
+IsMemWrite	vsrc/MIPS.v	/^	wire        IsMemWrite;\/\/ 1: if MemWrite and not IsIO, tells us that we write to memory$/;"	n
+Jump	vsrc/ControlUnit.v	/^		output       Jump,$/;"	p
+Jump	vsrc/MIPS.v	/^	wire        Jump;      \/\/ A direct jump instruction has been issued$/;"	n
+LED	vsrc/top.v	/^		  output     [6:0]  LED,$/;"	p
+MIPS	vsrc/MIPS.v	/^module MIPS($/;"	m
+MemWrite	vsrc/ControlUnit.v	/^		output       MemWrite,$/;"	p
+MemWrite	vsrc/MIPS.v	/^	wire        MemWrite;  \/\/ Write Enable for the Memory$/;"	n
+MemtoReg	vsrc/MIPS.v	/^	wire        MemtoReg;  \/\/ 1: Copy data from Data Memory to Register File$/;"	n
+NXDC_FILES	Makefile	/^NXDC_FILES = constr\/top.nxdc$/;"	m
+OBJ_DIR	Makefile	/^OBJ_DIR = $(BUILD_DIR)\/obj_dir$/;"	m
+Op	vsrc/ControlUnit.v	/^      input  [5:0] Op,$/;"	p
+PC	vsrc/MIPS.v	/^	reg  [31:0] PC;        \/\/ The Program counter (registered)$/;"	r
+PCBranch	vsrc/MIPS.v	/^	wire [31:0] PCBranch;  \/\/ Value calculated for the branch instructions$/;"	n
+PCCalc	vsrc/MIPS.v	/^   wire [31:0] PCCalc;    \/\/ Calculated value for the (next) PC$/;"	n
+PCJump	vsrc/MIPS.v	/^   wire [31:0] PCJump;    \/\/ Value for immediate jump$/;"	n
+PCPlus4	vsrc/MIPS.v	/^	wire [31:0] PCPlus4;   \/\/ The current value of PC + 4, default next memory address$/;"	n
+PCSrc	vsrc/MIPS.v	/^	wire        PCSrc;     \/\/ We have a Branch AND ALUResult is zero, we will branch$/;"	n
+PCbar	vsrc/MIPS.v	/^	wire [31:0] PCbar;     \/\/ Next state value of the Program counter, PC' in the diagram$/;"	n
+RD	vsrc/DataMemory.v	/^			    output [31:0] RD    \/\/ 32-bit read data$/;"	p
+Read1	vsrc/RegisterFile.v	/^    wire [31:0] Read1;  \/\/ output of PortA$/;"	n
+Read2	vsrc/RegisterFile.v	/^	 wire [31:0] Read2;  \/\/ output of PortB$/;"	n
+ReadData	vsrc/MIPS.v	/^	wire [31:0] ReadData;  \/\/ Output of the Data Memory$/;"	n
+ReadMemIO	vsrc/MIPS.v	/^	wire [31:0] ReadMemIO;  \/\/ Read from either Memory or I\/O$/;"	n
+RegDst	vsrc/ControlUnit.v	/^		output       RegDst,$/;"	p
+RegDst	vsrc/MIPS.v	/^	wire        RegDst;    \/\/ Destination Register 1: Instr[15:11] 0: Instr[20:15]$/;"	n
+RegWrite	vsrc/MIPS.v	/^	wire        RegWrite;  \/\/ 1: We will write back to the RegisterFile$/;"	n
+RegisterFile	vsrc/RegisterFile.v	/^module RegisterFile($/;"	m
+Result	vsrc/MIPS.v	/^	wire [31:0] Result;    \/\/ End result that will be written back to register file$/;"	n
+SignImm	vsrc/MIPS.v	/^   wire [31:0] SignImm;   \/\/ 32-bit extended Immediate value$/;"	n
+SrcA	vsrc/MIPS.v	/^   wire [31:0] SrcA;      \/\/ One input of the ALU$/;"	n
+SrcB	vsrc/MIPS.v	/^   wire [31:0] SrcB;      \/\/ Other input of the ALU$/;"	n
+TOPNAME	Makefile	/^TOPNAME = top$/;"	m
+VERILATOR	Makefile	/^VERILATOR = verilator$/;"	m
+VSRCS	Makefile	/^VSRCS = $(shell find $(abspath .\/vsrc) -name "*.v")$/;"	m
+WE	vsrc/DataMemory.v	/^			    input         WE,   \/\/ Write Enable 1: Write 0: no write$/;"	p
+WE3	vsrc/RegisterFile.v	/^			 input         WE3,  \/\/ Write-enable for third port WE3=1 write WD3 to A3$/;"	p
+WriteData	vsrc/MIPS.v	/^	wire [31:0] WriteData; \/\/ The output of Register File port 2,$/;"	n
+WriteReg	vsrc/MIPS.v	/^   wire  [4:0] WriteReg;  \/\/ Address of the register for write back$/;"	n
+Zero	vsrc/MIPS.v	/^	wire        Zero;      \/\/ The Zero flag, 1: if ALUResult == 0 $/;"	n
+a	vsrc/ALU.v	/^   input  [31:0] a,$/;"	p
+a	vsrc/reg_half.v	/^input [4 : 0] a;$/;"	p
+addout	vsrc/ALU.v	/^  wire [31:0] addout;     \/\/ adder subtractor out$/;"	n
+aluop	vsrc/ALU.v	/^	input  [3:0] aluop,$/;"	p
+arithout	vsrc/ALU.v	/^  wire [31:0] arithout;   \/\/ output after alt$/;"	n
+clk	vsrc/reg_half.v	/^input clk;$/;"	p
+clk_count	vsrc/clockdiv.v	/^	reg [1:0] clk_count;$/;"	r
+clockdiv	vsrc/clockdiv.v	/^module clockdiv( input clk,input rst,output clk_en );$/;"	m
+d	vsrc/reg_half.v	/^input [31 : 0] d;$/;"	p
+dpo	vsrc/reg_half.v	/^output [31 : 0] dpo;$/;"	p
+dpra	vsrc/reg_half.v	/^input [4 : 0] dpra;$/;"	p
+dut	csrc/main.cpp	/^static TOP_NAME dut;$/;"	v	file:
+forward	snake_patterns.asm	/^forward:$/;"	l
+input	vsrc/ALU.v	/^   input  [31:0] b,$/;"	p
+input	vsrc/ControlUnit.v	/^		input  [5:0] Funct,$/;"	p
+input	vsrc/DataMemory.v	/^			    input  [31:0] WD,   \/\/ 32-bit data in$/;"	p
+input	vsrc/DataMemory.v	/^             input   [5:0] A,    \/\/ Address for 64 locations$/;"	p
+input	vsrc/MIPS.v	/^				 input  [31:0] IOReadData     \/\/ 32bit input from the I\/O interface        $/;"	p
+input	vsrc/MIPS.v	/^				 input RESET,                 \/\/ Reset Active low will set back the Program counter$/;"	p
+input	vsrc/RegisterFile.v	/^			 input         CLK   \/\/ System clock$/;"	p
+input	vsrc/RegisterFile.v	/^			 input  [31:0] WD3,  \/\/ Write-back data, will be written to addess A3$/;"	p
+input	vsrc/top.v	/^		  input             RESET,$/;"	p
+logicout	vsrc/ALU.v	/^  wire [31:0] logicout;   \/\/ output of the logic block$/;"	n
+logicsel	vsrc/ALU.v	/^  wire [1:0] logicsel;    \/\/ lower two bits of aluop;$/;"	n
+loopcnt	snake_patterns.asm	/^loopcnt: .word 0x001e8484$/;"	l
+main	csrc/main.cpp	/^int main() {$/;"	f
+n_b	vsrc/ALU.v	/^  wire [31:0] n_b;        \/\/ inverted b$/;"	n
+output	vsrc/ALU.v	/^	output [31:0] result,$/;"	p
+output	vsrc/ControlUnit.v	/^		output       ALUSrc,$/;"	p
+output	vsrc/ControlUnit.v	/^		output       Branch,$/;"	p
+output	vsrc/ControlUnit.v	/^		output       MemtoReg,$/;"	p
+output	vsrc/ControlUnit.v	/^		output       RegWrite$/;"	p
+output	vsrc/InstructionMemory.v	/^	  output [31:0] RD   \/\/ Value at Address$/;"	p
+output	vsrc/MIPS.v	/^				 output  [3:0] IOAddr,        \/\/ IO Address we use 4 bits, could also be more$/;"	p
+output	vsrc/RegisterFile.v	/^			 output [31:0] RD1,  \/\/ register corresponding to A1$/;"	p
+output	vsrc/RegisterFile.v	/^			 output [31:0] RD2,  \/\/ register corresponding to A2$/;"	p
+output	vsrc/top.v	/^	     output reg [3:0]  AN$/;"	p
+pattern	snake_patterns.asm	/^pattern: .word 0x00200000,0x00004000,0x00000080,0x00000001,0x00000002,0x00000004,0x00000008,0x00000400,0x00020000,0x01000000,0x02000000,0x04000000$/;"	l
+reg_half	vsrc/reg_half.v	/^module reg_half($/;"	m
+reset	csrc/main.cpp	/^static void reset(int n) {$/;"	f	file:
+restart	snake_patterns.asm	/^restart:   $/;"	l
+sel_b	vsrc/ALU.v	/^  wire [31:0] sel_b;      \/\/ select b or n_b;$/;"	n
+single_cycle	csrc/main.cpp	/^static void single_cycle() {$/;"	f	file:
+slt	vsrc/ALU.v	/^  wire [31:0] slt;        \/\/ output of the slt extension$/;"	n
+spo	vsrc/reg_half.v	/^output [31 : 0] spo;$/;"	p
+top	vsrc/top.v	/^module top($/;"	m
+wait	snake_patterns.asm	/^wait:$/;"	l
+we	vsrc/reg_half.v	/^input we;$/;"	p
+zero	vsrc/ALU.v	/^	output zero$/;"	p
