@@ -8,24 +8,36 @@ Press Ctrl-B to configure iPXE (PCI 00:03.0)...
 
 
 Booting from Hard Disk..6828 decimal is 15254 octal!
-Physical memory: 131072K available, base = 640K, extended = 130432K
-check_page_free_list() succeeded!
-check_page_alloc() succeeded!
-check_page() succeeded!
-check_kern_pgdir() succeeded!
-check_page_free_list() succeeded!
-check_page_installed_pgdir() succeeded!
-[00000000] new env 00001000
-Incoming TRAP frame at 0xefffffbc
-Incoming TRAP frame at 0xefffffbc
-hello, world
-Incoming TRAP frame at 0xefffffbc
-i am environment 00001000
-Incoming TRAP frame at 0xefffffbc
-[00001000] exiting gracefully
-[00001000] free env 00001000
-Destroyed the only environment - nothing more to do!
+entering test_backtrace 5
+entering test_backtrace 4
+entering test_backtrace 3
+entering test_backtrace 2
+entering test_backtrace 1
+entering test_backtrace 0
+Stack backtrace:
+  ebp f010ff18 eip f01000a1 args 00000000 00000000 00000000 f010004a f0111308
+         kern/init.c:18:  test_backtrace+97
+  ebp f010ff38 eip f0100076 args 00000000 00000001 f010ff78 f010004a f0111308
+         kern/init.c:16:  test_backtrace+54
+  ebp f010ff58 eip f0100076 args 00000001 00000002 f010ff98 f010004a f0111308
+         kern/init.c:16:  test_backtrace+54
+  ebp f010ff78 eip f0100076 args 00000002 00000003 f010ffb8 f010004a f0111308
+         kern/init.c:16:  test_backtrace+54
+  ebp f010ff98 eip f0100076 args 00000003 00000004 00000000 f010004a f0111308
+         kern/init.c:16:  test_backtrace+54
+  ebp f010ffb8 eip f0100076 args 00000004 00000005 00000000 f010004a f0111308
+         kern/init.c:16:  test_backtrace+54
+  ebp f010ffd8 eip f01000f4 args 00000005 00001aac 00000660 00000000 00000000
+         kern/init.c:38:  i386_init+78
+  ebp f010fff8 eip f010003e args 00000003 00001003 00002003 00003003 00004003
+         kern/entry.S:83:  <unknown>+0
+leaving test_backtrace 0
+leaving test_backtrace 1
+leaving test_backtrace 2
+leaving test_backtrace 3
+leaving test_backtrace 4
+leaving test_backtrace 5
 6828 decimal is 15254 octal!
 Welcome to the JOS kernel monitor!
 Type 'help' for a list of commands.
-qemu-system-i386: terminating on signal 15 from pid 70153 (make)
+qemu-system-i386: terminating on signal 15 from pid 65374 (make)

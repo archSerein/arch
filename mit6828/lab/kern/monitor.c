@@ -10,7 +10,6 @@
 #include <kern/console.h>
 #include <kern/monitor.h>
 #include <kern/kdebug.h>
-#include <kern/trap.h>
 
 #define CMDBUF_SIZE	80	// enough for one VGA text line
 
@@ -25,7 +24,6 @@ struct Command {
 static struct Command commands[] = {
 	{ "help", "Display this list of commands", mon_help },
 	{ "kerninfo", "Display information about the kernel", mon_kerninfo },
-	{"kernbacktrace","display the stack infomation", mon_backtrace},
 };
 
 /***** Implementations of basic kernel monitor commands *****/
@@ -52,7 +50,7 @@ mon_kerninfo(int argc, char **argv, struct Trapframe *tf)
 	cprintf("  edata  %08x (virt)  %08x (phys)\n", edata, edata - KERNBASE);
 	cprintf("  end    %08x (virt)  %08x (phys)\n", end, end - KERNBASE);
 	cprintf("Kernel executable memory footprint: %dKB\n",
-		ROUNDUP(end - entry, 1024) / 1024); 
+		ROUNDUP(end - entry, 1024) / 1024);
 	return 0;
 }
 
@@ -60,24 +58,6 @@ int
 mon_backtrace(int argc, char **argv, struct Trapframe *tf)
 {
 	// Your code here.
-
-	cprintf("Stack backtrace:\n");
-	uint32_t ebp,eip;
-	struct Eipdebuginfo info;
-	for(ebp = read_ebp();ebp != 0x0;ebp = *((uint32_t *)ebp)) 
-	{
-		eip = *((uint32_t *)ebp+1);
-		
-		cprintf("  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n",ebp,*((uint32_t *)ebp+1),
-		*((uint32_t *)ebp+2),*((uint32_t *)ebp+3),*((uint32_t *)ebp+4),*((uint32_t *)ebp+5),
-		*((uint32_t *)ebp+6));
-
-		debuginfo_eip(eip,&info);
-
-		cprintf("         %s:%d: %.*s+%u\n",info.eip_file,info.eip_line,
-				info.eip_fn_namelen,info.eip_fn_name,eip-info.eip_fn_addr);
-	}
-
 	return 0;
 }
 
@@ -132,12 +112,9 @@ monitor(struct Trapframe *tf)
 {
 	char *buf;
 
-	cprintf("%u decimal is %o octal!\n", 6828,6828);      
 	cprintf("Welcome to the JOS kernel monitor!\n");
 	cprintf("Type 'help' for a list of commands.\n");
 
-	if (tf != NULL)
-		print_trapframe(tf);
 
 	while (1) {
 		buf = readline("K> ");

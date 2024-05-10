@@ -11,7 +11,6 @@ define hook-stop
   else
     if $lastcs == -1 || $lastcs == 8 || $lastcs == 27
       set architecture i8086
-      set tdesc filename target.xml
     end
     # Translate the segment:offset into a physical address
     printf "[%4x:%4x] ", $cs, $eip

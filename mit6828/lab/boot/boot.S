@@ -45,14 +45,14 @@ seta20.2:
   # and segment translation that makes virtual addresses 
   # identical to their physical addresses, so that the 
   # effective memory map does not change during the switch.
-  lgdt    gdtdesc		# 开始切换为32位
+  lgdt    gdtdesc
   movl    %cr0, %eax
   orl     $CR0_PE_ON, %eax
   movl    %eax, %cr0
   
   # Jump to next instruction, but in 32-bit code segment.
   # Switches processor into 32-bit mode.
-  ljmp    $PROT_MODE_CSEG, $protcseg		# kernel code segment selector
+  ljmp    $PROT_MODE_CSEG, $protcseg
 
   .code32                     # Assemble for 32-bit mode
 protcseg:
@@ -66,7 +66,7 @@ protcseg:
   
   # Set up the stack pointer and call into C.
   movl    $start, %esp
-  call bootmain		#起始地址0x7d25
+  call bootmain
 
   # If bootmain returns (it shouldn't), loop.
 spin:

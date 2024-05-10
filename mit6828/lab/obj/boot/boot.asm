@@ -57,16 +57,17 @@ seta20.2:
     7c1a:	b0 df                	mov    $0xdf,%al
   outb    %al,$0x60
     7c1c:	e6 60                	out    %al,$0x60
-
   # Switch from real to protected mode, using a bootstrap GDT
   # and segment translation that makes virtual addresses 
   # identical to their physical addresses, so that the 
   # effective memory map does not change during the switch.
-  lgdt    gdtdesc		# 开始切换为32位
+  # 加载 32位的全局描述符号表 
+  lgdt    gdtdesc
     7c1e:	0f 01 16             	lgdtl  (%esi)
     7c21:	64 7c 0f             	fs jl  7c33 <protcseg+0x1>
   movl    %cr0, %eax
     7c24:	20 c0                	and    %al,%al
+  # 切换 protected mode enable flag
   orl     $CR0_PE_ON, %eax
     7c26:	66 83 c8 01          	or     $0x1,%ax
   movl    %eax, %cr0
@@ -74,13 +75,15 @@ seta20.2:
   
   # Jump to next instruction, but in 32-bit code segment.
   # Switches processor into 32-bit mode.
-  ljmp    $PROT_MODE_CSEG, $protcseg		# kernel code segment selector
+  # 由16位切换为32位
+  ljmp    $PROT_MODE_CSEG, $protcseg
     7c2d:	ea                   	.byte 0xea
     7c2e:	32 7c 08 00          	xor    0x0(%eax,%ecx,1),%bh
 
 00007c32 <protcseg>:
 
   .code32                     # Assemble for 32-bit mode
+# 32位 code 开始执行的地方
 protcseg:
   # Set up the protected-mode data segment registers
   movw    $PROT_MODE_DSEG, %ax    # Our data segment selector
@@ -99,7 +102,7 @@ protcseg:
   # Set up the stack pointer and call into C.
   movl    $start, %esp
     7c40:	bc 00 7c 00 00       	mov    $0x7c00,%esp
-  call bootmain		#起始地址0x7d25
+  call bootmain
     7c45:	e8 cf 00 00 00       	call   7d19 <bootmain>
 
 00007c4a <spin>:
