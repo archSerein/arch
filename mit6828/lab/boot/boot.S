@@ -45,16 +45,20 @@ seta20.2:
   # and segment translation that makes virtual addresses 
   # identical to their physical addresses, so that the 
   # effective memory map does not change during the switch.
+  # 加载 32位的全局描述符号表 
   lgdt    gdtdesc
   movl    %cr0, %eax
+  # 切换 protected mode enable flag
   orl     $CR0_PE_ON, %eax
   movl    %eax, %cr0
   
   # Jump to next instruction, but in 32-bit code segment.
   # Switches processor into 32-bit mode.
+  # 由16位切换为32位
   ljmp    $PROT_MODE_CSEG, $protcseg
 
   .code32                     # Assemble for 32-bit mode
+# 32位 code 开始执行的地方
 protcseg:
   # Set up the protected-mode data segment registers
   movw    $PROT_MODE_DSEG, %ax    # Our data segment selector
