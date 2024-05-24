@@ -15,6 +15,7 @@ check_page() succeeded!
 check_kern_pgdir() succeeded!
 check_page_free_list() succeeded!
 check_page_installed_pgdir() succeeded!
+kernel panic at kern/env.c:461: env_run not yet implemented
 Welcome to the JOS kernel monitor!
 Type 'help' for a list of commands.
-qemu-system-i386: terminating on signal 15 from pid 33557 (make)
+qemu-system-i386: terminating on signal 15 from pid 11517 (make)
