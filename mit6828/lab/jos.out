@@ -24,4 +24,4 @@ Incoming TRAP frame at 0xefffffbc
 Destroyed the only environment - nothing more to do!
 Welcome to the JOS kernel monitor!
 Type 'help' for a list of commands.
-qemu-system-i386: terminating on signal 15 from pid 141979 (make)
+qemu-system-i386: terminating on signal 15 from pid 146060 (make)
