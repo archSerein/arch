@@ -46,6 +46,7 @@
 /*
  * Lab 3: Your code here for generating entry points for the different traps.
  */
+
 TRAPHANDLER_NOEC(divide_handler, 0)
 TRAPHANDLER_NOEC(debug_handler, 1)
 TRAPHANDLER_NOEC(nmi_handler, 2)
@@ -65,20 +66,25 @@ TRAPHANDLER(align_handler, 17)
 TRAPHANDLER_NOEC(mchk_handler, 18)
 TRAPHANDLER_NOEC(simderr_handler, 19)
 TRAPHANDLER_NOEC(syscall_handler, 48)
-
+TRAPHANDLER_NOEC(irq_timer_handler, IRQ_TIMER + IRQ_OFFSET)
+TRAPHANDLER_NOEC(irq_kbd_handler, IRQ_KBD + IRQ_OFFSET)
+TRAPHANDLER_NOEC(irq_serial_handler, IRQ_SERIAL + IRQ_OFFSET)
+TRAPHANDLER_NOEC(irq_suprious_handler, IRQ_SPURIOUS + IRQ_OFFSET)
+TRAPHANDLER_NOEC(irq_ide_handler, IRQ_IDE + IRQ_OFFSET)
+TRAPHANDLER_NOEC(irq_error_handler, IRQ_ERROR + IRQ_OFFSET)
 
 /*
  * Lab 3: Your code here for _alltraps
  */
-_alltraps:
+	//参考inc/trap.h中的Trapframe结构。tf_ss，tf_esp，tf_eflags，tf_cs，tf_eip，tf_err由处理器压入，所以现在只需要压入剩下寄存器（%ds,%es,通用寄存器）
+	//切换到内核数据段
+	_alltraps:
 	pushl %ds
 	pushl %es
-	
 	pushal
-
-	pushl %esp 
-	movw $GD_KD, %ax
-	movw %ax, %ds
-	movw %ax, %es
-
+	pushl $GD_KD
+	popl %ds
+	pushl $GD_KD
+	popl %es
+	pushl %esp				//压入trap()的参数tf，%esp指向Trapframe结构的起始地址
 	call trap
