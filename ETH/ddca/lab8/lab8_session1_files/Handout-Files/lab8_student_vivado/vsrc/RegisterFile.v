@@ -31,18 +31,19 @@ module RegisterFile(
    
 	
     wire [31:0] Read1;  // output of PortA
-	 wire [31:0] Read2;  // output of PortB
+	  wire [31:0] Read2;  // output of PortB
   // once everything works do not forget to add a reset here 
   // you should not enable WE while there is a reset
  
   // we instantiate two memories  
-	 reg_half i_portA	 (
+	reg_half i_portA	 (
 	   .a(A3), // Bus [4 : 0] 
 	   .d(WD3), // Bus [31 : 0] 
 	   .dpra(A1), // Bus [4 : 0] 
 	   .clk(CLK),
 	   .we(WE3),
-	   .dpo(Read1)); // Bus [31 : 0] 
+	   .dpo(Read1),
+     .spo()); // Bus [31 : 0] 
 
 	reg_half i_portB (
 	   .a(A3), // Bus [4 : 0] 
@@ -50,7 +51,8 @@ module RegisterFile(
 	   .dpra(A2), // Bus [4 : 0] 
 	   .clk(CLK),
 	   .we(WE3),
-	   .dpo(Read2)); // Bus [31 : 0]     
+	   .dpo(Read2),
+     .spo()); // Bus [31 : 0]     
 	
      // For both ports, if the address is 0 
 	  // Then the output will be zero

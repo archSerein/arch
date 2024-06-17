@@ -27,7 +27,7 @@ module InstructionMemory(
  
  initial
    begin
-     $readmemh("insmem_h.txt", /home/serein/Desktop/mit-os/ETH/ddca/lab8/lab8_session1_files/Handout-Files/lab8_student_vivado/InsArr);  // Initialize the array with this content
+     $readmemh("insmem_h.txt", InsArr);  // Initialize the array with this content
    end
 	
  assign RD= InsArr[A];   // The Read Data (RD) output corresponds to the Address (A)

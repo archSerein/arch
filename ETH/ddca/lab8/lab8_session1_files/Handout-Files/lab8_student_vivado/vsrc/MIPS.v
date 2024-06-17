@@ -97,6 +97,8 @@ module MIPS(
    // Instantiate the Instruction Memory
 	  InstructionMemory i_imem (
                                 // TODO Part 1
+                                .A(PC[7:2]),
+                                .RD(Instr)
                               );
 										
    // Sign extension, replicate the MSB of the Immediate value 
@@ -125,6 +127,11 @@ module MIPS(
 
      ALU i_alu (
                 // TODO Part 1
+                .a(SrcA),
+                .b(SrcB),
+                .aluop(ALUControl[3:0]),
+                .result(ALUResult),
+                .zero(Zero)
                 );	
 					 
    // Generate the PCSrc signal that tells to take the branch
@@ -134,16 +141,21 @@ module MIPS(
 	// Instantiate the Data Memory
 	  DataMemory i_dmem (
                         // TODO Part 1
+                        .CLK(CLK),
+                        .A(ALUResult[7:2]),
+                        .WE(IsMemWrite),
+                        .WD(WriteData),
+                        .RD(ReadData)
                         );
 
    // Memory Mapped I/O
    assign IsIO = (ALUResult[31:4] == 28'h00007ff) ? 1 : 0; // 1: when datamemory address
 	                                                  // falls into I/O  address range
    // TODO Part 1
-   assign IsMemWrite  =                // Is 1 when there is a SW instruction on DataMem address
-   assign IOWriteData =                // This line is connected directly to WriteData
-   assign IOAddr      =                // The LSB 4 bits of the Address is assigned to IOAddr
-   assign IOWriteEn   =                // Is 1 when there is a SW instruction on IO address 
+   assign IsMemWrite  = MemWrite & ~IsIO;               // Is 1 when there is a SW instruction on DataMem address
+   assign IOWriteData = WriteData;               // This line is connected directly to WriteData
+   assign IOAddr      = ALUResult[3:0];               // The LSB 4 bits of the Address is assigned to IOAddr
+   assign IOWriteEn   = MemWrite & IsIO;               // Is 1 when there is a SW instruction on IO address 
    
 
    assign ReadMemIO   = IsIO ? IOReadData : ReadData;   // Mux selects memory or I/O	
@@ -154,6 +166,16 @@ module MIPS(
    // The Control Unit
    ControlUnit i_cont (
                         //TODO Part 1
+                        .Op(Instr[31:26]),
+                        .Funct(Instr[5:0]),
+                        .Jump(Jump),
+                        .MemtoReg(MemtoReg),
+                        .MemWrite(MemWrite),
+                        .Branch(Branch),
+                        .ALUControl(ALUControl),
+                        .ALUSrc(ALUSrc),
+                        .RegDst(RegDst),
+                        .RegWrite(RegWrite)
                        );
 
 
