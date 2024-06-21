@@ -21,4 +21,7 @@ endfunction
 
 function Bit#(32) barrelShifterRight(Bit#(32) in, Bit#(5) shiftBy);
 	// TODO
+	Bit#(32) ret;
+	ret = in >> shiftBy;
+	return ret;
 endfunction

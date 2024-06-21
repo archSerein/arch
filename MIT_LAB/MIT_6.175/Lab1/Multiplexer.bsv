@@ -17,15 +17,24 @@ endfunction
 
 function Bit#(1) multiplexer1(Bit#(1) sel, Bit#(1) a, Bit#(1) b);
 	// TODO
+	return or1(and1(sel, b), and1(a, not1(sel)));
 endfunction
 
 // Exercise 2
 // Complete the implementation of the function multiplexer5 in Multiplexer.bsv
 // using for loops and multiplexer1.
 
-// function Bit#(5) multiplexer5(Bit#(1) sel, Bit#(5) a, Bit#(5) b);
+/*
+function Bit#(5) multiplexer5(Bit#(1) sel, Bit#(5) a, Bit#(5) b);
 	// TODO
-// endfunction
+	Bit#(5) ret;
+	for (Integer i = 0; i < 5 ; i = i + 1)
+	begin
+		ret[i] = multiplexer1(sel, a[i], b[i]);
+	end
+	return ret;
+endfunction
+*/
 
 
 // Exercise 3
@@ -36,6 +45,13 @@ endfunction
 
 function Bit#(n) multiplexer_n(Bit#(1) sel, Bit#(n) a, Bit#(n) b);
 	// TODO
+	let width = valueOf(n);
+	Bit#(width) ret = 0;
+	for (Integer i = 0; i < width; i = i + 1)
+	begin
+		ret[i] = multiplexer1(sel, a[i], b[i]);
+	end
+	return ret;
 endfunction
 
 function Bit#(5) multiplexer5(Bit#(1) sel, Bit#(5) a, Bit#(5) b);

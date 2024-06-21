@@ -11,9 +11,18 @@ endfunction
 // Exercise 4
 // Complete the code for add4 by using a for loop to properly connect all the uses of fa_sum and fa_carry.
 
-// function Bit#(5) add4(Bit#(4) a, Bit#(4) b, Bit#(1) c0);
+function Bit#(5) add4(Bit#(4) a, Bit#(4) b, Bit#(1) c0);
 	// TODO
-// endfunction
+	Bit#(5) s;
+	Bit#(1) cin = c0;
+	for (Integer i = 0; i < 4; i = i + 1)
+	begin
+		s[i] = fa_sum(a[i], b[i], cin);
+		cin = fa_carry(a[i], b[i], cin);
+	end
+	s[4] = cin;
+	return s;
+endfunction
 
 function Bit#(TAdd#(n,1)) addN(Bit#(n) a, Bit#(n) b, Bit#(1) c0);
     Bit#(n) s;
@@ -26,9 +35,9 @@ function Bit#(TAdd#(n,1)) addN(Bit#(n) a, Bit#(n) b, Bit#(1) c0);
     return {c,s};
 endfunction
 
-function Bit#(5) add4(Bit#(4) a, Bit#(4) b, Bit#(1) c0);
-    return addN(a,b,c0);
-endfunction
+// function Bit#(5) add4(Bit#(4) a, Bit#(4) b, Bit#(1) c0);
+//     return addN(a,b,c0);
+// endfunction
 
 interface Adder8;
     method ActionValue#(Bit#(9)) sum(Bit#(8) a,Bit#(8) b, Bit#(1) c_in);
@@ -50,5 +59,13 @@ endmodule
 module mkCSAdder(Adder8);
     method ActionValue#(Bit#(9)) sum(Bit#(8) a,Bit#(8) b,Bit#(1) c_in);
 	// TODO
+	Bit#(9) ret;
+	Bit#(5) carry_high = add4(a[7:4], b[7:4], 1);
+	Bit#(5) high = add4(a[7:4], b[7:4], 0);
+	Bit#(5) low = add4(a[3:0], b[3:0], c_in);
+	ret[7:4] = multiplexer_n(low[4], high[3:0], carry_high[3:0]);
+	ret[3:0] = low[3:0];
+	ret[8] = multiplexer_n(low[4], high[4], carry_high[4]);
+	return ret;
     endmethod
 endmodule
