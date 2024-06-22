@@ -16,16 +16,22 @@ endfunction
 // Multiplication by repeated addition
 function Bit#(TAdd#(n,n)) multiply_by_adding(Bit#(n) a, Bit#(n) b);
 	// TODO
-    // Bit#(n) carry = 0;
-    // Bit#(n) res = 0;
+	Bit#(n) high = 0;
+	Bit#(n) low = 0;
+	for (Integer i = 0; i < valueOf(n); i = i + 1)
+	begin
+		Bit#(TAdd#(1, n)) sum = zeroExtend(high) + zeroExtend((b[i] == '1) ? a : 0);
+		low[i] = sum[0];
+		high = truncateLSB(sum);
+	end
 
-    // for(Integer i = 0; i < valueOf(n); i = i + 1)
-    // begin
-    //     Bit#(TAdd#(1,n)) sum = zeroExtend(carry) + ((b[i] == 1) ? zeroExtend(a) : 0);
-    //     res[i] = sum[0];
-    //     carry = truncateLSB(sum);
-    // end
-    // return {carry, res};
+	return {high, low};	
+	// Bit#(TAdd#(n, n)) sum = 0;
+	// for (Bit#(n) i = 0; i < b; i = i + 1)
+	//     begin
+	// 	    sum = zeroExtend(a) + sum;
+	//     end
+	// return sum;
 endfunction
 
 // Multiplier Interface
@@ -38,46 +44,53 @@ endinterface
 
 
 // Folded multiplier by repeated addition
-module mkFoldedMultiplier( Multiplier#(n) )
-	provisos(Add#(1, a__, n)); // make sure n >= 1
+module mkFoldedMultiplier( Multiplier#(n) ) provisos(Add#(1, a__, n)); // make sure n >= 1
 	
 	// TODO
 
     // You can use these registers or create your own if you want
-    // Reg#(Bit#(n)) a <- mkRegU();
-    // Reg#(Bit#(n)) b <- mkRegU();
-    // Reg#(Bit#(n)) res <- mkRegU();
-    // Reg#(Bit#(n)) carry <- mkRegU();
-    // Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg(fromInteger(valueOf(n) + 1));
+	Reg#(Bit#(n)) aReg <- mkRegU;
+	Reg#(Bit#(n)) bReg <- mkRegU;
+	Reg#(Bit#(n)) low <- mkRegU;
+	Reg#(Bit#(n)) high <- mkRegU;
+	// 定义 i 的宽度为 log2n 向上取整
+	Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg(fromInteger(valueOf(n) + 1));
 
-    // rule mulStep(i < fromInteger(valueOf(n)));
-    //     Bit#(TAdd#(n, 1)) sum = zeroExtend(carry) + zeroExtend((b[0] == 1)? a: 0);
-    //     res[i] <= sum[0];
-    //     carry <= truncateLSB(sum);
-    //     b <= b >> 1;
-    //     i <= i + 1;
-    // endrule
+	rule mul_step(i < fromInteger(valueOf(n)));
+		// Bit#(n) mask = i << i;
+		Bit#(TAdd#(1, n)) sum = zeroExtend(high) + zeroExtend((bReg[i] == '1) ? aReg : 0);
+		// Bit#(TAdd#(1, n)) sum = zeroExtend(high) + zeroExtend(((bReg & mask) != '0) ? aReg : 0);
+		low[i] <= sum[0];
+		high <= truncateLSB(sum);
+		i <= i + 1;
+	endrule
 
-    // method Bool start_ready();
-    //     return i == fromInteger(valueOf(n) + 1);
-    // endmethod
+	method Bool start_ready();
+		// 调用 ActionValue 后表示已经可以重新启动了
+		// 返回 i == fromInteger(valueOf(n) + 1) (应该为 true)
+		return i == fromInteger(valueOf(n) + 1);
+	endmethod
 
-    // method Action start( Bit#(n) aIn, Bit#(n) bIn ) if (i == fromInteger(valueOf(n) + 1));
-    //     a <= aIn;
-    //     b <= bIn;
-    //     i <= 0;
-    //     carry <= 0;
-    //     res <= 0;
-    // endmethod
+	method Action start( Bit#(n) a, Bit#(n) b ) if (i == fromInteger(valueOf(n) + 1));
+		// 在 start_ready 返回 true 后，调用 start 将状态设置为正确的初始值
+		aReg <= a;
+		bReg <= b;
+		i <= 0;
+		high <= 0;
+		low <= 0;
+	endmethod
 
-    // method Bool result_ready();
-    //     return i == fromInteger(valueOf(n));
-    // endmethod
+	method Bool result_ready();
+		// 当 i == n 时返回true, 代表结果已经准备好
+		return i == fromInteger(valueOf(n));
+	endmethod
 
-    // method ActionValue#(Bit#(TAdd#(n,n))) result if (i == fromInteger(valueOf(n)));
-    //     i <= i + 1;
-    //     return { carry, res };
-    // endmethod
+	method ActionValue#(Bit#(TAdd#(n,n))) result if (i == fromInteger(valueOf(n)));
+		// 表示模块已经准备好重新启动
+		// 需要 start_ready 返回 true
+		i <= i + 1;
+		return { high, low };
+	endmethod
 endmodule
 
 

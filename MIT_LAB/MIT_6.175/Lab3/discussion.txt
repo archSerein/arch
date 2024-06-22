@@ -1,0 +1,10 @@
+1. 有符号数的乘法和无符号数的乘法不一致(使用补码)
+
+Error: "TestBench.bsv", line 10, column 17: (T0035)
+  Bit vector of unknown size introduced near this location.
+  Please remove unnecessary extensions, truncations and concatenations and/or
+  provide more type information to resolve this ambiguity.
+
+因为mkTbMulFunction的两个操作数的类型是相同的，编译器可以通过第一个操作数自动推导出第二个操作数的位宽
+
+实现的是无符号数的乘法，使用了zeroExtend()
