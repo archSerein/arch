@@ -1,0 +1,27 @@
+first:
+	读取 fifo 队列中 deqP 指向的寄存器
+	empty 寄存器
+notFull:
+	full 寄存器
+notEmpty:
+	empty 寄存器
+clear:
+	empty 寄存器
+	full 寄存器
+	enqP, deqP 寄存器
+deq:
+	fifo 队列
+	deqP, empty 寄存器
+enq:
+	fifo 队列
+	enqP, full 寄存器	
+
+f < g	f 发生在 g 之前(g 不能在一个动作中影响 f)
+f > g:	g 发生在 f 之前
+C:	f 和 g冲突，不能一起调用
+CF:	f 和 g 无冲突，互不影响
+conflict:
+		empty.w	full.w	fifo.w
+	empty.r	f < g	CF	f < g
+	full.r	CF	f < g	CF
+	fifo.r	f < g	CF	C
