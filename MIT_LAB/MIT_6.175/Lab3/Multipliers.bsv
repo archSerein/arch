@@ -104,53 +104,74 @@ function Bit#(n) arth_shift(Bit#(n) a, Integer n, Bool right_shift);
     end
 endfunction
 
-
+function Bit#(n) logic_shift(Bit#(n) a, Integer n, Bool right_shift);
+    UInt#(n) a_int = unpack(a);
+    if (right_shift) begin
+        return  pack(a_int >> n);
+    end else begin //left shift
+        return  pack(a_int <<n);
+    end
+endfunction
 
 // Booth Multiplier
-module mkBoothMultiplier( Multiplier#(n) )
-	provisos(Add#(2, a__, n)); // make sure n >= 2
+module mkBoothMultiplier( Multiplier#(n) ) provisos(Add#(2, a__, n)); // make sure n >= 2
 
 	// TODO
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),1))) m_pos <- mkRegU;
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),1))) m_neg <- mkRegU;
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),1))) p <- mkRegU;
-    // Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg( fromInteger(valueOf(n)+1) );
+	// 所有的寄存器的位宽定义为 2n + 1
+	Reg#(Bit#(TAdd#(TAdd#(n,n),1))) m_pos <- mkRegU;
+	Reg#(Bit#(TAdd#(TAdd#(n,n),1))) m_neg <- mkRegU;
+	Reg#(Bit#(TAdd#(TAdd#(n,n),1))) p <- mkRegU;
+	// 定义 i 的宽度为 log2(n) 向上取整
+	Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg( fromInteger(valueOf(n)+1) );
 
-    // rule mul_step(i < fromInteger(valueOf(n)));
-    //     let pr = p[1:0];
-    //     Bit#(TAdd#(TAdd#(n,n), 1)) temp = p;
+	rule mul_step(i < fromInteger(valueOf(n)));
+		// let pr = two least significant bits of p
+		let pr = p[1:0];
+		Bit#(TAdd#(TAdd#(n,n), 1)) temp = p;
+		
+		if (pr == 2'b01) begin
+		    temp = p + m_pos;
+		end
+		
+		if (pr == 2'b10) begin
+		    temp = p + m_neg;
+		end
+		if (pr == 2'b00 || pr == 2'b11) begin
+			// donothing
+		end
+		
+		// 有符号数的移位
+		p <= arth_shift(temp, 1, True);
+		// p <= logic_shift(temp, 1, True);
+		i <= i + 1;
+	endrule
 
-    //     if (pr == 2'b01) begin
-    //         temp = p + m_pos;
-    //     end
+	method Bool start_ready();
+		// 调用 ActionValue 后表示已经可以重新启动了
+		// 返回 i == fromInteger(valueOf(n) + 1) (应该为 true)
+		return i == fromInteger(valueOf(n) + 1);
+	endmethod
 
-    //     if (pr == 2'b10) begin
-    //         temp = p + m_neg;
-    //     end
+	method Action start( Bit#(n) m, Bit#(n) r ) if (i == fromInteger(valueOf(n) + 1));
+		// all 2n + 1 bits wide
+		// m_pos 初始化为 +m pr == 2'b01 时
+		// m_neg 初始化为 -m pr == 2'b10 时
+		m_pos <= {m, 0};
+		m_neg <= {-m, 0};
+		p <= {0, r, 1'b0};
+		i <= 0;
+	endmethod
 
-    //     p <= arth_shift(temp, 1, True);
-    //     i <= i + 1;
-    // endrule
+	method Bool result_ready();
+		return i == fromInteger(valueOf(n));
+	endmethod
 
-    // method Bool start_ready();
-    //     return i == fromInteger(valueOf(n) + 1);
-    // endmethod
-
-    // method Action start( Bit#(n) m, Bit#(n) r ) if (i == fromInteger(valueOf(n) + 1));
-    //     m_pos <= {m, 0};
-    //     m_neg <= {-m, 0};
-    //     p <= {0, r, 1'b0};
-    //     i <= 0;
-    // endmethod
-
-    // method Bool result_ready();
-    //     return i == fromInteger(valueOf(n));
-    // endmethod
-
-    // method ActionValue#(Bit#(TAdd#(n,n))) result() if (i == fromInteger(valueOf(n)));
-    //     i <= i + 1;
-    //     return truncateLSB(p);
-    // endmethod
+	method ActionValue#(Bit#(TAdd#(n,n))) result() if (i == fromInteger(valueOf(n)));
+		// 表示模块已经准备好重新启动
+		// 需要 start_ready 返回 true
+		i <= i + 1;
+		return truncateLSB(p);
+	endmethod
 endmodule
 
 
@@ -160,41 +181,56 @@ module mkBoothMultiplierRadix4( Multiplier#(n) )
 	provisos(Mul#(a__, 2, n), Add#(1, b__, a__)); // make sure n >= 2 and n is even
 
 	// TODO
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),2))) m_pos <- mkRegU;
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),2))) m_neg <- mkRegU;
-    // Reg#(Bit#(TAdd#(TAdd#(n,n),2))) p <- mkRegU;
-    // Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg( fromInteger(valueOf(n)/2+1) );
-
-    // rule mul_step(i < fromInteger(valueOf(n))/2);
-    //     let pr  = p[2:0];
-    //     Bit#(TAdd#(TAdd#(n, n), 2)) temp = p;
-
-    //     if ((pr == 3'b001) || (pr == 3'b010)) begin temp = p + m_pos; end
-    //     if ((pr == 3'b101) || (pr == 3'b110)) begin temp = p + m_neg; end
-    //     if (pr == 3'b011) begin temp = p + arth_shift(m_pos, 1, False); end
-    //     if (pr == 3'b100) begin temp = p + arth_shift(m_neg, 1, False); end
-
-    //     p <= arth_shift(temp, 2, True);
-    //     i <= i + 1;
-    // endrule
-
-    // method Bool start_ready();
-    //     return i == fromInteger(valueOf(n)/2 + 1);
-    // endmethod
-
-    // method Action start( Bit#(n) m, Bit#(n) r ) if (i == fromInteger(valueOf(n)/2 + 1));
-    //     m_pos <= {msb(m), m, 0};
-    //     m_neg <= {msb(-m), -m, 0};
-    //     p <= {0, r, 1'b0};
-    //     i <= 0;
-    // endmethod
-
-    // method Bool result_ready();
-    //     return i == fromInteger(valueOf(n)/2);
-    // endmethod
-
-    // method ActionValue#(Bit#(TAdd#(n,n))) result() if (i == fromInteger(valueOf(n)/2));
-    //     i <= i + 1;
-    //     return p [(2*valueOf(n)):1];
-    // endmethod
+	// 将寄存器的位宽定义为 2n + 2
+	Reg#(Bit#(TAdd#(TAdd#(n,n),2))) m_pos <- mkRegU;
+	Reg#(Bit#(TAdd#(TAdd#(n,n),2))) m_neg <- mkRegU;
+	Reg#(Bit#(TAdd#(TAdd#(n,n),2))) p <- mkRegU;
+	// 只需要重复 n / 2次
+	// 向上取整
+	Reg#(Bit#(TAdd#(TLog#(n),1))) i <- mkReg( fromInteger(valueOf(n)/2+1) );
+	
+	rule mul_step(i < fromInteger(valueOf(n))/2);
+		// let pr = three least significant bits of p
+		let pr  = p[2:0];
+		Bit#(TAdd#(TAdd#(n, n), 2)) temp = p;
+		
+		if ((pr == 3'b001) || (pr == 3'b010)) begin
+			temp = p + m_pos;
+		end
+		if ((pr == 3'b101) || (pr == 3'b110)) begin
+			temp = p + m_neg;
+		end
+		if (pr == 3'b011) begin
+			temp = p + arth_shift(m_pos, 1, False);
+		end
+		if (pr == 3'b100) begin
+			temp = p + arth_shift(m_neg, 1, False);
+		end
+		if (pr == 3'b000 || pr == 3'b111) begin
+			// donothing
+		end
+		
+		p <= arth_shift(temp, 2, True);
+		i <= i + 1;
+	endrule
+	
+	method Bool start_ready();
+	    return i == fromInteger(valueOf(n)/2 + 1);
+	endmethod
+	
+	method Action start( Bit#(n) m, Bit#(n) r ) if (i == fromInteger(valueOf(n)/2 + 1));
+	    m_pos <= {msb(m), m, 0};
+	    m_neg <= {msb(-m), -m, 0};
+	    p <= {0, r, 1'b0};
+	    i <= 0;
+	endmethod
+	
+	method Bool result_ready();
+	    return i == fromInteger(valueOf(n)/2);
+	endmethod
+	
+	method ActionValue#(Bit#(TAdd#(n,n))) result() if (i == fromInteger(valueOf(n)/2));
+	    i <= i + 1;
+	    return p [(2*valueOf(n)):1];
+	endmethod
 endmodule

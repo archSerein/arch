@@ -27,8 +27,8 @@ module mkTbSignedVsUnsigned();
         Reg#(int) cnt <- mkReg(0);
 	let max_cnt = 512;
 
-	Reg#(Bit#(8)) val1 <- mkReg(0);
-	Reg#(Bit#(8)) val2 <- mkReg(0);
+	Reg#(Bit#(8)) val1 <- mkReg(105);
+	Reg#(Bit#(8)) val2 <- mkReg(115);
 	rule counter;
         	let cnt_next = cnt + 1;
 		cnt <= cnt_next;
@@ -41,10 +41,10 @@ module mkTbSignedVsUnsigned();
                 let unsigned_result = multiply_unsigned(val1, val2);
 		let signed_result = multiply_signed(val1, val2);
 		if (signed_result != unsigned_result) begin
-			$display("neq: %x * %x = %x (unsigned) != %x (signed)", val1, val2, unsigned_result, signed_result);
+			$display("neq: %d * %d = %d (unsigned) != %d (signed)", val1, val2, unsigned_result, signed_result);
 		end
 		else begin
-			$display("OK: %x * %x = %x (unsigned) == %x (signed)", val1, val2, unsigned_result, signed_result);
+			$display("OK: %d * %d = %d (unsigned) == %d (signed)", val1, val2, unsigned_result, signed_result);
 		end
 		val1 <= val1 + 1;
 		val2  <= val2 + 1;
