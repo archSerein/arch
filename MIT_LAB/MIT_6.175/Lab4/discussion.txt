@@ -21,7 +21,22 @@ f > g:	g 发生在 f 之前
 C:	f 和 g冲突，不能一起调用
 CF:	f 和 g 无冲突，互不影响
 conflict:
-		empty.w	full.w	fifo.w
-	empty.r	f < g	CF	f < g
-	full.r	CF	f < g	CF
-	fifo.r	f < g	CF	C
+		notEmpty	notFull 	deq	enq	first	clear
+	notEmpty  CF		  CF		<	CF	  <	 >
+	notFull	  CF		  CF		CF	<	  CF	 >
+	deq	  >		  CF		CF	C	  C	 C
+	enq	  CF		  >		C	CF	  CF	 C
+	first	  >		  CF		C	CF	  CF	 C
+	clear	  <		  >		C	C	  C	 CF
+
+
+notEmpty	<	dep
+notEmpty	<	enp
+notEmpty	<	first
+notFull		<	enq
+notFull		<	deq
+deq		C	enq
+
+使用编译器属性强制规则触发(fireEveryCycle)
+deq 和 enq 只是发起请求，实际的操作在 fireEveryCycle 中
+在 fireEveryCycle 处理时，使用 EHR 给 enq, deq, clear分配不同的端口，强制实施此规则的约束

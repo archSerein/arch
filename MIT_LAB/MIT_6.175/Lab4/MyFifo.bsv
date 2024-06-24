@@ -86,200 +86,231 @@ endmodule
 
 // {notEmpty, first, deq} < {notFull, enq} < clear
 module mkMyPipelineFifo( Fifo#(n, t) ) provisos (Bits#(t,tSz));
-    // n is size of fifo
-    // t is data type of fifo
+	// n is size of fifo
+	// t is data type of fifo
 	// TODO
 	Vector#(n, Reg#(t))     data     <- replicateM(mkRegU());
 	Ehr#(3, Bit#(TLog#(n))) enqP     <- mkEhr(0);
 	Ehr#(3, Bit#(TLog#(n))) deqP     <- mkEhr(0);
-	Ehr#(3, Bool)           notEmpty <- mkEhr(False);
-	Ehr#(3, Bool)           notFull  <- mkEhr(True);
+	Ehr#(3, Bool)           empty	 <- mkEhr(True);
+	Ehr#(3, Bool)           full	 <- mkEhr(False);
 	Bit#(TLog#(n))          size     = fromInteger(valueOf(n)-1);
 	
-	// 0
+	// port 0
 	
 	method Bool notEmpty();
-	    return notEmpty[0];
+		return !empty[0];
 	endmethod
 	
-	method Action deq() if (notEmpty[0]);
-	    notFull[0] <= True;
-	    let nextDeqP = deqP[0] + 1;
-	    if (nextDeqP > size) begin
-	        nextDeqP = 0;
-	    end
-	    if (nextDeqP == enqP[0]) begin
-	        notEmpty[0] <= False;
-	    end
-	    deqP[0] <= nextDeqP;
+	method Action deq() if (!empty[0]);
+		full[0] <= False;
+		let nextDeqP = deqP[0] + 1;
+		if (nextDeqP > size) begin
+		    nextDeqP = 0;
+		end
+		if (nextDeqP == enqP[0]) begin
+		    empty[0] <= True;
+		end
+		deqP[0] <= nextDeqP;
 	endmethod
 	
-	// 1
+	// port 1
 	
 	method Bool notFull();
-	    return notFull[1];
+		return !full[1];
 	endmethod
 	
-	method Action enq (t x) if (notFull[1]);
-	    notEmpty[1] <= True;
-	    data[enqP[1]] <= x;
-	    let nextEnqP = enqP[1] + 1;
-	    if (nextEnqP > size) begin
-	        nextEnqP = 0;
-	    end
-	    if (nextEnqP == deqP[1]) begin
-	        notFull[1] <= False;
-	    end
-	    enqP[1] <= nextEnqP;
+	method Action enq (t x) if (!full[1]);
+		empty[1] <= False;
+		data[enqP[1]] <= x;
+		let nextEnqP = enqP[1] + 1;
+		if (nextEnqP > size) begin
+		    nextEnqP = 0;
+		end
+		if (nextEnqP == deqP[1]) begin
+		    full[1] <= True;
+		end
+		enqP[1] <= nextEnqP;
 	endmethod
 	
-	method t first() if (notEmpty[0]);
-	    return data[deqP[0]];
+	method t first() if (!empty[0]);
+		return data[deqP[0]];
 	endmethod
 	
-	// 2
+	// port 2
 	
 	method Action clear();
-	    deqP[2]     <= 0;
-	    enqP[2]     <= 0;
-	    notEmpty[2] <= False;
-	    notFull[2]  <= True;
+		deqP[2]		<= 0;
+		enqP[2]		<= 0;
+		empty[2]	<= True;
+		full[2]		<= False;
 	endmethod
 
 endmodule
 
 // {notFull, enq} < {notEmpty, first, deq} < clear
+// 端口0	端口1		端口2	
+// 实际的操作和 conflict fifo 是一致的
+// 只是对于在 conflict fifo 中读写会冲突的寄存器
+// 使用 EHR 分配不同的端口，有优先级
 module mkMyBypassFifo( Fifo#(n, t) ) provisos (Bits#(t,tSz));
-    // n is size of fifo
-    // t is data type of fifo
-// todo
-    // Vector#(n, Ehr#(2, t))  data     <- replicateM(mkEhrU());
-    // Ehr#(3, Bit#(TLog#(n))) enqP     <- mkEhr(0);
-    // Ehr#(3, Bit#(TLog#(n))) deqP     <- mkEhr(0);
-    // Ehr#(3, Bool)           notEmpty <- mkEhr(False);
-    // Ehr#(3, Bool)           notFull  <- mkEhr(True);
-    // Bit#(TLog#(n))          size     = fromInteger(valueOf(n)-1);
+	// n is size of fifo
+	// t is data type of fifo
+	// TODO
+	// 首先使用 EHR 替换之前会有冲突的寄存器
+	// 包括 enqP, deqP, full, empty
+	Vector#(n, Ehr#(2, t))  data     <- replicateM(mkEhrU());
+	Ehr#(3, Bit#(TLog#(n))) enqP     <- mkEhr(0);
+	Ehr#(3, Bit#(TLog#(n))) deqP     <- mkEhr(0);
+	Ehr#(3, Bool)           empty	 <- mkEhr(True);
+	Ehr#(3, Bool)           full	 <- mkEhr(False);
+	Bit#(TLog#(n))          size     = fromInteger(valueOf(n)-1);
 
-    // // 0
+	// port 0
+	
+	method Bool notFull();
+		return !full[0];
+	endmethod
+	
+	method Action enq (t x) if (!full[0]);
+	    empty[0] <= False;
+	    data[enqP[0]][0] <= x;
+	    let nextEnqP = enqP[0] + 1;
+	    if (nextEnqP > size) begin
+	        nextEnqP = 0;
+	    end
+	    if (nextEnqP == deqP[0]) begin
+	        full[0] <= True;
+	    end
+	    enqP[0] <= nextEnqP;
+	endmethod
 
-    // method Bool notFull();
-    //     return notFull[0];
-    // endmethod
+	// port 1
+	
+	method Bool notEmpty();
+		return !empty[1];
+	endmethod
+	
+	method Action deq() if (!empty[1]);
+		full[1] <= False;
+		let nextDeqP = deqP[1] + 1;
+		if (nextDeqP > size) begin
+		    nextDeqP = 0;
+		end
+		if (nextDeqP == enqP[1]) begin
+		    empty[1] <= True;
+		end
+		deqP[1] <= nextDeqP;
+	endmethod
+	
+	method t first() if (!empty[1]);
+		return data[deqP[1]][1];
+	endmethod
 
-    // method Action enq (t x) if (notFull[0]);
-    //     notEmpty[0] <= True;
-    //     data[enqP[0]][0] <= x;
-    //     let nextEnqP = enqP[0] + 1;
-    //     if (nextEnqP > size) begin
-    //         nextEnqP = 0;
-    //     end
-    //     if (nextEnqP == deqP[0]) begin
-    //         notFull[0] <= False;
-    //     end
-    //     enqP[0] <= nextEnqP;
-    // endmethod
-
-    // // 1
-
-    // method Bool notEmpty();
-    //     return notEmpty[1];
-    // endmethod
-
-    // method Action deq() if (notEmpty[1]);
-    //     notFull[1] <= True;
-    //     let nextDeqP = deqP[1] + 1;
-    //     if (nextDeqP > size) begin
-    //         nextDeqP = 0;
-    //     end
-    //     if (nextDeqP == enqP[1]) begin
-    //         notEmpty[1] <= False;
-    //     end
-    //     deqP[1] <= nextDeqP;
-    // endmethod
-
-    // method t first() if (notEmpty[1]);
-    //     return data[deqP[1]][1];
-    // endmethod
-
-    // // 2
-
-    // method Action clear();
-    //     deqP[2] <= 0;
-    //     enqP[2] <= 0;
-    //     notEmpty[2] <= False;
-    //     notFull[2] <= True;
-    // endmethod
+	// 2
+	
+	method Action clear();
+		deqP[2] <= 0;
+		enqP[2] <= 0;
+		empty[2] <= True;
+		full[2] <= False;
+	endmethod
 endmodule
 
 // {notFull, enq, notEmpty, first, deq} < clear
 module mkMyCFFifo( Fifo#(n, t) ) provisos (Bits#(t,tSz));
-    // n is size of fifo
-    // t is data type of fifo
-// TODO
-    // Vector#(n, Reg#(t))     data         <- replicateM(mkRegU());
-    // Ehr#(2, Bit#(TLog#(n))) enqP         <- mkEhr(0);
-    // Ehr#(2, Bit#(TLog#(n))) deqP         <- mkEhr(0);
-    // Ehr#(2, Bool)           notEmpty     <- mkEhr(False);
-    // Ehr#(2, Bool)           notFull      <- mkEhr(True);
-    // Ehr#(2, Bool)           req_deq      <- mkEhr(False);
-    // Ehr#(2, Maybe#(t))      req_enq      <- mkEhr(tagged Invalid);
-    // Bit#(TLog#(n))          size         = fromInteger(valueOf(n)-1);
+	// n is size of fifo
+	// t is data type of fifo
+	// TODO
+	Vector#(n, Reg#(t))     data         <- replicateM(mkRegU());
+	Ehr#(2, Bit#(TLog#(n))) enqP         <- mkEhr(0);
+	Ehr#(2, Bit#(TLog#(n))) deqP         <- mkEhr(0);
+	Ehr#(2, Bool)           empty        <- mkEhr(True);
+	Ehr#(2, Bool)           full         <- mkEhr(False);
+	// 添加的 EHR 用来表示调用 deq 的请求(没有参数)
+	// True: 有请求	False: 无请求
+	Ehr#(2, Bool)           req_deq      <- mkEhr(False);
+	// 添加的 EHR 用来表示调用 enq 的请求(参数为需要入队的数据)
+	// 数据类型: Maybe#(t) 有请求 标记为 Valid x	无请求 标记为 Invalid
+	Ehr#(2, Maybe#(t))      req_enq      <- mkEhr(tagged Invalid);
+	Bit#(TLog#(n))          size         = fromInteger(valueOf(n)-1);
 
-    // (*no_implicit_conditions, fire_when_enabled*)
-    // rule canonicalize;
-    //     // enq and deq
-    //     if ((notFull[0] && isValid(req_enq[1])) && (notEmpty[0] && req_deq[1])) begin
-    //         notEmpty[0] <= True;
-    //         notFull[0] <= True;
-    //         data[enqP[0]] <= fromMaybe(?, req_enq[1]);
-    //         enqP[0] <= nextEnqP;
-    //         deqP[0] <= nextDeqP;
-    //     // deq only
-    //     end else if (notEmpty[0] && req_deq[1]) begin
-    //         if (nextDeqP == enqP[0]) begin
-    //             notEmpty[0] <= False;
-    //         end
-    //         notFull[0] <= True;
-    //         deqP[0] <= nextDeqP;
-    //     // enq only
-    //     end else if (notFull[0] && isValid(req_enq[1])) begin
-    //         if (nextEnqP == deqP[0]) begin
-    //             notFull[0] <= False;
-    //         end
-    //         notEmpty[0] <= True;
-    //         data[enqP[0]] <= fromMaybe(?, req_enq[1]);
-    //         enqP[0] <= nextEnqP;
-    //     end
-    //     req_enq[1] <= tagged Invalid;
-    //     req_deq[1] <= False;
-    // endrule
+	(*no_implicit_conditions*)
+	(* fire_when_enabled*)
+	rule fireEveryCycle;
+		// 既有 enq 又有 deq
+		if ((!full[0] && isValid(req_enq[1])) && (!empty[0] && req_deq[1])) begin
+		    empty[0] <= False;
+		    full[0] <= False;
+		    let nextEnqP = enqP[0]  + 1;
+		    let nextDeqP = deqP[0]  + 1;
+		    if (nextEnqP > size) begin
+			    nextEnqP = 0;
+		    end
 
-    // method Bool notFull();
-    //     return notFull[0];
-    // endmethod
+		    if (nextDeqP > size) begin
+			    nextDeqP = 0;
+		    end
+		    data[enqP[0]] <= fromMaybe(?, req_enq[1]);
+		    enqP[0] <= nextEnqP;
+		    deqP[0] <= nextDeqP;
+		// 只有 deq
+		end else if (!empty[0] && req_deq[1]) begin
+		    let nextDeqP = deqP[0]  + 1;
+		    if (nextDeqP > size) begin
+			    nextDeqP = 0;
+		    end
+		    if (nextDeqP == enqP[0]) begin
+		        empty[0] <= True;
+		    end
+		    full[0] <= False;
+		    deqP[0] <= nextDeqP;
+		// 只有 enq
+		end else if (!full[0] && isValid(req_enq[1])) begin
+		    let nextEnqP = enqP[0]  + 1;
+		    if (nextEnqP > size) begin
+			    nextEnqP = 0;
+		    end
+		    if (nextEnqP == deqP[0]) begin
+		        full[0] <= True;
+		    end
+		    empty[0] <= False;
+		    data[enqP[0]] <= fromMaybe(?, req_enq[1]);
+		    enqP[0] <= nextEnqP;
+		end
+		req_enq[1] <= tagged Invalid;
+		req_deq[1] <= False;
+	endrule
 
-    // method Action enq (t x) if (notFull[0]);
-    //     req_enq[0] <= tagged Valid (x);
-    // endmethod
+	method Bool notFull();
+		return !full[0];
+	endmethod
+	
+	method Action enq (t x) if (!full[0]);
+		// 有 enq 请求时将参数保存到 EHR req_enq中
+		// 然后在 fireEveryCycle 中进行请求的处理
+		req_enq[0] <= tagged Valid (x);
+	endmethod
+	
+	method Bool notEmpty();
+		return !empty[0];
+	endmethod
+	
+	method Action deq() if (!empty[0]);
+		// 有 deq 请求时将 EHR req_deq 设置为 True
+		// 然后会在 fireEveryCycle 中进行请求的处理
+		req_deq[0] <= True;
+	endmethod
+	
+	method t first() if (!empty[0]);
+		return data[deqP[0]];
+	endmethod
 
-    // method Bool notEmpty();
-    //     return notEmpty[0];
-    // endmethod
-
-    // method Action deq() if (notEmpty[0]);
-    //     req_deq[0] <= True;
-
-    // endmethod
-
-    // method t first() if (notEmpty[0]);
-    //     return data[deqP[0]];
-    // endmethod
-
-    // method Action clear();
-    //     enqP[1] <= 0;
-    //     deqP[1] <= 0;
-    //     notEmpty[1] <= False;
-    //     notFull[1] <= True;
-    // endmethod
+	method Action clear();
+		enqP[1] <= 0;
+		deqP[1] <= 0;
+		empty[1] <= True;
+		full[1] <= False;
+	endmethod
 
 endmodule
