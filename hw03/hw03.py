@@ -14,6 +14,15 @@ def pascal(row, column):
     6
     """
     "*** YOUR CODE HERE ***"
+    if column == 0:
+        return 1
+    elif column == row and row == 1:
+        return 1
+    elif column > row:
+        return 0
+    else:
+        return pascal(row-1, column-1) + pascal(row-1, column)
+
 
 
 def insert_items(s, before, after):
@@ -42,6 +51,14 @@ def insert_items(s, before, after):
     True
     """
     "*** YOUR CODE HERE ***"
+    index = 0
+    while index < len(s):
+        if s[index] == before:
+            s.insert(index+1, after)
+            index += 1
+        index += 1
+    return s
+
 
 
 HW_SOURCE_FILE=__file__
@@ -51,11 +68,13 @@ def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', mass]
 
 def mass(p):
     """Select the mass of a planet."""
     assert is_planet(p), 'must call mass on a planet'
     "*** YOUR CODE HERE ***"
+    return p[1]
 
 def is_planet(p):
     """Whether p is a planet."""
@@ -108,6 +127,15 @@ def balanced(m):
     True
     """
     "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return True
+
+    if total_mass(end(left(m))) * length(left(m)) != total_mass(end(right(m))) * length(right(m)):
+        return False
+
+    if not balanced(end(left(m))) or not balanced(end(right(m))):
+        return False
+    return True
 
 
 def berry_finder(t):
@@ -128,6 +156,17 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
+    def find(t):
+        if type(t) != list:
+            if t == "berry":
+                return True
+            else:
+                return False
+        flag = False
+        for x in t:
+            flag |= find(x)
+        return flag
+    return find(t)
 
 
 HW_SOURCE_FILE=__file__
@@ -143,6 +182,10 @@ def max_path_sum(t):
     17
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return label(t)
+    else:
+        return label(t) + max(max_path_sum(b) for b in branches(t))
 
 
 def print_move(origin, destination):
@@ -178,6 +221,16 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    aux = 6 - start - end
+    if n == 1:
+        print_move(start, end)
+    else:
+        """
+            
+        """
+        move_stack(n - 1, start, aux)
+        print_move(start, end)
+        move_stack(n - 1, aux, end)
 
 
 from operator import sub, mul
@@ -193,7 +246,7 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return (lambda f: (lambda x: x(x))(lambda y: f(lambda *args: y(y)(*args))))(lambda f: lambda n: 1 if n == 0 else n * f(n - 1))
 
 
 def mobile(left, right):
