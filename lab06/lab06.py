@@ -20,6 +20,13 @@ def count_occurrences(t, n, x):
     2
     """
     "*** YOUR CODE HERE ***"
+    times = 0
+    while n > 0:
+        y = next(t)
+        if x == y:
+            times += 1
+        n -= 1
+    return times
 
 
 def hailstone(n):
@@ -36,6 +43,13 @@ def hailstone(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    while n != 1:
+        yield n
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n = 3 * n + 1
+    yield n
 
 
 def merge(incr_a, incr_b):
@@ -58,6 +72,25 @@ def merge(incr_a, incr_b):
     iter_a, iter_b = iter(incr_a), iter(incr_b)
     next_a, next_b = next(iter_a, None), next(iter_b, None)
     "*** YOUR CODE HERE ***"
+    while next_a != None and next_b != None:
+        if next_a > next_b:
+            yield next_b
+            next_b = next(iter_b, None)
+        elif next_a < next_b:
+            yield next_a
+            next_a = next(iter_a, None)
+        else:
+            yield next_a
+            next_a, next_b = next(iter_a, None), next(iter_b, None)
+    if next_a != None:
+        while next_a != None:
+            yield next_a
+            next_a = next(iter_a, None)
+    else:
+        while next_b != None:
+            yield next_b
+            next_b = next(iter_b, None)
+
 
 
 def deep_map(f, s):
@@ -83,6 +116,11 @@ def deep_map(f, s):
     True
     """
     "*** YOUR CODE HERE ***"
+    for i in range(len(s)):
+        if type(s[i]) == list:
+            deep_map(f, s[i])
+        else:
+            s[i] = f(s[i])
 
 
 def buy(required_fruits, prices, total_amount):
@@ -104,9 +142,9 @@ def buy(required_fruits, prices, total_amount):
             print(cart)
         elif fruits and amount > 0:
             fruit = fruits[0]
-            price = ____
-            for k in ____:
-                add(____, ____, ____)
+            price = prices[fruit]
+            for k in range(amount // price):
+                add(fruits[1:], amount - price * (k+1), cart + display(fruit, k+1))
     add(required_fruits, total_amount, '')
 
 

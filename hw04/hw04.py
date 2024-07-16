@@ -9,6 +9,14 @@ def hailstone(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    while n != 1:
+        yield n
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n = 3 * n + 1
+    while True:
+        yield n
 
 
 def merge(a, b):
@@ -24,6 +32,17 @@ def merge(a, b):
     [2, 3, 5, 7, 8, 9, 11, 13, 14, 15]
     """
     "*** YOUR CODE HERE ***"
+    next_a, next_b = next(a, None), next(b, None)
+    while True:
+        if next_a > next_b:
+            yield next_b
+            next_b = next(b, None)
+        elif next_a < next_b:
+            yield next_a
+            next_a = next(a, None)
+        else:
+            yield next_a
+            next_a, next_b = next(a, None), next(b, None)
 
 
 def perms(seq):
@@ -49,7 +68,13 @@ def perms(seq):
     [['a', 'b'], ['b', 'a']]
     """
     "*** YOUR CODE HERE ***"
-
+    if len(seq) == 0:
+        yield []
+    else:
+        for i in range(len(seq)):
+            rest = seq[:i] + seq[i+1:]
+            for p in perms(rest):
+                yield [seq[i]] + p
 
 def yield_paths(t, value):
     """Q4: Yields all possible paths from the root of t to a node with the label
@@ -86,10 +111,10 @@ def yield_paths(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
     if label(t) == value:
-        yield ____
+        yield [value]
     for b in branches(t):
-        for ____ in ____:
-            yield ____
+        for p in yield_paths(b, value):
+            yield [label(t)] + p
 
 
 class Minty:
@@ -122,18 +147,33 @@ class Minty:
 
     def create(self, type):
         "*** YOUR CODE HERE ***"
+        return Coin(self.year, type)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = self.present_year
 
 class Coin:
     cents = 50
 
     def __init__(self, year, type):
         "*** YOUR CODE HERE ***"
+        self.year = year
+        self.type = type
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        passed_years = Minty().present_year - self.year
+        if self.type == 'Nickel':
+            if passed_years > 50:
+                return 5 + passed_years - 50
+            else:
+                return 5
+        else:
+            if passed_years > 50:
+                return 10 + passed_years - 50
+            else:
+                return 10
 
 
 class VendingMachine:
@@ -174,6 +214,38 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, product, price):
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.fund = 0
+
+    def vend(self):
+        if self.stock == 0:
+            return f'Nothing left to vend. Please restock.'
+        else:
+            if self.fund < self.price:
+                return f'Please add ${self.price - self.fund} more funds.'
+            else:
+                tmp = self.fund - self.price
+                self.stock -= 1
+                self.fund = 0
+                if tmp == 0:
+                    return f'Here is your {self.product}.'
+                else:
+                    return f'Here is your {self.product} and ${tmp} change.'
+    def add_funds(self, balance):
+        self.fund += balance
+        if self.stock == 0:
+            tmp = self.fund
+            self.fund = 0
+            return f'Nothing left to vend. Please restock. Here is your ${tmp}.'
+        else:
+            return f'Current balance: ${self.fund}'
+
+    def restock(self, stock):
+        self.stock += stock
+        return f'Current {self.product} stock: {self.stock}'
 
 
 
