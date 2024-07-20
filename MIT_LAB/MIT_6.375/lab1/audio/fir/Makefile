@@ -1,6 +1,6 @@
 bscflags = -keep-fires -aggressive-conditions
 bsvdir = ../common
-build_dir = bscdir
+build_dir = ./bscdir
 synth_dir = /tmp/6375-lab1-${USER}
 
 src = FIRFilter.bsv
