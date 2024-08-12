@@ -1,0 +1,7 @@
+如何实例化 4, 256 tap FIR filter?
+定义 mkFITFilter 模块的接口是一个参数化的 Vector, 通过传入的 tnp1 不同, 就可以实例化不同的 tap FIR Filter
+模块的内部敬爱嗯原来固定大小的 tap 使用传入的参数替换, 通过TSub, TAdd 用于 type 计算的方法和 valueOf 获取它的值作为一个 Integer 使用
+
+
+增强模块和接口的通用性，bsv 中用许多可以用于 type 的方法，比直接使用全局定型定义更方便
+多态化无法直接综合, 并届在实现多态化的模块和接口时需要加很多 provisos, 防止出现不符合电路或者没有实际对应电路的情况

@@ -6,14 +6,16 @@ import AudioProcessorTypes::*;
 import Chunker::*;
 import FFT::*;
 import FIRFilter::*;
+import FilterCoefficients::*;
 import Splitter::*;
+import FixedPoint::*;
 
 module mkAudioPipeline(AudioProcessor);
 
-    AudioProcessor fir <- mkFIRFilter();
+    AudioProcessor fir <- mkFIRFilter(c);
     Chunker#(FFT_POINTS, ComplexSample) chunker <- mkChunker();
-    FFT fft <- mkFFT();
-    FFT ifft <- mkIFFT();
+    FFT#(FFT_POINTS, FixedPoint#(16, 16)) fft <- mkFFT();
+    FFT#(FFT_POINTS, FixedPoint#(16, 16)) ifft <- mkIFFT();
     Splitter#(FFT_POINTS, ComplexSample) splitter <- mkSplitter();
 
     rule fir_to_chunker (True);

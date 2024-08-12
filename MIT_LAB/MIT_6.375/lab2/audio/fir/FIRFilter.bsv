@@ -3,10 +3,11 @@ import Vector::*;
 import FixedPoint::*;
 
 import AudioProcessorTypes :: *;
-import FilterCoefficients::*;
+// import FilterCoefficients::*;
 import Multiplier::*;
 
-module mkFIRFilter(AudioProcessor);
+// module mkFIRFilter(AudioProcessor);
+module mkFIRFilter(Vector#(tnp1, FixedPoint#(16, 16)) coeffs, AudioProcessor ifc);
 	// 实例化两个 mkFIFO module
 	// FIFO 元素的类型是 Sample
     FIFO#(Sample) infifo <- mkFIFO();
@@ -23,9 +24,9 @@ module mkFIRFilter(AudioProcessor);
     // Reg#(Sample) r6 <- mkReg(0);
     // Reg#(Sample) r7 <- mkReg(0);
 	// 使用 Vector 代替上面的八个分离的寄存器
-    Vector#(8, Reg#(Sample)) r <- replicateM(mkReg(0));
+    Vector#(TSub#(tnp1, 1), Reg#(Sample)) r <- replicateM(mkReg(0));
 
-    Vector#(9, Multiplier) muls <- replicateM(mkMultiplier());
+    Vector#(tnp1, Multiplier) muls <- replicateM(mkMultiplier());
 
 	// state elements update rules
     rule process (True);
@@ -44,7 +45,7 @@ module mkFIRFilter(AudioProcessor);
 		// compiler will replace this for-loop with its fully unrolled verson
 		// during its static elaboration
         r[0] <= sample;
-        for (Integer i = 0; i < 7; i = i + 1) begin
+        for (Integer i = 0; i < valueOf(TSub#(tnp1, 2)); i = i + 1) begin
             r[i + 1] <= r[i];
         end
         
@@ -58,15 +59,15 @@ module mkFIRFilter(AudioProcessor);
         //     +   c[6] * fromInt(r5)
         //     +   c[7] * fromInt(r6)
         //     +   c[8] * fromInt(r7);
-        muls[0].putOperands(c[0], sample);
-        for (Integer i = 0; i < 8; i = i + 1) begin
-            muls[i + 1].putOperands(c[i + 1], r[i]);
+        muls[0].putOperands(coeffs[0], sample);
+        for (Integer i = 0; i < valueOf(TSub#(tnp1, 1)); i = i + 1) begin
+            muls[i + 1].putOperands(coeffs[i + 1], r[i]);
         end
     endrule
 
     rule acc;
         FixedPoint#(16, 16) accumulate <- muls[0].getResult();
-        for (Integer i = 0; i < 8; i = i + 1) begin
+        for (Integer i = 0; i < valueOf(TSub#(tnp1, 1)); i = i + 1) begin
             let result <- muls[i + 1].getResult();
             accumulate = accumulate + result;
         end
