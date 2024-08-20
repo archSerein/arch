@@ -79,7 +79,7 @@ module mkPitchAdjust(Integer s, FixedPoint#(isize, fsize) factor, PitchAdjust#(n
         };
     endfunction
     // entry
-    rule entry if (finish);
+    rule entry if (finish && i == 0);
         in <= inFIFO.first();
         inFIFO.deq();
         out <= replicate(cmplxmp(0, 0));
@@ -116,4 +116,3 @@ module mkPitchAdjust(Integer s, FixedPoint#(isize, fsize) factor, PitchAdjust#(n
 	interface Get response = toGet(outFIFO);
 
 endmodule
-

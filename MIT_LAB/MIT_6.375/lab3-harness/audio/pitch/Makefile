@@ -1,9 +1,9 @@
-bscflags = -keep-fires -aggressive-conditions -Xc++ -D_GLIBCXX_USE_CXX11_ABI=0
+bscflags = -keep-fires -aggressive-conditions 
 bsvdir = ../common:../fir:../fft
 build_dir = bscdir
 synth_dir = /tmp/6375-lab3-${USER}
 
-src = PitchAdjust.bsv PitchAdjustTest.bsv $(wildcard ../common/*.bsv) $(wildcard ../fft/*.bsv) $(wildcard ../fir/*.bsv) 
+src = convertMP.bsv PitchAdjust.bsv PitchAdjustTest.bsv $(wildcard ../common/*.bsv) $(wildcard ../fft/*.bsv) $(wildcard ../fir/*.bsv) 
 
 
 PitchAdjust: PitchAdjust.bsv PitchAdjustTest.bsv
