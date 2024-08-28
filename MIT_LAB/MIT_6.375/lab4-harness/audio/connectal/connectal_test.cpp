@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <stdlib.h>
+#include <math.h>
 
 #include "MyDutRequest.h"
 #include "MyDutIndication.h"
@@ -114,7 +116,17 @@ int main (int argc, const char **argv)
     device = new MyDutRequestProxy(IfcNames_MyDutRequestS2H);
 
     // Invoke reset_dut method of HW request ifc (Soft-reset)
+    double pf = atof(argv[1]);
+
+    uint16_t m_i = (uint16_t)floor(pf);
+    uint16_t m_f = (uint16_t)( pow(2, 16) * (pf - floor(pf)) );
+    // 32-bit unsigned integer that can be used by software
+    uint32_t factorPkt = (uint32_t)(m_i << 16) | m_f;
+    // uint32_t factorPkt = static_cast<uint32_t>(std::round(pf));
+    // fixedPoint#(16, 16) ???
     device->reset_dut();
+
+    device->setFactor(factorPkt);
 
     // Run the testbench: send in.cpm
     run_test_bench();

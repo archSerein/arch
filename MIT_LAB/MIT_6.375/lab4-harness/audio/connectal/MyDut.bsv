@@ -15,6 +15,7 @@ interface MyDutRequest;
     // Bit#(n) is the only supported argument type for request methods
     method Action putSampleInput (Bit#(16) in);
     method Action reset_dut();
+    method Action setFactor(Bit#(32) factorPkt);
 endinterface
 
 // interface used by hardware to send a message back to software
@@ -41,7 +42,10 @@ module mkMyDut#(MyDutIndication indication) (MyDut);
     endrule
 
     // Your design
-    AudioProcessor ap <- mkAudioPipeline(reset_by my_rst.new_rst);
+    // AudioProcessor ap <- mkAudioPipeline(reset_by my_rst.new_rst);
+    SettableAudioProcessor#(ISIZE, FSIZE) audioprocessor <- mkAudioPipeline();
+    AudioProcessor ap = audioprocessor.pipeline;
+
 
     // Send a message back to sofware whenever the response is ready
     rule indicationToSoftware;
@@ -62,6 +66,9 @@ module mkMyDut#(MyDutIndication indication) (MyDut);
         method Action reset_dut;
             my_rst.assertReset; // assert my_rst.new_rst signal
             isResetting <= True;
+        endmethod
+        method Action setFactor(Bit#(32) factorPkt) if (!isResetting);
+            audioprocessor.pipelineSetFactor.put(unpack(factorPkt));
         endmethod
     endinterface
 endmodule
