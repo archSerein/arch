@@ -21,7 +21,7 @@ module mkProc(Proc);
     RFile      rf <- mkRFile;
     IMemory  iMem <- mkIMemory;
     DMemory  dMem <- mkDMemory;
-    Cop       cop <- mkCop;
+    CsrFile  csrf <- mkCsrFile;
 
     Bool memReady = iMem.init.done() && dMem.init.done();
 
@@ -29,13 +29,15 @@ module mkProc(Proc);
     // TODO: Complete the implementation of this processor
 
 
-    method ActionValue#(Tuple2#(RIndx, Data)) cpuToHost;
-        let ret <- cop.cpuToHost;
+    method ActionValue#(CpuToHostData) cpuToHost;
+        let ret <- csrf.cpuToHost;
         return ret;
     endmethod
 
-    method Action hostToCpu(Bit#(32) startpc) if ( !cop.started && memReady );
-        cop.start;
+    method Action hostToCpu(Bit#(32) startpc) if ( !csrf.started && memReady );
+        csrf.start(0); // only 1 core, id = 0
+        $display("Start at pc 200\n");
+	    $fflush(stdout);
         pc <= startpc;
     endmethod
 
