@@ -1,9 +1,8 @@
 version: "3.9"
 services:
   connectal:
-    image: kazutoiris/connectal:latest
+    image: mit_lab:latest
     tty: true
     volumes:
       - .:/root
-    network_mode: none
 
