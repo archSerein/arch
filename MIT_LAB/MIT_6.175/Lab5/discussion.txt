@@ -1,0 +1,50 @@
+What is the IPC for the two-stage pipelined processor for each benchmark tested by the
+run_bmarks.sh script?
+    Bench       Cycle       Inst    IPC
+    median      5088        4244    0.834
+    multipy     27007       20893   0.774
+    qsort       145936      123496  0.846
+    towers      4340        4168    0.960
+    vvadd       2706        2408    0.890
+What is the formula to compute the next address predictor accuracy from the IPC? 
+(Hint, how many cycles does it take to execute an instruction when the PC+4 prediction is correct?
+What about when it is incorrect?) Using this formula, what is the accuracy of the PC+4 next address
+predictor for each benchmark?
+    Cycle = Inst * (correct + 2 * (1 - correct))
+    correct = 2 - Cycle / Inst = 2 - CPI
+    Bench       Cycle       Inst        correct
+    madian      5088        4244        0.801
+    multipy     27007       20893       0.707
+    qsort       145936      123496      0.818
+    towers      4340        4168        0.959
+    vvadd       2706        2408        0.876
+What is the IPC for the two-stage pipelined processor with a BTB for each benchmark tested by the
+run_bmarks.sh script? How much has it improved over the previous version?
+    Bench       Cycle       Inst    IPC        improved
+    median      4875        4244    0.871       8.7%
+    multiply    21481       20893   0.973       37.6%
+    qsort       139506      123496  0.885       8.2%
+    towers      4267        4168    0.977       11.5%
+    vvadd       2409        2408    1.000       14.2%
+How does adding the BTB change the performance of the bpred_* microbenchmarks? (Hint: the number of cycles for bpred_j should go down.)
+    with BTB
+        test            Cycle       Inst        IPC
+        bpred_bht       1311        1010        0.770
+        bpred_j         1825        1806        0.986
+        bpred_ras       361         286         0.792
+    without BTB
+        test            Cycle       Inst
+        bpred_bht       1210        1010        get worse
+        bpred_j         3506        1806        improve
+        bpred_ras       413         286         improve
+
+    简易的BTB（Branch Target Buffer）分支预测通常适用于以下情况：
+
+        短循环（Short Loops）：BTB适合用于预测短循环中的分支跳转，因为循环的分支行为往往是重复的，容易被缓存和预测。
+
+        频繁的相同分支目标（Frequent Same Target Branches）：当程序中有一些分支指令频繁跳转到相同的目标地址时，BTB可以有效地缓存这些目标地址，提高预测准确性。
+
+        程序执行模式稳定（Stable Execution Patterns）：适用于分支行为稳定且没有频繁变化的程序，比如某些嵌入式系统或特定的应用场景。
+    所以在 bpred_bht 这种跳转地址不是很稳定的情况, 预测的正确性会降低; bpred_j 和 bpred_ras 一个是无条件跳转属于分支行为稳定的情况另一个则是函数的调用和返回, 不过由于跳转地址的不确定性分支预测的结果正确性的优化并不明显
+How would you improve the BTB to improve the results of bpred_bht
+    使用效果更好的 tage 分支预测方法或者直接使用 pc + 4
