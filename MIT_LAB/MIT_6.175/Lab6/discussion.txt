@@ -1,0 +1,9 @@
+1. If you replace the BTB with a simple pc + 4 address prediction, the processor still works, but it does not perform as well. If you replace it with a really bad predictor that predicts pc is the next instruction for each pc, it should still work but have even worse performance because each instruction would require redirection (unless the instruction loops back to itself). If you actually set the prediction to pc, you will get errors in the assembly tests; the first one will be from cache.riscv.vmh.
+
+What is the error you get?
+What is happening in the processor to cause that to happen?
+Why do not you get this error with PC+4 and BTB predictors?
+How would you fix it?
+You do not actually have to fix this bug, just answer the questions. (Hint: look at the addr field of ExecInst structure.)
+	If the predicted pc is equal to the current pc, then the prediction must be wrong and it will be redirected to eInst.addr, but in Ld and St the value of this data is pointing to data memoey, and at this point the redirection will lead to an error in the update of the pc.
+
