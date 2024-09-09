@@ -1,9 +1,87 @@
-1. If you replace the BTB with a simple pc + 4 address prediction, the processor still works, but it does not perform as well. If you replace it with a really bad predictor that predicts pc is the next instruction for each pc, it should still work but have even worse performance because each instruction would require redirection (unless the instruction loops back to itself). If you actually set the prediction to pc, you will get errors in the assembly tests; the first one will be from cache.riscv.vmh.
+1. If you replace the BTB with a simple pc + 4 address prediction, the processor still works, but it does
+	not perform as well. If you replace it with a really bad predictor that predicts pc is the next
+	instruction for each pc, it should still work but have even worse performance because each instruction
+	would require redirection (unless the instruction loops back to itself). If you actually set the
+	prediction to pc, you will get errors in the assembly tests; the first one will be from cache.riscv.vmh.
 
 What is the error you get?
 What is happening in the processor to cause that to happen?
 Why do not you get this error with PC+4 and BTB predictors?
 How would you fix it?
-You do not actually have to fix this bug, just answer the questions. (Hint: look at the addr field of ExecInst structure.)
-	If the predicted pc is equal to the current pc, then the prediction must be wrong and it will be redirected to eInst.addr, but in Ld and St the value of this data is pointing to data memoey, and at this point the redirection will lead to an error in the update of the pc.
+You do not actually have to fix this bug, just answer the questions. (Hint: look at the addr field of 
+	ExecInst structure.)If the predicted pc is equal to the current pc, then the prediction must be wrong
+	and it will be redirected to eInst.addr, but in Ld and St the value of this data is pointing to data 
+	memoey, and at this point the redirection will lead to an error in the update of the pc.
 
+pc 寄存器将会被更新为 dMem.addr 的值, 因为 prePc 为当前的 pc 值, 那么他会一直预测错误, 并使用 eInst.addr 重定向, 但是在 Ld
+或者 St 指令时, eInst.addr 表示的是将要访问的 dMem 的地址, 所以会出错。可以使用 pc+4 作为预测值
+What evidence do you have that all pipeline stages can fire in the same cycle?
+Cycle       1269 ----------------------------------------------------
+pc: 0000075c, ppc: 0000075c
+pc: 0000075c, inst: 0000006f extended: DecodedInst { iType: J, aluFunc: Add, brFunc: AT, dst: tagged Invalid , src1: tagged Invalid , src2: tagged Invalid , csr: tagged Invalid , imm: tagged Valid 'h00000000 }
+RegFile: PC = 0000075c, rVal1 = 00000000, rVal2 = 00000000, csrVal = 00000000
+Exec: pc: 0000075c
+doMemory: pc: 0000075c
+doWriteback: pc: 0000075c, data: 00000760
+由此可见, 在这个周期每一级流水线都被触发了
+In your six-stage pipelined processor, how many cycles does it take to correct a mispredicted instruction?
+正常情况下是 3 cycles, 但是如果在 mispredicted path 存在数据以来阻塞了流水线将会需要更多的 cycles
+If an instruction depends on the result of the instruction immediately before it in the pipeline,how many
+cycles is that instruction stalled?
+3 cycles, 紧接着的指令需要等待上一条指令经历从 exe -> mem -> writeback 三个阶段, 所以需要 3 cycles
+What IPC do you get for each benchmark?
+	bench		cycle		inst		IPC
+	median		15362		4244		0.28
+	multiply	38538		20893		0.54
+	qsort		419245		123496		0.29
+	tower		6950		4168		0.60
+	vvadd		3637		2408		0.66
+One of the hardest things about this lab is properly training and integrating the BHT into the pipeline.
+There are many mistakes that can be made while still seeing decent results. By having a good plan based on
+the fundamentals of direction prediction, you will avoid many of those mistakes.
+For this discussion question, state your plan for integrating the BHT into the pipeline. The following
+questions should help guide you:
+
+	Where will the BHT be positioned in the pipeline?
+		在 decode 级进行预测, exec 级更新 BHT 的信息
+	What pipeline stage performs lookups into the BHT?
+		decode
+	In which pipeline stage will the BHT prediction be used?
+		decode
+	Will the BHT prediction need to be passed between pipeline stages?
+		yes
+	How to redirect PC using BHT prediction?
+		在 decode 级如果发现是 branch 指令. 就会通过 BHT 生成一个新的 ppc, 使用优先级更高的端口更新 pcReg
+	Do you need to add a new epoch?
+		需要在 decode 级增加一个
+	How to handle the redirect messages?
+		在 decode 级处理 bht 与 btb 预测不相同的情况, 在 exe 级处理预测错误的情况	
+	Do you need to change anything to the current instruction and its data structures if redirecting?
+		将 pcReg 增加一个端口
+	How will you train the BHT?
+		在 exe 级如果是分支或者跳转指令且指令有效就会触发 bht 的 update, 使用当前指令的 pc 和 brTaken 
+		进行更新
+	Which stage produces training data for the BHT?
+		pc and brTaken
+	Which stage will use the interface method to train the BHT?
+		exe
+	How to send training data?
+		method update
+	For which instructions will you train the BHT?
+		iType == Br || iType == J
+	How will you know if your BHT works?
+
+How much improvement do you see in the bpred_bht.riscv.vmh test over the processor in SixStage.bsv?
+			with bht		without bht
+	inst	1007			
+	cycle	2456
+
+What IPC do you get for each benchmark? How much improvement is this over the original six-stage
+pipeline?
+
+	bench				cycles				inst				IPC
+	median				8691				4244				0.488
+	multiply			33593				20893				0.622
+	qsort				234943				123496				0.526
+	tower				6113				4168				0.682
+	vvadd				3620				2408				0.665

@@ -65,11 +65,11 @@ module mkProc(Proc);
 	// Ehr#(2, Maybe#(ExeRedirect)) exeRedirect <- mkEhr(Invalid);
 
 	// FIFO between two stages
-    Fifo#(6, F2D)           f2dFifo <- mkCFFifo;
-    Fifo#(6, D2R)           d2rFifo <- mkCFFifo;
-    Fifo#(6, R2E)           r2eFifo <- mkCFFifo;
-    Fifo#(6, E2M)           e2mFifo <- mkCFFifo;
-    Fifo#(6, M2W)           m2wFifo <- mkCFFifo;
+    Fifo#(2, F2D)           f2dFifo <- mkCFFifo;
+    Fifo#(2, D2R)           d2rFifo <- mkCFFifo;
+    Fifo#(2, R2E)           r2eFifo <- mkCFFifo;
+    Fifo#(2, E2M)           e2mFifo <- mkCFFifo;
+    Fifo#(2, M2W)           m2wFifo <- mkCFFifo;
 
     Bool memReady = iMem.init.done && dMem.init.done;
     rule test (!memReady);
