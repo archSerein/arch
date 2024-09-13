@@ -21,7 +21,6 @@ typedef struct {
     Addr        predPc;
     Bool        ifExeEpoch;
     Bool        ifDecodeEpoch;
-    Bool        ifRrfEpoch;
 }   F2D deriving (Bits, Eq);
 
 typedef struct {
@@ -29,7 +28,7 @@ typedef struct {
     Addr        predPc;
     DecodedInst dInst;
     Bool        idExeEpoch;
-    Bool        idRrfEpoch;
+    Bool        idDecodeEpoch;
 }   D2R deriving (Bits, Eq);
 
 typedef struct {
@@ -54,7 +53,7 @@ typedef struct {
 
 (* synthesize *)
 module mkProc(Proc);
-    Ehr#(4, Addr) pcReg <- mkEhr(?);
+    Ehr#(3, Addr) pcReg <- mkEhr(?);
     RFile            rf <- mkRFile;
 	Scoreboard#(6)   sb <- mkCFScoreboard;
     FPGAMemory     iMem <- mkFPGAMemory;
@@ -66,10 +65,9 @@ module mkProc(Proc);
 	// global epoch for redirection from Execute stage
 	Reg#(Bool)    exeEpoch      <- mkReg(False);
     Reg#(Bool)    decodeEpoch   <- mkReg(False);
-    Reg#(Bool)    rrfEpoch      <- mkReg(False);
 
-    Vector#(8, Ehr#(2, Data))  ras <- replicateM(mkEhr(0));
-    Ehr#(2, Bit#(TLog#(8)))    index <- mkEhr(0);
+    Vector#(8, Reg#(Data))  ras <- replicateM(mkReg(0));
+    Reg#(Bit#(TLog#(8)))    index <- mkReg(0);
 	// EHR for redirection
 	// Ehr#(2, Maybe#(ExeRedirect)) exeRedirect <- mkEhr(Invalid);
 
@@ -92,7 +90,7 @@ module mkProc(Proc);
         Addr predPc = btb.predPc(pcReg[0]);
 
         f2dFifo.enq(F2D{pc: pcReg[0], predPc: predPc, ifExeEpoch: exeEpoch,
-                        ifDecodeEpoch: decodeEpoch, ifRrfEpoch: rrfEpoch});
+                        ifDecodeEpoch: decodeEpoch});
         pcReg[0] <= predPc;
         $display("pc: %h, ppc: %h", pcReg[0], predPc);
     endrule
@@ -103,28 +101,9 @@ module mkProc(Proc);
 
         let _Fetch = f2dFifo.first();
 
-        if (decodeEpoch == _Fetch.ifDecodeEpoch && exeEpoch == _Fetch.ifExeEpoch && 
-                rrfEpoch == _Fetch.ifRrfEpoch) begin
-            Addr    ppc;
-            if (dInst.iType == Br) begin
-                ppc = bht.ppcDP(_Fetch.pc, fromMaybe(?, dInst.imm) + _Fetch.pc);
-            end else if (dInst.iType == J) begin
-                ppc = fromMaybe(?, dInst.imm) + _Fetch.pc;
-                if (fromMaybe(?, dInst.dst) == 1) begin
-                    ras[index[0]][0] <= _Fetch.pc + 4;
-                    index[0] <= index[0] + 1;
-                end
-            end else begin
-                ppc = _Fetch.predPc;
-            end
-            if (ppc != _Fetch.predPc) begin
-                decodeEpoch <= !decodeEpoch;
-                pcReg[1] <= ppc;
-            end
-            $display("pc: %h, inst: %h extended: ", _Fetch.pc, inst, fshow(dInst));
-            d2rFifo.enq(D2R{pc: _Fetch.pc, predPc: ppc, dInst: dInst,
-                            idExeEpoch: _Fetch.ifExeEpoch, idRrfEpoch: _Fetch.ifRrfEpoch});
-        end
+        $display("pc: %h, inst: %h extended: ", _Fetch.pc, inst, fshow(dInst));
+        d2rFifo.enq(D2R{pc: _Fetch.pc, predPc: _Fetch.predPc, dInst: dInst,
+                        idExeEpoch: _Fetch.ifExeEpoch, idDecodeEpoch: _Fetch.ifDecodeEpoch});
         f2dFifo.deq();
     endrule
 
@@ -138,25 +117,33 @@ module mkProc(Proc);
             Data    rVal2 = rf.rd2(fromMaybe(?, rInst.src2));
             Data    csrVal= csrf.rd(fromMaybe(?, rInst.csr));
 
-            if (rrfEpoch == _Decode.idRrfEpoch && exeEpoch == _Decode.idExeEpoch) begin
+            if (decodeEpoch == _Decode.idDecodeEpoch && exeEpoch == _Decode.idExeEpoch) begin
                 Addr    ppc;
-                if (rInst.iType == Jr) begin
+                if (rInst.iType == Br) begin
+                    ppc = bht.ppcDP(_Decode.pc, fromMaybe(?, rInst.imm) + _Decode.pc);
+                end else if (rInst.iType == J) begin
+                    ppc = fromMaybe(?, rInst.imm) + _Decode.pc;
+                    if (fromMaybe(?, rInst.dst) == 1) begin
+                        ras[index] <= _Decode.pc + 4;
+                        index <= index + 1;
+                    end
+                end else if (rInst.iType == Jr) begin
                     if (fromMaybe(?, rInst.src1) == 1 && fromMaybe(?, rInst.dst) == 0) begin
-                        ppc = ras[index[1]-1][1];
-                        index[1] <= index[1] - 1;
+                        ppc = ras[index-1];
+                        index <= index - 1;
                     end else begin
-                        ppc = rVal1 + fromMaybe(?, rInst.imm);
-                        if (fromMaybe(?, rInst.dst) == 1) begin
-                            ras[index[1]][1] <= _Decode.pc + 4;
-                            index[1] <= index[1] + 1;
-                        end
+                        ppc = fromMaybe(?, rInst.imm) + rVal1;
+                    end
+                    if (fromMaybe(?, rInst.dst) == 1) begin
+                        ras[index] <= _Decode.pc + 4;
+                        index <= index + 1;
                     end
                 end else begin
                     ppc = _Decode.predPc;
                 end
                 if (ppc != _Decode.predPc) begin
-                    rrfEpoch <= !rrfEpoch;
-                    pcReg[2] <= ppc;
+                    decodeEpoch <= !decodeEpoch;
+                    pcReg[1] <= ppc;
                 end
                 $display("RegFile: PC = %x, rVal1 = %x, rVal2 = %x, csrVal = %x", _Decode.pc, rVal1, rVal2, csrVal);
                 r2eFifo.enq(R2E{pc: _Decode.pc, predPc: ppc, rVal1: rVal1, rVal2: rVal2, csrVal: csrVal,
@@ -189,7 +176,7 @@ module mkProc(Proc);
                 // redirection
                 // 移除此时处于 Rrf 级向计分板写入的数据
                 exeEpoch <= !exeEpoch;
-                pcReg[3] <= eInst.addr;
+                pcReg[2] <= eInst.addr;
                 btb.update(_Rrf.pc, eInst.addr);
                 $display("Exec: mispredict ppc: %h, real pc: %h", _Rrf.predPc, eInst.addr);
             end else begin
@@ -200,7 +187,7 @@ module mkProc(Proc);
             e2mFifo.enq(E2M{pc: _Rrf.pc, eInst: tagged Valid eInst});
         end else begin
             e2mFifo.enq(E2M{pc: _Rrf.pc, eInst: tagged Invalid});
-            $display("has been redirection");
+            // $display("has been redirection");
         end
     endrule
 
