@@ -1,53 +1,49 @@
-// Branch Prediction
-// BHT - Branch History Table
-
 import Types::*;
-import ProcTypes::*;
-import RegFile::*;
 import Vector::*;
 
+
 interface Bht#(numeric type indexSize);
-    method Addr ppcDP(Addr pc, Addr targetPc);
-    method Action update(Addr pc, Bool taken);
+    method  Addr    ppcDP(Addr pc, Addr targetPC);
+    method  Action  update(Addr pc, Bool taken);
 endinterface
 
-module mkBht(Bht#(indexSize)) provisos ( Add#(indexSize, a__, 32), NumAlias#(TExp#(indexSize), bhtEntries));
-    
-    Vector#(bhtEntries, Reg#(Bit#(2))) bhtArr <- replicateM(mkReg(2'b01));
+module mkBht(Bht#(indexSize)) provisos(Add#(a__, indexSize, 32));
+    Vector#(TExp#(indexSize), Reg#(Bit#(2)))   bhtArr <- replicateM(mkReg(2'b01));
 
-    Bit#(2) maxDP = 2'b11;
-    Bit#(2) minDP = 2'b00;
-
-    function Bit#(indexSize) getIndex(Addr pc) = truncate(pc >> 2);
-    
-    function Bit#(2) getBhtEntry(Addr pc); 
-        return bhtArr[getIndex(pc)];
+    function Bit#(indexSize) getBhtIndex(Addr pc);
+        return truncate(pc >> 2);
     endfunction
 
-    function Bit#(2) newDPBits(Bit#(2) oldDPBits, Bool taken);
-        let newDP = oldDPBits;
-        if (taken) begin
-            newDP = newDP + 1;
-            newDP = (newDP == minDP) ? maxDP : newDP;
-        end else begin
-            newDP = newDP - 1;
-            newDP = (newDP == maxDP) ? minDP : newDP;
-        end
-        return newDP;
+    function Bit#(2) getBhtEntry(Bit#(indexSize) index);
+        return bhtArr[index];
     endfunction
 
-    method Addr ppcDP(Addr pc, Addr targetPc);
-        let dpBits = getBhtEntry(pc);
-        let taken = (dpBits == 2'b11 || dpBits == 2'b10) ? True : False;
-        let pred_pc = taken ? targetPc : pc + 4;
-        return pred_pc;
-    endmethod
+    function Bit#(2) newDpBits(Bit#(2) dpBits, Bool taken);
+        Bit#(2) newDp = case (dpBits)
+            2'b00:  (taken ? 2'b01 : 2'b00);
+            2'b01:  (taken ? 2'b10 : 2'b00);
+            2'b10:  (taken ? 2'b11 : 2'b01);
+            2'b11:  (taken ? 2'b11 : 2'b10);
+        endcase;
+
+        return newDp;
+    endfunction
 
     method Action update(Addr pc, Bool taken);
-        let index = getIndex(pc);
-        let dpBits = getBhtEntry(pc);
-        bhtArr[index] <= newDPBits(dpBits, taken);
+        Bit#(indexSize) index = getBhtIndex(pc);
+        let dpBits = getBhtEntry(index);
+        bhtArr[index] <= newDpBits(dpBits, taken);
     endmethod
 
+    method Addr ppcDP(Addr pc, Addr targetPC);
+        Bit#(indexSize) index = getBhtIndex(pc);
+        let dpBits = getBhtEntry(index);
+
+        Bool direction = (dpBits == 2'b00 || dpBits == 2'b01) ? False : True;
+        if (direction) begin
+            return targetPC;
+        end else begin
+            return pc + 4;
+        end
+    endmethod
 endmodule
-    

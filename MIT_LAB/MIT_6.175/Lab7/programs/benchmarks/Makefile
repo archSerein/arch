@@ -54,10 +54,13 @@ RISCV_LINK_OPTS = -nostdlib -nostartfiles -ffast-math -lc -lgcc
 # objdump
 RISCV_OBJDUMP = $(RISCV_PREFIX)-objdump --disassemble --disassemble-zeroes --section=.text --section=.text.startup --section=.data
 # convert to VMH: 64KB memory
-# ELF2HEX_TOOL_DIR = /opt/riscv/bin
-# RISCV_ELF2HEX = $(ELF2HEX_TOOL_DIR)/elf2hex
+ELF2HEX_TOOL_DIR = /opt/riscv/bin
+RISCV_ELF2HEX = $(ELF2HEX_TOOL_DIR)/elf2hex
 # VMH_WIDTH = 8
 # VMH_DEPTH = 65536
+
+VMH_WIDTH = 64
+VMH_DEPTH = 8192
 
 VPATH += $(addprefix $(bmarkdir)/, $(bmarks))
 VPATH += $(bmarkdir)/common
@@ -80,11 +83,11 @@ bmarks_riscv_vmh = $(addsuffix .riscv.vmh, $(bmarks))
 bmarks_defs   = -DPREALLOCATE=0 -DHOST_DEBUG=0
 bmarks_cycles = 80000
 
-# $(bmarks_riscv_vmh): %.riscv.vmh: %.riscv
-# 	@echo $(basename $<)
-# 	@echo "@0" > $(bmarks_build_vmh_dir)/temp
-# 	$(RISCV_ELF2HEX) $(VMH_WIDTH) $(VMH_DEPTH) $(bmarks_build_bin_dir)/$< >> $(bmarks_build_vmh_dir)/temp
-# 	$(bmarkdir)/../trans_vmh.py $(bmarks_build_vmh_dir)/temp $(bmarks_build_vmh_dir)/$@
+$(bmarks_riscv_vmh): %.riscv.vmh: %.riscv
+	@echo $(basename $<)
+	@echo "@0" > $(bmarks_build_vmh_dir)/temp
+	$(RISCV_ELF2HEX) $(VMH_WIDTH) $(VMH_DEPTH) $(bmarks_build_bin_dir)/$< >> $(bmarks_build_vmh_dir)/temp
+	$(bmarkdir)/../trans_vmh.py $(bmarks_build_vmh_dir)/temp $(bmarks_build_vmh_dir)/$@
 
 $(bmarks_riscv_dump): %.riscv.dump: %.riscv
 	$(RISCV_OBJDUMP) $(bmarks_build_bin_dir)/$< > $(bmarks_build_dump_dir)/$@
@@ -97,7 +100,7 @@ $(bmarks_riscv_dump): %.riscv.dump: %.riscv
 	$(RISCV_GCC) $(RISCV_GCC_OPTS) $(bmarks_defs) -D__ASSEMBLY__=1 \
 	             -c $(incs) $< -o $(bmarks_build_obj_dir)/$@
 
-riscv: $(bmarks_build_bin_dir) $(bmarks_build_obj_dir) $(bmarks_build_dump_dir) $(bmarks_build_vmh_dir) $(bmarks_riscv_dump) # $(bmarks_riscv_vmh)
+riscv: $(bmarks_build_bin_dir) $(bmarks_build_obj_dir) $(bmarks_build_dump_dir) $(bmarks_build_vmh_dir) $(bmarks_riscv_dump) $(bmarks_riscv_vmh)
 
 
 #------------------------------------------------------------

@@ -4,7 +4,7 @@ asm_tests=(
     mandelbrot
 	)
 
-vmh_dir=programs/build/benchmarks/vmh512
+vmh_dir=programs/build/benchmarks/vmh
 log_dir=logs
 wait_time=0
 
