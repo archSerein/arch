@@ -95,6 +95,7 @@ module ps2keyboard( clk, clrn, ps2_data, ready,overflow, ps2_clk,
             overflow <= overflow | (r_ptr == (w_ptr + 3'b001));
           end
           count <= 0;
+	  $display("data: %h", buffer[8:1]);
         end
         else
           begin
