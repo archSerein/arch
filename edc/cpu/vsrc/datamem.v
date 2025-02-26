@@ -28,9 +28,9 @@ module datamem( clk,
   always @(posedge rdclock)
   begin
     if(wren)
-      tempout<=ram[wraddress];
+      tempout<=ram[wraddress[5:0]];
     else
-      q <= ram[rdaddress];
+      q <= ram[rdaddress[5:0]];
   end
 
     assign tempin[7:0]   = (byteena_a[0])? data[7:0]  : tempout[7:0];
@@ -42,7 +42,7 @@ module datamem( clk,
   begin
     if(wren)
     begin
-      ram[wraddress]<=tempin;
+      ram[wraddress[5:0]]<=tempin;
     end
     else
     begin

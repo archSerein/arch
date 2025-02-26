@@ -19,7 +19,7 @@ module regfile(clk, rst, regwr, rw, ra, rb, busa, busb, busw);
       wrclk <= ~wrclk;
   end
 
-  always @(negedge wrclk)
+  always @(posedge wrclk)
   begin
     if(rst)
       regfile[0] <= x0;
