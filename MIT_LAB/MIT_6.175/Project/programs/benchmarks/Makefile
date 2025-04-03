@@ -44,7 +44,7 @@ RISCV_PREFIX = $(RISCV_TOOL_DIR)/riscv32-unknown-elf
 # gcc
 RISCV_GCC = $(RISCV_PREFIX)-gcc
 # RISCV_GCC_OPTS = -static -Wa,-march=RVI -std=gnu99 -O2 -ffast-math -fno-common -fno-builtin-printf
-RISCV_GCC_OPTS = -static -Wa,-march=rv32i -mabi=ilp32 -std=gnu99 -O2 -ffast-math -fno-common -fno-builtin-printf
+RISCV_GCC_OPTS = -static -Wa,-march=rv32i_zicsr -mabi=ilp32 -std=gnu99 -O2 -ffast-math -fno-common -fno-builtin-printf
 
 # link
 RISCV_LINK = $(RISCV_GCC) -T$(bmarkdir)/common/test.ld $(incs) -I$(bmarks_build_obj_dir)/

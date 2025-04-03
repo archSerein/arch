@@ -25,41 +25,38 @@ import RefTypes::*;
 import MessageFifo::*;
 
 typedef struct {
-    Addr pc;
-    Addr predPc;
-    Bool ieCanary;
-    Bool idCanary;
-} Fetch2Decode deriving (Bits, Eq);
+    Addr        pc;
+    Addr        predPc;
+    Bool        ifExeEpoch;
+    Bool        ifDecodeEpoch;
+}   F2D deriving (Bits, Eq);
 
 typedef struct {
-    Addr pc;
-    Addr predPc;
-    Bool ieCanary;
-    Bool idCanary;
+    Addr        pc;
+    Addr        predPc;
     DecodedInst dInst;
-} Decode2RegisterFetch deriving (Bits, Eq);
+    Bool        idExeEpoch;
+}   D2R deriving (Bits, Eq);
 
 typedef struct {
-    Addr pc;
-    Addr predPc;
-    DecodedInst dInst;
-    Data rVal1;
-    Data rVal2;
-    Data csrVal;
-    Bool ieCanary;
-    Bool idCanary;
-} Fetch2Execute deriving (Bits, Eq);
+    Addr        pc;
+    Addr        predPc;
+    Data        rVal1;
+    Data        rVal2;
+    Data        csrVal;
+    DecodedInst rInst;
+    Bool        irExeEpoch;
+}   R2E deriving (Bits, Eq);
 
 typedef struct {
-    Addr pc;
-    Addr predPc;
-    Maybe#(ExecInst) eInst;
-} Execute2WriteBack deriving (Bits, Eq);
+    Addr                pc;
+    Maybe#(ExecInst)    eInst;
+}   E2M deriving (Bits, Eq);
 
 typedef struct {
-	Addr pc;
-	Addr nextPc;
-} Redirect deriving (Bits, Eq);
+    Addr                pc;
+    Maybe#(ExecInst)    mInst;
+}   M2W deriving (Bits, Eq);
 
 module mkCore(
     CoreID id,
@@ -67,154 +64,140 @@ module mkCore(
     RefDMem refDMem,
     Core ifc
 );
-    Ehr#(2, Addr)                   pcReg <- mkEhr(?);
-    RFile                              rf <- mkRFile;
-    CsrFile                          csrf <- mkCsrFile(id);
-    ICache                         iCache <- mkICache(iMem);
-    MessageFifo#(2)             toParentQ <- mkMessageFifo;
-    MessageFifo#(2)           fromParentQ <- mkMessageFifo;
-    DCache                         dCache <- mkDCache(id, toMessageGet(fromParentQ), toMessagePut(toParentQ), refDMem);
-    MemReqIDGen               memReqIDGen <- mkMemReqIDGen;
-    Scoreboard#(6)                     sb <- mkCFScoreboard;
-    Btb#(6)                           btb <- mkBtb;
-    Bht#(8)                           bht <- mkBht;
-    Reg#(Bool)                   exeCanary <- mkReg(False);
-    Reg#(Bool)                   decCanary <- mkReg(False);
-	Ehr#(2, Maybe#(Redirect)) exeRedirect <- mkEhr(Invalid);
-	Ehr#(2, Maybe#(Redirect)) decRedirect <- mkEhr(Invalid);
-	Fifo#(2, Fetch2Decode)            i2d <- mkCFFifo;
-	Fifo#(2, Decode2RegisterFetch)    d2r <- mkCFFifo;
-	Fifo#(2, Fetch2Execute)           r2e <- mkCFFifo;
-	Fifo#(2, Execute2WriteBack)       e2m <- mkCFFifo;
-	Fifo#(2, Execute2WriteBack)       m2w <- mkCFFifo;
 
+    Ehr#(2, Addr)         pcReg <- mkEhr(?);
+    CsrFile                csrf <- mkCsrFile(id);
+    RFile                    rf <- mkRFile;
+    MemReqIDGen     memReqIDGen <- mkMemReqIDGen;
+    ICache               iCache <- mkICache(iMem);
+    MessageFifo#(8)   toParentQ <- mkMessageFifo;
+    MessageFifo#(8) fromParentQ <- mkMessageFifo;
+    DCache               dCache <- mkDCache(id, toMessageGet(fromParentQ), toMessagePut(toParentQ), refDMem);
+    Btb#(6)                 btb <- mkBtb; // 64-entry BTB
+    Bht#(8)                 bht <- mkBht;
+	Scoreboard#(6)           sb <- mkCFScoreboard;
 
-    rule doFetch(csrf.started);
-		iCache.req(pcReg[0]);
-        let predPc = btb.predPc(pcReg[0]);
-        i2d.enq(Fetch2Decode {
-            pc: pcReg[0],
-            predPc: predPc,
-            ieCanary: exeCanary,
-            idCanary: decCanary
-        });
+	// global epoch for redirection from Execute stage
+	Reg#(Bool)    exeEpoch    <- mkReg(False);
+	Reg#(Bool)    decodeEpoch <- mkReg(False);
+    Reg#(Data)    scSuccValue <- mkRegU;
+
+    Fifo#(2, F2D)           f2dFifo <- mkCFFifo;
+    Fifo#(2, D2R)           d2rFifo <- mkCFFifo;
+    Fifo#(2, R2E)           r2eFifo <- mkCFFifo;
+    Fifo#(2, E2M)           e2mFifo <- mkCFFifo;
+    Fifo#(2, M2W)           m2wFifo <- mkCFFifo;
+
+    rule doFetch (csrf.started);
+        iCache.req(pcReg[0]);
+        Addr predPc = btb.predPc(pcReg[0]);
+
+        f2dFifo.enq(F2D{pc: pcReg[0], predPc: predPc, ifExeEpoch: exeEpoch,
+                        ifDecodeEpoch: decodeEpoch});
         pcReg[0] <= predPc;
+        // $display("pc: %h, ppc: %h", pcReg[0], predPc);
     endrule
 
-
-    rule doDecode(csrf.started);
-        let dMsg = i2d.first;
-        i2d.deq;
+    rule doDecode (csrf.started);
         let inst <- iCache.resp();
-        if (dMsg.ieCanary == exeCanary && dMsg.idCanary == decCanary) begin
-            let dInst = decode(inst);
-            if (dInst.iType == Br || dInst.iType == J) begin
-                let bht_ppc = dMsg.pc + 4;
-                if (bht.predict(dMsg.pc) || dInst.iType == J) begin
-                    bht_ppc = dMsg.pc + fromMaybe(?, dInst.imm);
-                end
-                if (bht_ppc != dMsg.predPc) begin
-                    dMsg.predPc = bht_ppc;
-                    decRedirect[0] <= Valid (Redirect {
-                        pc: dMsg.pc,
-                        nextPc: dMsg.predPc
-                    });
-                end
-            end
-            d2r.enq(Decode2RegisterFetch {
-                pc:       dMsg.pc,
-                predPc:   dMsg.predPc,
-                ieCanary: dMsg.ieCanary,
-                idCanary: dMsg.idCanary,
-                dInst:    dInst
-            });
-        end
-	endrule
+        DecodedInst dInst = decode(inst);
 
-    rule doRegisterFetch(csrf.started);
-        let dMsg = d2r.first;
-        let dInst = dMsg.dInst;
-		if(!sb.search1(dInst.src1) && !sb.search2(dInst.src2)) begin
-            d2r.deq;
-            Data rVal1 = rf.rd1(fromMaybe(?, dInst.src1));
-            Data rVal2 = rf.rd2(fromMaybe(?, dInst.src2));
-            Data csrVal = csrf.rd(fromMaybe(?, dInst.csr));
-            Fetch2Execute eMsg = Fetch2Execute {
-                pc:       dMsg.pc,
-                predPc:   dMsg.predPc,
-                dInst:    dInst,
-                rVal1:    rVal1,
-                rVal2:    rVal2,
-                csrVal:   csrVal,
-                ieCanary: dMsg.ieCanary,
-                idCanary: dMsg.idCanary
-            };
-            r2e.enq(eMsg);
-			sb.insert(dInst.dst);
-		end
+        let _Fetch = f2dFifo.first();
+        if (decodeEpoch == _Fetch.ifDecodeEpoch && exeEpoch == _Fetch.ifExeEpoch) begin
+            Addr    ppc;
+            if (dInst.iType == Br) begin
+                ppc = bht.ppcDP(_Fetch.pc, fromMaybe(?, dInst.imm) + _Fetch.pc);
+            end else if (dInst.iType == J) begin
+                ppc = fromMaybe(?, dInst.imm) + _Fetch.pc;
+            end else begin
+                ppc = _Fetch.predPc;
+            end
+            if (ppc != _Fetch.predPc) begin
+                decodeEpoch <= !decodeEpoch;
+                pcReg[1] <= ppc;
+            end
+
+            // $display("pc: %h, inst: %h extended: ", _Fetch.pc, inst, fshow(dInst));
+            d2rFifo.enq(D2R{pc: _Fetch.pc, predPc: ppc, dInst: dInst,
+                        idExeEpoch: _Fetch.ifExeEpoch});
+        end
+        f2dFifo.deq();
     endrule
 
-    rule doExecute(csrf.started);
-        let dMsg = r2e.first;
-		r2e.deq;
-        Maybe#(ExecInst) eInstValid;
-		if(dMsg.ieCanary != exeCanary) begin
-            eInstValid = Invalid;
-		end
-		else begin
-			let eInst = exec(
-                dMsg.dInst,
-                dMsg.rVal1,
-                dMsg.rVal2,
-                dMsg.pc,
-                dMsg.predPc,
-                dMsg.csrVal
-            );
-            eInstValid = Valid(eInst);
-            if(eInst.mispredict) begin
-                exeRedirect[0] <= Valid (Redirect {
-                    pc:     dMsg.pc,
-                    nextPc: eInst.addr
-                });
-            end
-            if (eInst.iType == Br) begin
-                bht.train(dMsg.pc, eInst.brTaken);
-            end
+    rule doRrf (csrf.started);
+        let _Decode = d2rFifo.first();
+        let rInst   = _Decode.dInst;
+
+        // search scoreboard to determine stall
+        if (!sb.search1(rInst.src1) && !sb.search2(rInst.src2)) begin
+            Data    rVal1 = rf.rd1(fromMaybe(?, rInst.src1));
+            Data    rVal2 = rf.rd2(fromMaybe(?, rInst.src2));
+            Data    csrVal= csrf.rd(fromMaybe(?, rInst.csr));
+
+            // $display("RegFile: PC = %x, rVal1 = %x, rVal2 = %x, csrVal = %x", _Decode.pc, rVal1, rVal2, csrVal);
+            r2eFifo.enq(R2E{pc: _Decode.pc, predPc: _Decode.predPc, rVal1: rVal1, rVal2: rVal2, csrVal: csrVal,
+                            rInst: rInst, irExeEpoch: _Decode.idExeEpoch});
+            sb.insert(rInst.dst);
+            d2rFifo.deq();
         end
-
-        let eMsg = Execute2WriteBack {
-            pc: dMsg.pc,
-            predPc: dMsg.predPc,
-            eInst: eInstValid
-        };
-        e2m.enq(eMsg);
-
     endrule
 
-    rule doMemory(csrf.started);
-        let dMsg = e2m.first;
-        e2m.deq;
-        if (isValid(dMsg.eInst)) begin
-            let eInst = fromMaybe(?, dMsg.eInst);
-            case (eInst.iType)
+    rule doExec (csrf.started);
+        let _Rrf = r2eFifo.first();
+        r2eFifo.deq();
+
+        if (exeEpoch == _Rrf.irExeEpoch) begin
+            ExecInst eInst = exec(_Rrf.rInst, _Rrf.rVal1, _Rrf.rVal2, _Rrf.pc, _Rrf.predPc, _Rrf.csrVal);
+            // check unsupported instruction at commit time. Exiting
+            if (eInst.iType == Unsupported) begin
+                $fwrite(stderr,"ERROR: Executing unsupported instruction at pc: %x. Exiting\n", _Rrf.pc);
+                $finish;
+                end
+            if (eInst.mispredict) begin
+                // 更新 epoch
+                // redirection
+                // 移除此时处于 Rrf 级向计分板写入的数据
+                exeEpoch <= !exeEpoch;
+                pcReg[1] <= eInst.addr;
+                btb.update(_Rrf.pc, eInst.addr);
+                // $display("Exec: mispredict ppc: %h, real pc: %h", _Rrf.predPc, eInst.addr);
+            end else begin
+                btb.update(_Rrf.pc, _Rrf.predPc);
+                // $display("Exec: pc: %h", _Rrf.pc);
+            end
+
+            e2mFifo.enq(E2M{pc: _Rrf.pc, eInst: tagged Valid eInst});
+        end else begin
+            e2mFifo.enq(E2M{pc: _Rrf.pc, eInst: tagged Invalid});
+        end
+    endrule
+
+    rule doMemory (csrf.started);
+        let _Exec = e2mFifo.first();
+        e2mFifo.deq();
+
+        if (isValid(_Exec.eInst)) begin
+            let _eInst = fromMaybe(?, _Exec.eInst);
+            case (_eInst.iType)
                 Ld: begin
                     let rid <- memReqIDGen.getID;
-                    let req = MemReq { op: Ld, addr: eInst.addr, data: ?, rid: rid };
+                    let req = MemReq { op: Ld, addr: _eInst.addr, data: ?, rid: rid };
                     dCache.req(req);
                 end
                 St: begin
                     let rid <- memReqIDGen.getID;
-                    let req = MemReq { op: St, addr: eInst.addr, data: eInst.data, rid: rid };
+                    let req = MemReq { op: St, addr: _eInst.addr, data: _eInst.data, rid: rid };
+                    scSuccValue <= _eInst.data;
                     dCache.req(req);
                 end
                 Lr: begin
                     let rid <- memReqIDGen.getID;
-                    let req = MemReq { op: Lr, addr: eInst.addr, data: ?, rid: rid };
+                    let req = MemReq { op: Lr, addr: _eInst.addr, data: ?, rid: rid };
                     dCache.req(req);
                 end
                 Sc: begin
                     let rid <- memReqIDGen.getID;
-                    let req = MemReq { op: Sc, addr: eInst.addr, data: eInst.data, rid: rid };
+                    let req = MemReq { op: Sc, addr: _eInst.addr, data: _eInst.data, rid: rid };
                     dCache.req(req);
                 end
                 Fence: begin
@@ -225,62 +208,48 @@ module mkCore(
                 default: begin
                 end
             endcase
+            // $display("doMemory: pc: %h", _Exec.pc);
+
+            m2wFifo.enq(M2W{pc: _Exec.pc, mInst: tagged Valid _eInst});
+        end else begin
+            m2wFifo.enq(M2W{pc: _Exec.pc, mInst: tagged Invalid});
         end
-        m2w.enq(dMsg);
     endrule
 
-    rule doWriteBack(csrf.started);
-        let dMsg = m2w.first;
-        m2w.deq;
-        if (isValid(dMsg.eInst)) begin
-            let eInst = fromMaybe(?, dMsg.eInst);
-            if(eInst.iType == Ld || eInst.iType == Lr || eInst.iType == Sc) begin
-                eInst.data <- dCache.resp();
+    rule doWriteback (csrf.started);
+        let _Mem = m2wFifo.first();
+        m2wFifo.deq();
+
+        if (isValid(_Mem.mInst)) begin
+            let _mInst = fromMaybe(?, _Mem.mInst);
+            if (_mInst.iType == Ld || _mInst.iType == Lr ||
+                _mInst.iType == Sc) begin
+                _mInst.data <- dCache.resp();
             end
 
-            // check unsupported instruction at commit time. Exiting
-            if(eInst.iType == Unsupported) begin
-                $fwrite(stderr, "ERROR: Executing unsupported instruction at pc: %x. Exiting\n", dMsg.pc);
-                $finish;
+            // write back
+            if (isValid(_mInst.dst)) begin
+                rf.wr(fromMaybe(?, _mInst.dst), _mInst.data);
             end
-            if(isValid(eInst.dst)) begin
-                rf.wr(fromMaybe(?, eInst.dst), eInst.data);
-            end
-		    let willPrint = fromMaybe(?, eInst.csr) != csrMtohost || (fromMaybe(?, eInst.csr) == csrMtohost && id == 0);
-		    csrf.wr(eInst.iType == Csrw && willPrint ? eInst.csr : Invalid, eInst.data);
-        end
-        sb.remove;
-	endrule
 
-	(* fire_when_enabled *)
-	(* no_implicit_conditions *)
-	rule cononicalizeRedirect(csrf.started);
-		if(exeRedirect[1] matches tagged Valid .r) begin
-			pcReg[1] <= r.nextPc;
-			exeCanary <= !exeCanary;
-			btb.update(r.pc, r.nextPc);
-		end
-        else if (decRedirect[1] matches tagged Valid .r) begin
-			pcReg[1] <= r.nextPc;
-			decCanary <= !decCanary;
-			btb.update(r.pc, r.nextPc);
+            // CSR write for sending data to host & stats
+            csrf.wr(_mInst.iType == Csrw ? _mInst.csr : Invalid, _mInst.data);
         end
-		exeRedirect[1] <= Invalid;
-		decRedirect[1] <= Invalid;
-	endrule
+        sb.remove();
+    endrule
 
     interface MessageGet toParent = toMessageGet(toParentQ);
     interface MessagePut fromParent = toMessagePut(fromParentQ);
 
-    method ActionValue#(CpuToHostData) cpuToHost if(csrf.started);
+    method ActionValue#(CpuToHostData) cpuToHost if (csrf.started);
         let ret <- csrf.cpuToHost;
         return ret;
     endmethod
 
     method Bool cpuToHostValid = csrf.cpuToHostValid;
 
-    method Action hostToCpu(Bit#(32) startpc) if ( !csrf.started );
-        csrf.start();
+    method Action hostToCpu(Bit#(32) startpc) if (!csrf.started);
+        csrf.start;
         pcReg[0] <= startpc;
     endmethod
 endmodule

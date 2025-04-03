@@ -2,6 +2,7 @@
 
 
 bmarks_tests=(
+	mc_incrementers
 	mc_print
 	mc_hello
 	mc_produce_consume
@@ -9,7 +10,6 @@ bmarks_tests=(
 	mc_vvadd
 	mc_multiply
 	mc_dekker
-	mc_incrementers
 	mc_spin_lock
 	mc_multiply2
 	)

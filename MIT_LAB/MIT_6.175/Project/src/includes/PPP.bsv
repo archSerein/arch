@@ -6,133 +6,129 @@ import MessageFifo::*;
 import Vector::*;
 import FShow::*;
 
-function Bool isStateM(MSI s);
-    return s == M;
-endfunction
-
-function Bool isStateS(MSI s);
-    return s == S;
-endfunction
-
-function Bool isStateI(MSI s);
-    return s == I;
-endfunction
-
-function Bool isCompatible(MSI a, MSI b);
-    return a == I || b == I || (a == S && b == S);
-endfunction
-
 module mkPPP(MessageGet c2m, MessagePut m2c, WideMem mem, Empty ifc);
-    Vector#(CoreNum, Vector#(CacheRows, Reg#(MSI)))      childState <- replicateM(replicateM(mkReg(I)));
-    Vector#(CoreNum, Vector#(CacheRows, Reg#(CacheTag)))   childTag <- replicateM(replicateM(mkRegU));
-    Vector#(CoreNum, Vector#(CacheRows, Reg#(Bool)))      waitState <- replicateM(replicateM(mkReg(False)));
+    Vector#(CoreNum, Vector#(CacheRows, Reg#(MSI))) childState <- replicateM(replicateM(mkReg(I)));
+    Vector#(CoreNum, Vector#(CacheRows, Reg#(CacheTag))) childTag <- replicateM(replicateM(mkRegU));
+    Vector#(CoreNum, Vector#(CacheRows, Reg#(Bool)))    waitState <- replicateM(replicateM(mkReg(False)));
 
-    Reg#(Bool)  missReg <- mkReg(False);
-    Reg#(Bool) readyReg <- mkReg(False);
+    Reg#(Bool)      miss    <- mkReg(False);
+    Reg#(Bool)      ready   <- mkReg(False);
 
-    rule parentResp (!c2m.hasResp && !missReg && readyReg);
-        let           req = c2m.first.Req;
-        let           idx = getIndex(req.addr);
-        let           tag = getTag(req.addr);
-        let         child = req.child;
-        Bool willConflict = False;
+    function Bool isCompatible(MSI x, MSI y);
+        Bool res = True;
+        if (x == M && y == M) begin
+            res = False;
+        end
+        if (x == M && y == S) begin
+            res = False;
+        end
+        if (x == S && y == M) begin
+            res = False;
+        end
+        return res;
+    endfunction
+    rule parentResp if (c2m.first matches tagged Req .req &&& ready &&& !miss);
+        let index = getIndex(req.addr);
+        let child = req.child;
+        Bool conflict = False;
         for (Integer i = 0; i < valueOf(CoreNum); i = i + 1) begin
             if (fromInteger(i) != child) begin
-                MSI s = (childTag[i][idx] == tag) ? childState[i][idx] : I;
-                if (!isCompatible(s, req.state) || waitState[child][idx]) begin
-                    willConflict = True;
+                MSI state = childTag[fromInteger(i)][index] == getTag(req.addr) ?
+                                childState[fromInteger(i)][index] : I;
+                if (!isCompatible(state, req.state) || waitState[child][index]) begin
+                    conflict = True;
                 end
             end
         end
-        if (!willConflict) begin
-            MSI state = (childTag[child][idx] == tag) ? childState[child][idx] : I;
-            if (!isStateI(state)) begin
-                m2c.enq_resp(CacheMemResp {
+
+        if (!conflict) begin
+            let state = getTag(req.addr) == childTag[child][index] ? childState[child][index] : I;
+            if (state != I) begin
+                CacheMemResp message = CacheMemResp {
                     child: child,
-                    addr: req.addr,
+                    addr:  req.addr,
                     state: req.state,
-                    data: Invalid
-                });
-                childState[child][idx] <= req.state;
-                childTag[child][idx] <= tag;
+                    data:  Invalid
+                };
+                m2c.enq_resp(message);
+                childState[child][index] <= req.state;
+                childTag[child][index]  <= getTag(req.addr);
                 c2m.deq;
-            end
-            else begin
-                mem.req(WideMemReq {
+            end else begin
+                // 需要向 Mem 请求数据
+                WideMemReq message = WideMemReq{
                     write_en: '0,
-                    addr: req.addr,
-                    data: ?
-                });
-                missReg <= True;
+                    addr:  req.addr,
+                    data:  ?
+                };
+                mem.req(message);
+                miss <= True;
             end
-            readyReg <= False;
+        end else begin
+            ready <= False;
         end
     endrule
 
-    rule dwn (!c2m.hasResp && !missReg && !readyReg);
-        let   req = c2m.first.Req;
-        let   idx = getIndex(req.addr);
-        let   tag = getTag(req.addr);
-        let child = req.child;
+    rule parentRespData if (miss &&& c2m.first matches tagged Req .req &&& ready);
+        let data <- mem.resp();
+        let valid = mem.respValid();
+        CacheMemResp message = CacheMemResp{
+            child: req.child,
+            addr:  req.addr,
+            state: req.state,
+            data:  Valid(data)
+        };
+        childState[req.child][getIndex(req.addr)] <= req.state;
+        childTag[req.child][getIndex(req.addr)] <= getTag(req.addr);
+        m2c.enq_resp(message);
+        c2m.deq;
+        miss <= False;
+    endrule
 
-        Maybe#(Integer) sendCore = tagged Invalid;
+    rule dwn (c2m.first matches tagged Req .req &&& !ready &&& !miss);
+        let child = req.child;
+        Maybe#(CoreID)  index = Invalid;
         for (Integer i = 0; i < valueOf(CoreNum); i = i + 1) begin
             if (fromInteger(i) != child) begin
-                MSI state = (childTag[i][idx] == tag)? childState[i][idx] : I;
-                if (!isCompatible(state, req.state) && !waitState[i][idx]) begin
-                    if (!isValid(sendCore)) begin
-                        sendCore = tagged Valid i;
-                    end
+                MSI state = childTag[fromInteger(i)][getIndex(req.addr)] == getTag(req.addr) ?
+                                childState[fromInteger(i)][getIndex(req.addr)] : I;
+                if (!isCompatible(state, req.state) || waitState[fromInteger(i)][getIndex(req.addr)]) begin
+                    index = tagged Valid fromInteger(i);
                 end
             end
         end
-        if (!isValid(sendCore)) begin
-            readyReg <= True;
-        end
-        else begin
-            waitState[fromMaybe(?, sendCore)][idx] <= True;
-            m2c.enq_req(CacheMemReq {
-                child: fromInteger(fromMaybe(?, sendCore)),
-                addr:req.addr,
-                state: (req.state == M ? I : S)
-            });
+        if (isValid(index)) begin
+            let id = fromMaybe(?, index);
+            CacheMemReq message = CacheMemReq{
+                child: id,
+                addr:  req.addr,
+                state:  req.state == M ? I : S
+            };
+            waitState[id][getIndex(req.addr)] <= True;
+            $display("downgrade request");
+            m2c.enq_req(message);
+        end else begin
+            ready <= True;
         end
     endrule
 
-    rule parentDataResp (!c2m.hasResp && missReg);
-        let req = c2m.first.Req;
-        let idx = getIndex(req.addr);
-        let tag = getTag(req.addr);
-        let child = req.child;
-        let line <- mem.resp();
-        m2c.enq_resp(CacheMemResp {
-            child: child,
-            addr: req.addr,
-            state: req.state,
-            data: Valid(line)
-        });
-        childState[child][idx] <= req.state;
-        childTag[child][idx] <= tag;
-        c2m.deq;
-        missReg <= False;
-    endrule
-
-    rule dwnRsp (c2m.hasResp);
-        let resp = c2m.first.Resp;
-        c2m.deq;
-        let idx = getIndex(resp.addr);
-        let tag = getTag(resp.addr);
+    rule dwnRsp (c2m.first matches tagged Resp .resp);
         let child = resp.child;
-        MSI status = (childTag[child][idx] == tag) ? childState[child][idx] : I;
-        if (isStateM(status)) begin
-            mem.req(WideMemReq{
-                write_en: '1,
-                addr: resp.addr,
-                data: fromMaybe(?, resp.data)
-            });
+        let index = getIndex(resp.addr);
+        MSI state = childTag[child][index] == getTag(resp.addr) ? childState[child][index] : I;
+        let data  = fromMaybe(?, resp.data);
+        if (state == M) begin
+            WideMemReq message = WideMemReq{
+                write_en:  '1,
+                addr:  resp.addr,
+                data:  data
+            };
+            mem.req(message);
         end
-        childState[child][idx] <= resp.state;
-        waitState[child][idx] <= False;
-        childTag[child][idx] <= tag;
+        childTag[child][index]  <= getTag(resp.addr);
+        childState[child][index] <= resp.state;
+        waitState[child][index] <= False;
+        c2m.deq;
     endrule
+
 endmodule

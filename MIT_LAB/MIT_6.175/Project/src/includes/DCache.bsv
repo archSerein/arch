@@ -8,20 +8,8 @@ import Fifo::*;
 import Ehr::*;
 import RefTypes::*;
 
-typedef enum { Rdy, StrtMiss, SndFillReq, WaitFillResp, Resp } CacheStatus
-deriving(Eq, Bits);
-
-function Bool isStateM(MSI s);
-    return s == M;
-endfunction
-
-function Bool isStateS(MSI s);
-    return s == S;
-endfunction
-
-function Bool isStateI(MSI s);
-    return s == I;
-endfunction
+typedef enum {Ready, StartMiss, SendFillReq, WaitFillResp, Response, 
+                CacheFlush} ReqState deriving (Eq, Bits);
 
 module mkDCache#(CoreID id)(
     MessageGet fromMem,
@@ -29,173 +17,212 @@ module mkDCache#(CoreID id)(
     RefDMem refDMem,
     DCache ifc
 );
-    Vector#(CacheRows, Reg#(CacheLine)) dataVec <- replicateM(mkRegU);
-    Vector#(CacheRows, Reg#(CacheTag))   tagVec <- replicateM(mkRegU);
-    Vector#(CacheRows, Reg#(MSI))       privVec <- replicateM(mkReg(I));
 
-    Reg#(CacheStatus) mshr <- mkReg(Rdy);
+    Vector#(CacheRows, Reg#(CacheLine))         dataArray <-replicateM(mkRegU);
+    Vector#(CacheRows, Reg#(CacheTag))          tagArray  <-replicateM(mkRegU);
+    Vector#(CacheRows, Reg#(MSI))               stateArray<-replicateM(mkReg(I));
 
-    Fifo#(8, Data)                  hitQ <- mkBypassFifo;
-    Fifo#(8, MemReq)                reqQ <- mkBypassFifo;
-    Reg#(MemReq)                  buffer <- mkRegU;
-    Reg#(Maybe#(CacheLineAddr)) lineAddr <- mkReg(Invalid);
+    Fifo#(8, Data)                              hitQ    <- mkBypassFifo;
+    Fifo#(8, MemReq)                            reqQ    <- mkBypassFifo;
+    Reg#(MemReq)                                missReq <- mkRegU;
+    Reg#(ReqState)                              mshr    <- mkReg(Ready);
 
-    rule doRdy (mshr == Rdy);
-        MemReq r = reqQ.first;
-        reqQ.deq;
-        let     sel = getWordSelect(r.addr);
-        let     idx = getIndex(r.addr);
-        let     tag = getTag(r.addr);
-        let     hit = tagVec[idx] == tag && privVec[idx] > I;
-        let proceed = (r.op != Sc || (r.op == Sc && isValid(lineAddr) &&
-                       fromMaybe(?, lineAddr) == getLineAddr(r.addr)));
+    Reg#(Bit#(TLog#(CacheRows))) flushIdx               <- mkReg(0);
+    Reg#(Maybe#(CacheLineAddr))                 lineAddr <- mkReg(Invalid);
 
-        if (!proceed) begin
-            hitQ.enq(scFail);
-            refDMem.commit(r, Invalid, Valid(scFail));
-            lineAddr <= Invalid;
-        end
-        else begin
-            if (!hit) begin
-                buffer <= r;
-                mshr <= StrtMiss;
-            end
-            else begin
-                if (r.op == Ld || r.op == Lr) begin
-                    hitQ.enq(dataVec[idx][sel]);
-                    refDMem.commit(r, Valid(dataVec[idx]), Valid(dataVec[idx][sel]));
-                    if (r.op == Lr) begin
-                        lineAddr <= tagged Valid getLineAddr(r.addr);
-                    end
-                end
-                else begin
-                    if (isStateM(privVec[idx])) begin
-                        dataVec[idx][sel] <= r.data;
-                        if (r.op == Sc) begin
-                            hitQ.enq(scSucc);
-                            refDMem.commit(r, Valid(dataVec[idx]), Valid(scSucc));
-                            lineAddr <= Invalid;
-                        end
-                        else begin
-                            refDMem.commit(r, Valid(dataVec[idx]), Invalid);
-                        end
-                    end
-                    else begin
-                        buffer <= r;
-                        mshr <= SndFillReq;
-                    end
-                end
-            end
-        end
-    endrule
-
-    rule doStrtMiss (mshr == StrtMiss);
-        let idx = getIndex(buffer.addr);
-        let tag = tagVec[idx];
-        let sel = getWordSelect(buffer.addr);
-
-        if (!isStateI(privVec[idx])) begin
-            privVec[idx] <= I;
-            Maybe#(CacheLine) line = isStateM(privVec[idx]) ? Valid(dataVec[idx]) : Invalid;
-            let addr = { tag, idx, sel, 2'b0 };
-            toMem.enq_resp(CacheMemResp {
+    rule doStartMiss if (mshr == StartMiss);
+        let index = getIndex(missReq.addr);
+        if (stateArray[index] != I) begin
+            stateArray[index] <= I;
+            let addr = {tagArray[index], index, getWordSelect(missReq.addr), 2'b0};
+            Maybe#(CacheLine) data = (stateArray[index] == M) ? Valid(dataArray[index]) : Invalid;
+            CacheMemResp message = CacheMemResp{
                 child: id,
                 addr: addr,
                 state: I,
-                data: line
-            });
+                data: data
+            };
+            toMem.enq_resp(message);
+            if (fromMaybe(?, lineAddr) == getLineAddr(addr)) begin
+                lineAddr <= Invalid;
+            end
         end
-        if (isValid(lineAddr) && fromMaybe(?, lineAddr) == getLineAddr(buffer.addr)) begin
-            lineAddr <= Invalid;
-        end
-        mshr <= SndFillReq;
+        mshr <= SendFillReq;
     endrule
 
-    rule doSndFillReq (mshr == SndFillReq);
-        let state = (buffer.op == Ld || buffer.op == Lr) ? S : M;
-        toMem.enq_req(CacheMemReq { child: id, addr: buffer.addr, state: state });
+    rule doSendFillReq if (mshr == SendFillReq);
+        let upg = (missReq.op == Ld || missReq.op == Lr) ? S : M;
+        CacheMemReq message = CacheMemReq{
+            child:  id,
+            addr:   missReq.addr,
+            state:  upg
+        };
+        toMem.enq_req(message);
         mshr <= WaitFillResp;
     endrule
 
-    rule doWaitFillResp (mshr == WaitFillResp && fromMem.hasResp);
-        let tag = getTag(buffer.addr);
-        let idx = getIndex(buffer.addr);
-        let sel = getWordSelect(buffer.addr);
-        CacheMemResp x = ?;
-        if (fromMem.first matches tagged Resp .r) begin
-            x = r;
-        end
-        fromMem.deq;
-        CacheLine line = isValid(x.data) ? fromMaybe(?, x.data) : dataVec[idx];
-        if (buffer.op == St) begin
-            let old_line = isValid(x.data) ? fromMaybe(?, x.data) : dataVec[idx];
-            refDMem.commit(buffer, Valid(old_line), Invalid);
-            line[sel] = buffer.data;
-        end
-        else if (buffer.op == Sc) begin
-            if (isValid(lineAddr) && fromMaybe(?, lineAddr) == getLineAddr(buffer.addr)) begin
-                let lastMod = isValid(x.data) ? fromMaybe(?, x.data) : dataVec[idx];
-                refDMem.commit(buffer, Valid(lastMod), Valid(scSucc));
-                line[sel] = buffer.data;
+    rule doWaitFillResp if (mshr == WaitFillResp &&&
+                            fromMem.first matches tagged Resp .resp);
+        let index        = getIndex(missReq.addr);
+        CacheLine rdata  = isValid(resp.data) ? fromMaybe(?, resp.data) : dataArray[index];
+        let old          = rdata;
+        let offset       = getWordSelect(missReq.addr);
+        if (missReq.op == St) begin
+            rdata[offset] = missReq.data;
+            refDMem.commit(missReq, Valid(old), Invalid);
+        end else if (missReq.op == Sc) begin
+            if (isValid(lineAddr) && fromMaybe(?, lineAddr) == getLineAddr(missReq.addr)) begin
+                rdata[offset] = missReq.data;
+                refDMem.commit(missReq, Valid(old), Valid(scSucc));
                 hitQ.enq(scSucc);
-            end
-            else begin
+                $display("core %d cache sc data: %h", id, missReq.data);
+            end else begin
                 hitQ.enq(scFail);
-                refDMem.commit(buffer, Invalid, Valid(scFail));
+                refDMem.commit(missReq, Valid(old), Valid(scFail));
             end
             lineAddr <= Invalid;
         end
-        dataVec[idx] <= line;
-        tagVec[idx] <= tag;
-        privVec[idx] <= x.state;
-        mshr <= Resp;
+        dataArray[index]  <= rdata;
+        stateArray[index] <= resp.state;
+        tagArray[index]   <= getTag(missReq.addr);
+        fromMem.deq;
+        mshr <= Response;
     endrule
 
-    rule doResp (mshr == Resp);
-        let idx = getIndex(buffer.addr);
-        let sel = getWordSelect(buffer.addr);
-        if (buffer.op == Ld || buffer.op == Lr) begin
-            hitQ.enq(dataVec[idx][sel]);
-            refDMem.commit(buffer, Valid(dataVec[idx]), Valid(dataVec[idx][sel]));
-            if (buffer.op == Lr) begin
-                lineAddr <= tagged Valid getLineAddr(buffer.addr);
-            end
+    rule doResponse if (mshr == Response);
+        if (missReq.op == Ld || missReq.op == Lr) begin
+            let index        = getIndex(missReq.addr);
+            let offset       = getWordSelect(missReq.addr);
+            CacheLine   data = dataArray[index];
+            hitQ.enq(data[offset]);
+            refDMem.commit(missReq, Valid(dataArray[index]), Valid(data[offset]));
         end
-        mshr <= Rdy;
+        if (missReq.op == Lr) begin
+            $display("core %d cache lr data: %h", id, dataArray[getWordSelect(missReq.addr)]);
+            lineAddr <= tagged Valid getLineAddr(missReq.addr);
+        end
+        mshr <= Ready;
     endrule
 
-    rule doDng (mshr != Resp && !fromMem.hasResp && fromMem.hasReq);
-        CacheMemReq x = ?;
-        if (fromMem.first matches tagged Req .r) begin
-            x = r;
-        end
-        let sel = getWordSelect(x.addr);
-        let idx = getIndex(x.addr);
-        let tag = getTag(x.addr);
-        if (privVec[idx] > x.state) begin
-            Maybe#(CacheLine) line = (privVec[idx] == M) ? Valid(dataVec[idx]) : Invalid;
-            let addr = { tag, idx, sel, 2'b0 };
-            toMem.enq_resp(CacheMemResp {
-                child: id,
-                addr: addr,
-                state: x.state,
-                data: line
-            });
-            privVec[idx] <= x.state;
-            if (x.state == I) begin
+    rule doDng if (mshr != Response &&&
+                    fromMem.first matches tagged Req .req);
+        let index = getIndex(req.addr);
+        if (stateArray[index] > req.state) begin
+            Maybe#(CacheLine) d = (stateArray[index] == M) ? Valid(dataArray[index]) : Invalid;
+            CacheMemResp cacheResp = CacheMemResp {
+                child:  id,
+                addr:   req.addr,
+                state:  req.state,
+                data:   d
+            };
+            toMem.enq_resp(cacheResp);
+            stateArray[index] <= req.state;
+            if (isValid(lineAddr) && fromMaybe(?, lineAddr) == getLineAddr(req.addr)) begin
                 lineAddr <= Invalid;
             end
         end
         fromMem.deq;
     endrule
 
-    method Action req(MemReq r);
-        reqQ.enq(r);
+    rule doReady if (mshr == Ready);
+        let r = reqQ.first;
         refDMem.issue(r);
+        reqQ.deq;
+        let addr = r.addr;
+        let index = getIndex(addr);
+        let state = stateArray[index];
+        let tag = getTag(addr);
+        let hit = state != I && tagArray[index] == tag;
+        let proceed = (r.op != Sc || (r.op == Sc && isValid(lineAddr) &&
+                          fromMaybe(?, lineAddr) == getLineAddr(addr)));
+
+        if (!proceed) begin
+            hitQ.enq(scFail);
+            lineAddr <= Invalid;
+        end else begin
+            if (!hit) begin
+                missReq <= r;
+                mshr    <= StartMiss;
+            end else begin
+                let data = dataArray[index];
+                let offset = getWordSelect(addr);
+                case (r.op)
+                    Ld: begin
+                        hitQ.enq(data[offset]);
+                        refDMem.commit(r, Valid(dataArray[index]), Valid(data[offset]));
+                    end
+                    St: begin
+                        if (state == M) begin
+                            data[offset] = r.data;
+                            let old = dataArray[index];
+                            dataArray[index] <= data;
+                            refDMem.commit(missReq, Valid(dataArray[index]), Valid(data[offset]));
+                        end else begin
+                            missReq <= r;
+                            mshr    <= SendFillReq;
+                        end
+                    end
+                    Lr: begin
+                        hitQ.enq(data[offset]);
+                        refDMem.commit(r, Valid(dataArray[index]), Valid(data[offset]));
+                        lineAddr    <= tagged Valid getLineAddr(addr);
+                        $display("core %d cache lr data: %h", id, data[offset]);
+                    end
+                    Sc: begin
+                        if (state == M) begin
+                            data[offset] = r.data;
+                            let old = dataArray[index];
+                            hitQ.enq(scSucc);
+                            dataArray[index] <= data;
+                            $display("core %d cache sc data: %h", id, r.data);
+                            refDMem.commit(missReq, Valid(old), Valid(scSucc));
+                            lineAddr    <= Invalid;
+                        end else begin
+                            missReq <= r;
+                            mshr    <= SendFillReq;
+                        end
+                    end
+                    Fence: begin
+                        // 降级请求
+                        mshr <= CacheFlush;
+                    end
+                endcase
+            end
+        end
+    endrule
+
+    rule cacheFlush if (mshr == CacheFlush);
+        let idx = flushIdx;
+
+        if (stateArray[idx] != I) begin
+            Addr evictAddr = {tagArray[idx], idx, 0};
+            CacheMemResp message = CacheMemResp {
+                child: id,
+                addr: evictAddr,
+                state: I,
+                data: Valid(dataArray[idx])
+            };
+            toMem.enq_resp(message);
+            stateArray[idx] <= I;
+        end
+
+        // 增加 flush index
+        if (idx == fromInteger(valueOf(CacheRows) - 1)) begin
+            mshr <= Ready;
+            flushIdx <= 0;
+        end else begin
+            flushIdx <= idx + 1;
+        end
+    endrule
+
+    method Action req(MemReq r) if (reqQ.notFull);
+        reqQ.enq(r);
     endmethod
 
-    method ActionValue#(Data) resp;
+    method ActionValue#(MemResp) resp;
         hitQ.deq;
-        return hitQ.first;
+        let data = hitQ.first;
+        return data;
     endmethod
+
 endmodule
